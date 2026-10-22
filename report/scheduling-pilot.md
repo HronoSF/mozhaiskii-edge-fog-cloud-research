@@ -117,6 +117,8 @@ The table below covers **every tested combination** in the one completed VM sess
 
 **What happened:** Round Robin distributed tasks evenly; the two predictive schedulers usually sent most tasks to Cloud. Adding delay changed measured completion times, but **these are single-session observations, not evidence of a general performance ranking**.
 
+![Median latency by scenario, based on the single completed VM session](../figures/median-latency.svg)
+
 ## 5. What did I measure?
 
 Before an application run, I check the network emulator's **delay, bandwidth limit, routing, disconnection/reconnection and unaffected access path**.
