@@ -1,0 +1,7 @@
+{
+  "measured_execution_sha": "b47689f644397018d408e97f83be5c587d7182ff",
+  "audited_results_sha": "33035e085988ce2165fdd46755ee8f75cb3a04e4",
+  "effective_input_files": 38,
+  "host_runner_sha256": "fc1745885be924981d10cf9a612b0bd5e7bb8724790a4b54e2c8cbdc4555a4a6",
+  "scope": "Byte-identical effective acquisition payload shared by A01-A03, plus its original owned-VM lifecycle runner. No internal authority, raw host log or earlier cohort is included. Public reruns produce new observations, not new A-series replicas."
+}

@@ -1,1 +1,176 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="810" viewBox="0 0 1600 810" role="img" aria-label="Twelve real scored tasks in the completed-run Round Robin burst unshaped scenario, grouped by Edge, Fog, Cloud. Waiting, transfer, execution and return times use actual measurements, with one late task marked."><rect width="1600" height="810" fill="white"/><text x="48" y="55" font-family="Arial,sans-serif" font-size="32" font-weight="700" fill="#17283D" text-anchor="start">Where did the tasks spend their time?</text><text x="48" y="87" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#52677D" text-anchor="start">One example: Completed run · Round Robin · burst arrivals · normal network · 12 real tasks</text><path d="M280 133 V635" stroke="#D4DEE7" stroke-dasharray="4 6"/><text x="280" y="659" font-family="Arial,sans-serif" font-size="17" font-weight="400" fill="#51677C" text-anchor="middle">0 s</text><path d="M441.1111111111111 133 V635" stroke="#D4DEE7" stroke-dasharray="4 6"/><text x="441.1111111111111" y="659" font-family="Arial,sans-serif" font-size="17" font-weight="400" fill="#51677C" text-anchor="middle">1 s</text><path d="M602.2222222222222 133 V635" stroke="#D4DEE7" stroke-dasharray="4 6"/><text x="602.2222222222222" y="659" font-family="Arial,sans-serif" font-size="17" font-weight="400" fill="#51677C" text-anchor="middle">2 s</text><path d="M763.3333333333334 133 V635" stroke="#D4DEE7" stroke-dasharray="4 6"/><text x="763.3333333333334" y="659" font-family="Arial,sans-serif" font-size="17" font-weight="400" fill="#51677C" text-anchor="middle">3 s</text><path d="M924.4444444444445 133 V635" stroke="#D4DEE7" stroke-dasharray="4 6"/><text x="924.4444444444445" y="659" font-family="Arial,sans-serif" font-size="17" font-weight="400" fill="#51677C" text-anchor="middle">4 s</text><path d="M1085.5555555555557 133 V635" stroke="#D4DEE7" stroke-dasharray="4 6"/><text x="1085.5555555555557" y="659" font-family="Arial,sans-serif" font-size="17" font-weight="400" fill="#51677C" text-anchor="middle">5 s</text><path d="M1246.6666666666667 133 V635" stroke="#D4DEE7" stroke-dasharray="4 6"/><text x="1246.6666666666667" y="659" font-family="Arial,sans-serif" font-size="17" font-weight="400" fill="#51677C" text-anchor="middle">6 s</text><path d="M1407.7777777777778 133 V635" stroke="#D4DEE7" stroke-dasharray="4 6"/><text x="1407.7777777777778" y="659" font-family="Arial,sans-serif" font-size="17" font-weight="400" fill="#51677C" text-anchor="middle">7 s</text><rect x="30" y="129" width="1538" height="183" rx="10" fill="#F0F8F6"/><text x="55" y="158" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#157F83" text-anchor="start">EDGE</text><text x="154" y="189" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 0</text><rect x="280.00" y="172" width="0.40" height="19" fill="#409A86"/><rect x="280.03" y="172" width="0.40" height="19" fill="#3E84B4"/><rect x="280.21" y="172" width="0.40" height="19" fill="#B49A4E"/><rect x="280.24" y="172" width="114.97" height="19" fill="#6658AD"/><rect x="395.21" y="172" width="0.40" height="19" fill="#83B1D7"/><path d="M441.11 168 V196" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><text x="154" y="220" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 3</text><rect x="602.22" y="203" width="0.83" height="19" fill="#409A86"/><rect x="603.05" y="203" width="0.40" height="19" fill="#3E84B4"/><rect x="603.38" y="203" width="0.40" height="19" fill="#B49A4E"/><rect x="603.44" y="203" width="19.50" height="19" fill="#6658AD"/><rect x="622.95" y="203" width="0.40" height="19" fill="#83B1D7"/><path d="M763.33 199 V227" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><text x="154" y="251" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 6</text><rect x="763.33" y="234" width="0.68" height="19" fill="#409A86"/><rect x="764.01" y="234" width="0.40" height="19" fill="#3E84B4"/><rect x="764.15" y="234" width="0.40" height="19" fill="#B49A4E"/><rect x="764.21" y="234" width="163.80" height="19" fill="#6658AD"/><rect x="928.01" y="234" width="0.40" height="19" fill="#83B1D7"/><path d="M924.44 230 V258" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="928.08" cy="243" r="7" fill="#B94537" stroke="white" stroke-width="2"/><text x="943.0827019555555" y="251" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#B94537" text-anchor="start">LATE</text><text x="154" y="282" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 9</text><rect x="951.30" y="265" width="0.88" height="19" fill="#409A86"/><rect x="952.17" y="265" width="0.40" height="19" fill="#3E84B4"/><rect x="952.37" y="265" width="0.40" height="19" fill="#B49A4E"/><rect x="952.39" y="265" width="89.65" height="19" fill="#6658AD"/><rect x="1042.04" y="265" width="0.40" height="19" fill="#83B1D7"/><path d="M1112.41 261 V289" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><rect x="30" y="323" width="1538" height="183" rx="10" fill="#FCF7EF"/><text x="55" y="352" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#B17B35" text-anchor="start">FOG</text><text x="154" y="383" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 1</text><rect x="441.11" y="366" width="0.75" height="19" fill="#409A86"/><rect x="441.86" y="366" width="0.40" height="19" fill="#3E84B4"/><rect x="442.01" y="366" width="0.40" height="19" fill="#B49A4E"/><rect x="442.14" y="366" width="10.69" height="19" fill="#6658AD"/><rect x="452.82" y="366" width="0.40" height="19" fill="#83B1D7"/><path d="M602.22 362 V390" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><text x="154" y="414" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 4</text><rect x="629.07" y="397" width="0.40" height="19" fill="#409A86"/><rect x="629.40" y="397" width="0.40" height="19" fill="#3E84B4"/><rect x="629.67" y="397" width="0.40" height="19" fill="#B49A4E"/><rect x="629.70" y="397" width="6.96" height="19" fill="#6658AD"/><rect x="636.66" y="397" width="0.40" height="19" fill="#83B1D7"/><path d="M790.19 393 V421" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><text x="154" y="445" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 7</text><rect x="924.44" y="428" width="0.54" height="19" fill="#409A86"/><rect x="924.99" y="428" width="0.40" height="19" fill="#3E84B4"/><rect x="925.11" y="428" width="0.40" height="19" fill="#B49A4E"/><rect x="925.16" y="428" width="46.26" height="19" fill="#6658AD"/><rect x="971.43" y="428" width="0.40" height="19" fill="#83B1D7"/><path d="M1085.56 424 V452" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><text x="154" y="476" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 10</text><rect x="978.15" y="459" width="0.74" height="19" fill="#409A86"/><rect x="978.89" y="459" width="0.40" height="19" fill="#3E84B4"/><rect x="979.14" y="459" width="0.40" height="19" fill="#B49A4E"/><rect x="979.18" y="459" width="43.65" height="19" fill="#6658AD"/><rect x="1022.83" y="459" width="0.40" height="19" fill="#83B1D7"/><path d="M1139.26 455 V483" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><rect x="30" y="517" width="1538" height="183" rx="10" fill="#F5F4FB"/><text x="55" y="546" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#6B5A9F" text-anchor="start">CLOUD</text><text x="154" y="577" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 2</text><rect x="602.22" y="560" width="0.74" height="19" fill="#409A86"/><rect x="602.96" y="560" width="0.40" height="19" fill="#3E84B4"/><rect x="603.06" y="560" width="0.40" height="19" fill="#B49A4E"/><rect x="603.11" y="560" width="8.13" height="19" fill="#6658AD"/><rect x="611.24" y="560" width="0.40" height="19" fill="#83B1D7"/><path d="M763.33 556 V584" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><text x="154" y="608" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 5</text><rect x="655.93" y="591" width="0.43" height="19" fill="#409A86"/><rect x="656.36" y="591" width="0.40" height="19" fill="#3E84B4"/><rect x="656.43" y="591" width="0.40" height="19" fill="#B49A4E"/><rect x="656.47" y="591" width="27.20" height="19" fill="#6658AD"/><rect x="683.67" y="591" width="0.40" height="19" fill="#83B1D7"/><path d="M817.04 587 V615" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><text x="154" y="639" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 8</text><rect x="924.44" y="622" width="0.64" height="19" fill="#409A86"/><rect x="925.08" y="622" width="0.66" height="19" fill="#3E84B4"/><rect x="925.74" y="622" width="0.40" height="19" fill="#B49A4E"/><rect x="925.77" y="622" width="8.56" height="19" fill="#6658AD"/><rect x="934.34" y="622" width="0.40" height="19" fill="#83B1D7"/><path d="M1085.56 618 V646" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><text x="154" y="670" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Task 11</text><rect x="1085.56" y="653" width="0.40" height="19" fill="#409A86"/><rect x="1085.87" y="653" width="0.40" height="19" fill="#3E84B4"/><rect x="1085.96" y="653" width="0.40" height="19" fill="#B49A4E"/><rect x="1086.02" y="653" width="10.09" height="19" fill="#6658AD"/><rect x="1096.11" y="653" width="0.40" height="19" fill="#83B1D7"/><path d="M1246.67 649 V677" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/><rect x="52" y="718" width="24" height="16" rx="3" fill="#409A86"/><text x="86" y="733" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Gateway + sender wait</text><rect x="336" y="718" width="24" height="16" rx="3" fill="#3E84B4"/><text x="370" y="733" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Input transfer</text><rect x="557" y="718" width="24" height="16" rx="3" fill="#B49A4E"/><text x="591" y="733" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Worker queue</text><rect x="760" y="718" width="24" height="16" rx="3" fill="#6658AD"/><text x="794" y="733" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">CPU execution (elapsed)</text><rect x="1062" y="718" width="24" height="16" rx="3" fill="#83B1D7"/><text x="1096" y="733" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#33465A" text-anchor="start">Result return</text><text x="50" y="777" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#51677C" text-anchor="start">The red tick is each task’s own 1-second deadline. Bars begin at the planned release; durations are measured, not simulated.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="810" viewBox="0 0 1600 810" role="img" aria-label="A03 Round Robin burst unshaped: twelve measured tasks grouped by Edge, Fog, and Cloud on a common timeline."><rect width="100%" height="100%" fill="white"/>
+<text x="48" y="55" font-family="Arial,sans-serif" font-size="32" font-weight="700" fill="#17283D">Where did the tasks spend their time?</text>
+<text x="48" y="87" font-family="Arial,sans-serif" font-size="20" fill="#52677D">A03 · Round Robin · burst arrivals · unshaped network · 12 scored tasks</text>
+<path d="M280.00 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
+<text x="280.00" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">0 s</text>
+<path d="M469.23 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
+<text x="469.23" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">1 s</text>
+<path d="M658.46 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
+<text x="658.46" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">2 s</text>
+<path d="M847.69 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
+<text x="847.69" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">3 s</text>
+<path d="M1036.92 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
+<text x="1036.92" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">4 s</text>
+<path d="M1226.15 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
+<text x="1226.15" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">5 s</text>
+<path d="M1415.38 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
+<text x="1415.38" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">6 s</text>
+<rect x="30" y="129" width="1538" height="167" rx="10" fill="#F0F8F6"/>
+<text x="55" y="158" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#157F83">EDGE</text>
+<text x="154" y="189" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 0</text>
+<rect x="280.0000" y="172" width="0.0044" height="19" fill="#409A86"/>
+<rect x="280.0044" y="172" width="0.0088" height="19" fill="#409A86"/>
+<rect x="280.0132" y="172" width="0.0006" height="19" fill="#3E84B4"/>
+<rect x="280.0138" y="172" width="0.0017" height="19" fill="#3E84B4"/>
+<rect x="280.0154" y="172" width="0.0033" height="19" fill="#3E84B4"/>
+<rect x="280.0187" y="172" width="0.0122" height="19" fill="#B49A4E"/>
+<rect x="280.0309" y="172" width="0.2168" height="19" fill="#B49A4E"/>
+<rect x="280.2478" y="172" width="0.0469" height="19" fill="#B49A4E"/>
+<rect x="280.2946" y="172" width="152.7919" height="19" fill="#6658AD"/>
+<rect x="433.0865" y="172" width="0.0750" height="19" fill="#83B1D7"/>
+<path d="M469.23 168 V196" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text x="154" y="220" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 3</text>
+<rect x="658.4615" y="203" width="2.5907" height="19" fill="#409A86"/>
+<rect x="661.0522" y="203" width="0.1983" height="19" fill="#409A86"/>
+<rect x="661.2506" y="203" width="0.0011" height="19" fill="#3E84B4"/>
+<rect x="661.2517" y="203" width="0.0026" height="19" fill="#3E84B4"/>
+<rect x="661.2542" y="203" width="0.0109" height="19" fill="#3E84B4"/>
+<rect x="661.2652" y="203" width="0.0550" height="19" fill="#B49A4E"/>
+<rect x="661.3202" y="203" width="0.9412" height="19" fill="#B49A4E"/>
+<rect x="662.2614" y="203" width="0.0711" height="19" fill="#B49A4E"/>
+<rect x="662.3325" y="203" width="33.2627" height="19" fill="#6658AD"/>
+<rect x="695.5952" y="203" width="0.0539" height="19" fill="#83B1D7"/>
+<path d="M847.69 199 V227" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text x="154" y="251" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 6</text>
+<rect x="847.6923" y="234" width="0.7605" height="19" fill="#409A86"/>
+<rect x="848.4529" y="234" width="0.0395" height="19" fill="#409A86"/>
+<rect x="848.4923" y="234" width="0.0069" height="19" fill="#3E84B4"/>
+<rect x="848.4992" y="234" width="0.0045" height="19" fill="#3E84B4"/>
+<rect x="848.5038" y="234" width="0.0118" height="19" fill="#3E84B4"/>
+<rect x="848.5155" y="234" width="0.0470" height="19" fill="#B49A4E"/>
+<rect x="848.5625" y="234" width="0.1144" height="19" fill="#B49A4E"/>
+<rect x="848.6769" y="234" width="0.1190" height="19" fill="#B49A4E"/>
+<rect x="848.7959" y="234" width="188.4954" height="19" fill="#6658AD"/>
+<rect x="1037.2913" y="234" width="0.0704" height="19" fill="#83B1D7"/>
+<path d="M1036.92 230 V258" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="1037.36" cy="243.5" r="7" fill="#B94537" stroke="white" stroke-width="2"/>
+<text x="154" y="282" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 9</text>
+<rect x="1068.4615" y="265" width="0.9498" height="19" fill="#409A86"/>
+<rect x="1069.4113" y="265" width="0.0208" height="19" fill="#409A86"/>
+<rect x="1069.4322" y="265" width="0.0006" height="19" fill="#3E84B4"/>
+<rect x="1069.4327" y="265" width="0.0013" height="19" fill="#3E84B4"/>
+<rect x="1069.4341" y="265" width="0.0042" height="19" fill="#3E84B4"/>
+<rect x="1069.4383" y="265" width="0.0194" height="19" fill="#B49A4E"/>
+<rect x="1069.4577" y="265" width="0.3127" height="19" fill="#B49A4E"/>
+<rect x="1069.7704" y="265" width="0.0229" height="19" fill="#B49A4E"/>
+<rect x="1069.7933" y="265" width="102.0747" height="19" fill="#6658AD"/>
+<rect x="1171.8681" y="265" width="0.0708" height="19" fill="#83B1D7"/>
+<path d="M1257.69 261 V289" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<rect x="30" y="308" width="1538" height="167" rx="10" fill="#FCF7EF"/>
+<text x="55" y="337" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#B17B35">FOG</text>
+<text x="154" y="368" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 1</text>
+<rect x="469.2308" y="351" width="0.9726" height="19" fill="#409A86"/>
+<rect x="470.2034" y="351" width="0.0315" height="19" fill="#409A86"/>
+<rect x="470.2349" y="351" width="0.0013" height="19" fill="#3E84B4"/>
+<rect x="470.2362" y="351" width="0.0034" height="19" fill="#3E84B4"/>
+<rect x="470.2396" y="351" width="0.0060" height="19" fill="#3E84B4"/>
+<rect x="470.2456" y="351" width="0.0243" height="19" fill="#B49A4E"/>
+<rect x="470.2699" y="351" width="0.0854" height="19" fill="#B49A4E"/>
+<rect x="470.3553" y="351" width="0.0791" height="19" fill="#B49A4E"/>
+<rect x="470.4344" y="351" width="11.4990" height="19" fill="#6658AD"/>
+<rect x="481.9334" y="351" width="0.0694" height="19" fill="#83B1D7"/>
+<path d="M658.46 347 V375" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text x="154" y="399" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 4</text>
+<rect x="690.0000" y="382" width="0.5942" height="19" fill="#409A86"/>
+<rect x="690.5942" y="382" width="0.0200" height="19" fill="#409A86"/>
+<rect x="690.6141" y="382" width="0.0007" height="19" fill="#3E84B4"/>
+<rect x="690.6148" y="382" width="0.0016" height="19" fill="#3E84B4"/>
+<rect x="690.6164" y="382" width="0.0055" height="19" fill="#3E84B4"/>
+<rect x="690.6219" y="382" width="0.0198" height="19" fill="#B49A4E"/>
+<rect x="690.6417" y="382" width="0.3635" height="19" fill="#B49A4E"/>
+<rect x="691.0051" y="382" width="0.0285" height="19" fill="#B49A4E"/>
+<rect x="691.0336" y="382" width="8.3634" height="19" fill="#6658AD"/>
+<rect x="699.3970" y="382" width="0.0573" height="19" fill="#83B1D7"/>
+<path d="M879.23 378 V406" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text x="154" y="430" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 7</text>
+<rect x="1036.9231" y="413" width="0.1489" height="19" fill="#409A86"/>
+<rect x="1037.0719" y="413" width="0.0207" height="19" fill="#409A86"/>
+<rect x="1037.0927" y="413" width="0.0014" height="19" fill="#3E84B4"/>
+<rect x="1037.0941" y="413" width="0.0017" height="19" fill="#3E84B4"/>
+<rect x="1037.0958" y="413" width="0.0063" height="19" fill="#3E84B4"/>
+<rect x="1037.1021" y="413" width="0.0295" height="19" fill="#B49A4E"/>
+<rect x="1037.1316" y="413" width="0.0607" height="19" fill="#B49A4E"/>
+<rect x="1037.1923" y="413" width="0.0639" height="19" fill="#B49A4E"/>
+<rect x="1037.2562" y="413" width="52.1889" height="19" fill="#6658AD"/>
+<rect x="1089.4451" y="413" width="0.0513" height="19" fill="#83B1D7"/>
+<path d="M1226.15 409 V437" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text x="154" y="461" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 10</text>
+<rect x="1100.0000" y="444" width="0.8542" height="19" fill="#409A86"/>
+<rect x="1100.8542" y="444" width="0.0165" height="19" fill="#409A86"/>
+<rect x="1100.8707" y="444" width="0.0006" height="19" fill="#3E84B4"/>
+<rect x="1100.8713" y="444" width="0.0011" height="19" fill="#3E84B4"/>
+<rect x="1100.8724" y="444" width="0.0044" height="19" fill="#3E84B4"/>
+<rect x="1100.8767" y="444" width="0.0183" height="19" fill="#B49A4E"/>
+<rect x="1100.8951" y="444" width="0.2826" height="19" fill="#B49A4E"/>
+<rect x="1101.1777" y="444" width="0.0216" height="19" fill="#B49A4E"/>
+<rect x="1101.1993" y="444" width="61.0683" height="19" fill="#6658AD"/>
+<rect x="1162.2676" y="444" width="0.0447" height="19" fill="#83B1D7"/>
+<path d="M1289.23 440 V468" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<rect x="30" y="487" width="1538" height="167" rx="10" fill="#F5F4FB"/>
+<text x="55" y="516" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#6B5A9F">CLOUD</text>
+<text x="154" y="547" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 2</text>
+<rect x="658.4615" y="530" width="2.2719" height="19" fill="#409A86"/>
+<rect x="660.7335" y="530" width="0.1695" height="19" fill="#409A86"/>
+<rect x="660.9029" y="530" width="0.0057" height="19" fill="#3E84B4"/>
+<rect x="660.9086" y="530" width="0.0079" height="19" fill="#3E84B4"/>
+<rect x="660.9166" y="530" width="0.0194" height="19" fill="#3E84B4"/>
+<rect x="660.9359" y="530" width="0.1362" height="19" fill="#B49A4E"/>
+<rect x="661.0721" y="530" width="0.2841" height="19" fill="#B49A4E"/>
+<rect x="661.3563" y="530" width="0.2213" height="19" fill="#B49A4E"/>
+<rect x="661.5775" y="530" width="11.8677" height="19" fill="#6658AD"/>
+<rect x="673.4452" y="530" width="0.1036" height="19" fill="#83B1D7"/>
+<path d="M847.69 526 V554" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text x="154" y="578" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 5</text>
+<rect x="721.5385" y="561" width="2.0137" height="19" fill="#409A86"/>
+<rect x="723.5522" y="561" width="0.0419" height="19" fill="#409A86"/>
+<rect x="723.5940" y="561" width="0.0015" height="19" fill="#3E84B4"/>
+<rect x="723.5955" y="561" width="0.0025" height="19" fill="#3E84B4"/>
+<rect x="723.5980" y="561" width="0.0110" height="19" fill="#3E84B4"/>
+<rect x="723.6090" y="561" width="0.0526" height="19" fill="#B49A4E"/>
+<rect x="723.6616" y="561" width="0.0698" height="19" fill="#B49A4E"/>
+<rect x="723.7313" y="561" width="0.0372" height="19" fill="#B49A4E"/>
+<rect x="723.7685" y="561" width="32.3424" height="19" fill="#6658AD"/>
+<rect x="756.1110" y="561" width="0.0686" height="19" fill="#83B1D7"/>
+<path d="M910.77 557 V585" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text x="154" y="609" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 8</text>
+<rect x="1036.9231" y="592" width="0.2025" height="19" fill="#409A86"/>
+<rect x="1037.1256" y="592" width="0.0299" height="19" fill="#409A86"/>
+<rect x="1037.1555" y="592" width="0.0005" height="19" fill="#3E84B4"/>
+<rect x="1037.1560" y="592" width="0.0036" height="19" fill="#3E84B4"/>
+<rect x="1037.1595" y="592" width="0.0064" height="19" fill="#3E84B4"/>
+<rect x="1037.1660" y="592" width="0.0256" height="19" fill="#B49A4E"/>
+<rect x="1037.1916" y="592" width="0.4153" height="19" fill="#B49A4E"/>
+<rect x="1037.6069" y="592" width="0.0284" height="19" fill="#B49A4E"/>
+<rect x="1037.6353" y="592" width="9.1291" height="19" fill="#6658AD"/>
+<rect x="1046.7644" y="592" width="0.0457" height="19" fill="#83B1D7"/>
+<path d="M1226.15 588 V616" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text x="154" y="640" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 11</text>
+<rect x="1226.1538" y="623" width="1.5456" height="19" fill="#409A86"/>
+<rect x="1227.6995" y="623" width="0.1450" height="19" fill="#409A86"/>
+<rect x="1227.8445" y="623" width="0.0047" height="19" fill="#3E84B4"/>
+<rect x="1227.8492" y="623" width="0.0060" height="19" fill="#3E84B4"/>
+<rect x="1227.8551" y="623" width="0.0187" height="19" fill="#3E84B4"/>
+<rect x="1227.8738" y="623" width="0.0874" height="19" fill="#B49A4E"/>
+<rect x="1227.9612" y="623" width="0.6051" height="19" fill="#B49A4E"/>
+<rect x="1228.5663" y="623" width="0.1160" height="19" fill="#B49A4E"/>
+<rect x="1228.6823" y="623" width="11.8880" height="19" fill="#6658AD"/>
+<rect x="1240.5702" y="623" width="0.1055" height="19" fill="#83B1D7"/>
+<path d="M1415.38 619 V647" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
+<rect x="52" y="718" width="24" height="16" rx="3" fill="#409A86"/><text x="86" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">Gateway / release wait</text>
+<rect x="330" y="718" width="24" height="16" rx="3" fill="#3E84B4"/><text x="364" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">Observation, decision, commit</text>
+<rect x="700" y="718" width="24" height="16" rx="3" fill="#B49A4E"/><text x="734" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">Sender, input, worker queue</text>
+<rect x="1115" y="718" width="24" height="16" rx="3" fill="#6658AD"/><text x="1149" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">Execution</text>
+<rect x="1295" y="718" width="24" height="16" rx="3" fill="#83B1D7"/><text x="1329" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">Result return</text>
+<text x="50" y="777" font-family="Arial,sans-serif" font-size="18" fill="#51677C">Bars start at planned arrival; dashed red ticks mark each task deadline. Very short measured stages may not resolve at this scale.</text>
+<text x="1550" y="795" font-family="Arial,sans-serif" font-size="15" text-anchor="end" fill="#B94537">Task 6 / E: 1002.318 ms response vs 1000 ms deadline (miss)</text>
+</svg>

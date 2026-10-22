@@ -1,13 +1,11 @@
-# Research publication instructions
+# Public experiment publication instructions
 
-Write scientific explanations in plain English, defining Edge, Fog, Cloud, ECT, MADT and other technical terms before first use. Use a simple hyphen `-` rather than typographic en/em dashes in prose, and straight single quotes `'...'` instead of curly quotation marks. Retain precise measured results and clear limitations.
+This repository contains only the A01-A03 report, its measurement tables/figures, effective execution source and instructions. Research planning, hypotheses, debugging, live authority and internal reviews belong in the private development repository.
 
-## PDF publication rule
+Write plain English and define technical terms before use. Use ordinary hyphens and straight quotes in prose. Preserve unfavorable outcomes, original deadlines and numerical thresholds. N=3fresh VM sessions on one physical host is a bounded correctness screen, not general reliability or policy superiority.
 
-Any future PDF must be built from complete, versioned LaTeX source with XeLaTeX, using the shared templates `latex/research-report.tex` and `latex/research-report.sty`. Keep every plotted measurement and figure under version control. Match the validated reference report before publishing and inspect every rendered chart, table and page.
+Build every PDF with XeLaTeX from complete versioned source using `latex/research-report.tex` and `latex/research-report.sty`. Keep their typography unchanged. Keep every plotted measurement and figure versioned. Inspect every rendered page, chart and table against the reference style. Tables must remain whole on one page. Check embedded fonts, links and actual vector rendering. Do not publish font binaries, use Word/browser PDF substitutes or edit generated PDFs.
 
-The previously published Markdown report and compiled PDF were withdrawn because that separate conversion had not been validated against the approved local PDF. Do not reconstruct or publish a substitute report automatically; publication requires verified document sources and rendered output.
+The38effective input files under `experiment/` are byte-pinned acquisition source. Do not silently modernize or retune them. Public packaging is checked offline; an offline build/test is never a new VM replication. New guest operations require a separately specified/authorized scope, preserve failed/partial attempts and must not overwrite the closed A01-A03 cohort. Never use broad Docker/VM pruning.
 
-Do not create canonical PDF artifacts via Word, browser print, WeasyPrint or manual drawing; do not edit generated PDFs directly. Check font embedding, accessibility of links, actual graphic rendering, tables and page breaks. No font binaries in the repository.
-
-Do not silently change data or convert pilot observations into claims of cross-session repeatability or a scheduler-performance ranking. Do not include proprietary logs, private repository history, host identifiers, token/secrets or unpublished internal reviews in the public release.
+Do not publish credentials, host identifiers, proprietary logs, private history or internal review records. Require a separate fresh independent review of final scientific claims and publication artifacts before acceptance. No automatic merging.

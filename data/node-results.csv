@@ -1,0 +1,13 @@
+slot,node,role,all_source_decisions,scored_source_decisions,calibration_worker_outputs,queue_proof_worker_outputs,warmup_worker_outputs,scored_worker_outputs,all_worker_outputs
+A01,G,orchestrator/source,948,144,,,,,
+A01,E,worker,,,24,4,240,16,284
+A01,F,worker,,,24,4,240,26,294
+A01,C,worker,,,24,4,240,102,370
+A02,G,orchestrator/source,948,144,,,,,
+A02,E,worker,,,24,4,240,16,284
+A02,F,worker,,,24,4,240,26,294
+A02,C,worker,,,24,4,240,102,370
+A03,G,orchestrator/source,948,144,,,,,
+A03,E,worker,,,24,4,240,16,284
+A03,F,worker,,,24,4,240,30,298
+A03,C,worker,,,24,4,240,98,366

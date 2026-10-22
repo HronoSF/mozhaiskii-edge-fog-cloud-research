@@ -1,37 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 755" width="1300" height="755">
-<rect x="0" y="0" width="1300" height="755" fill="#fff"/>
-<line x1="335" y1="102" x2="335" y2="650" stroke="#d7dade" stroke-width="1.1"/>
-<text x="335" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#333">0</text>
-<line x1="478" y1="102" x2="478" y2="650" stroke="#d7dade" stroke-width="1.1"/>
-<text x="478" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#333">50</text>
-<line x1="622" y1="102" x2="622" y2="650" stroke="#d7dade" stroke-width="1.1"/>
-<text x="622" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#333">100</text>
-<line x1="765" y1="102" x2="765" y2="650" stroke="#d7dade" stroke-width="1.1"/>
-<text x="765" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#333">150</text>
-<line x1="908" y1="102" x2="908" y2="650" stroke="#d7dade" stroke-width="1.1"/>
-<text x="908" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#333">200</text>
-<line x1="1052" y1="102" x2="1052" y2="650" stroke="#d7dade" stroke-width="1.1"/>
-<text x="1052" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#333">250</text>
-<line x1="1195" y1="102" x2="1195" y2="650" stroke="#d7dade" stroke-width="1.1"/>
-<text x="1195" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#333">300</text>
-<rect x="350" y="35" width="27" height="14" fill="#466A9A"/><text x="387" y="48" font-family="Georgia,serif" font-size="18" fill="#252525">Round Robin</text>
-<rect x="630" y="35" width="27" height="14" fill="#C28A37"/><text x="667" y="48" font-family="Georgia,serif" font-size="18" fill="#252525">Compute-ECT</text>
-<rect x="910" y="35" width="27" height="14" fill="#258579"/><text x="947" y="48" font-family="Georgia,serif" font-size="18" fill="#252525">Network-ECT</text>
-<text x="323" y="144" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Steady, Normal - Round Robin</text><rect x="335" y="122" width="514.57" height="30" fill="#466A9A" opacity=".92"/><text x="859.57" y="144" font-family="Georgia,serif" font-size="18" fill="#222">179.5</text>
-<text x="323" y="187" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Steady, Normal - Compute-ECT</text><rect x="335" y="165" width="355.75" height="30" fill="#C28A37" opacity=".92"/><text x="700.75" y="187" font-family="Georgia,serif" font-size="18" fill="#222">124.1</text>
-<text x="323" y="230" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Steady, Normal - Network-ECT</text><rect x="335" y="208" width="341.99" height="30" fill="#258579" opacity=".92"/><text x="686.99" y="230" font-family="Georgia,serif" font-size="18" fill="#222">119.3</text>
-<line x1="335" y1="246" x2="1280" y2="246" stroke="#a4a9b0" stroke-width="1"/>
-<text x="323" y="282" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Steady, +20 ms - Round Robin</text><rect x="335" y="260" width="765.97" height="30" fill="#466A9A" opacity=".92"/><text x="1110.97" y="282" font-family="Georgia,serif" font-size="18" fill="#222">267.2</text>
-<text x="323" y="325" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Steady, +20 ms - Compute-ECT</text><rect x="335" y="303" width="581.93" height="30" fill="#C28A37" opacity=".92"/><text x="926.93" y="325" font-family="Georgia,serif" font-size="18" fill="#222">203.0</text>
-<text x="323" y="368" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Steady, +20 ms - Network-ECT</text><rect x="335" y="346" width="562.44" height="30" fill="#258579" opacity=".92"/><text x="907.44" y="368" font-family="Georgia,serif" font-size="18" fill="#222">196.2</text>
-<line x1="335" y1="384" x2="1280" y2="384" stroke="#a4a9b0" stroke-width="1"/>
-<text x="323" y="420" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Burst, Normal - Round Robin</text><rect x="335" y="398" width="433.15" height="30" fill="#466A9A" opacity=".92"/><text x="778.15" y="420" font-family="Georgia,serif" font-size="18" fill="#222">151.1</text>
-<text x="1280" y="420" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#983f37">11/12 on time</text>
-<text x="323" y="463" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Burst, Normal - Compute-ECT</text><rect x="335" y="441" width="403.91" height="30" fill="#C28A37" opacity=".92"/><text x="748.91" y="463" font-family="Georgia,serif" font-size="18" fill="#222">140.9</text>
-<text x="323" y="506" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Burst, Normal - Network-ECT</text><rect x="335" y="484" width="336.55" height="30" fill="#258579" opacity=".92"/><text x="681.55" y="506" font-family="Georgia,serif" font-size="18" fill="#222">117.4</text>
-<line x1="335" y1="522" x2="1280" y2="522" stroke="#a4a9b0" stroke-width="1"/>
-<text x="323" y="558" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Burst, +20 ms - Round Robin</text><rect x="335" y="536" width="593.97" height="30" fill="#466A9A" opacity=".92"/><text x="938.97" y="558" font-family="Georgia,serif" font-size="18" fill="#222">207.2</text>
-<text x="323" y="601" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Burst, +20 ms - Compute-ECT</text><rect x="335" y="579" width="481.03" height="30" fill="#C28A37" opacity=".92"/><text x="826.03" y="601" font-family="Georgia,serif" font-size="18" fill="#222">167.8</text>
-<text x="323" y="644" font-family="Georgia,serif" font-size="17" text-anchor="end" fill="#222">Burst, +20 ms - Network-ECT</text><rect x="335" y="622" width="504.53" height="30" fill="#258579" opacity=".92"/><text x="849.53" y="644" font-family="Georgia,serif" font-size="18" fill="#222">176.0</text>
-<text x="765" y="718" font-family="Georgia,serif" font-size="21" text-anchor="middle" fill="#222">Median end-to-end latency from planned release (ms)</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="755" viewBox="0 0 1300 755"><rect width="100%" height="100%" fill="white"/><text x="40" y="38" font-family="Georgia,serif" font-size="24" fill="#222">Median response in the three VM sessions</text>
+<circle cx="450.00" cy="73.00" r="5" fill="#444"/>
+<text x="468" y="79" font-family="Georgia,serif" font-size="19" text-anchor="start" fill="#222">A01</text>
+<rect x="680.00" y="68.00" width="10" height="10" fill="#444"/>
+<text x="703" y="79" font-family="Georgia,serif" font-size="19" text-anchor="start" fill="#222">A02</text>
+<path d="M920.00,67.00 L914.00,78.00 L926.00,78.00 Z" fill="#444"/>
+<text x="938" y="79" font-family="Georgia,serif" font-size="19" text-anchor="start" fill="#222">A03</text>
+<line x1="350.0" y1="105" x2="350.0" y2="650" stroke="#d7dade"/>
+<text x="350.0" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#222">0</text>
+<line x1="490.0" y1="105" x2="490.0" y2="650" stroke="#d7dade"/>
+<text x="490.0" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#222">50</text>
+<line x1="630.0" y1="105" x2="630.0" y2="650" stroke="#d7dade"/>
+<text x="630.0" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#222">100</text>
+<line x1="770.0" y1="105" x2="770.0" y2="650" stroke="#d7dade"/>
+<text x="770.0" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#222">150</text>
+<line x1="910.0" y1="105" x2="910.0" y2="650" stroke="#d7dade"/>
+<text x="910.0" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#222">200</text>
+<line x1="1050.0" y1="105" x2="1050.0" y2="650" stroke="#d7dade"/>
+<text x="1050.0" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#222">250</text>
+<line x1="1190.0" y1="105" x2="1190.0" y2="650" stroke="#d7dade"/>
+<text x="1190.0" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#222">300</text>
+<text x="338" y="143" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Steady / normal - Round Robin</text>
+<line x1="858.80" y1="137" x2="1012.83" y2="137" stroke="#466A9A" stroke-width="2"/>
+<circle cx="858.80" cy="127.00" r="5" fill="#466A9A"/>
+<rect x="1007.83" y="132.00" width="10" height="10" fill="#466A9A"/>
+<path d="M986.13,141.00 L980.13,152.00 L992.13,152.00 Z" fill="#466A9A"/>
+<text x="338" y="186" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Steady / normal - Compute-ECT</text>
+<line x1="680.45" y1="180" x2="689.41" y2="180" stroke="#C28A37" stroke-width="2"/>
+<circle cx="680.45" cy="170.00" r="5" fill="#C28A37"/>
+<rect x="684.41" y="175.00" width="10" height="10" fill="#C28A37"/>
+<path d="M683.87,184.00 L677.87,195.00 L689.87,195.00 Z" fill="#C28A37"/>
+<text x="338" y="229" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Steady / normal - Network-ECT</text>
+<line x1="668.14" y1="223" x2="686.38" y2="223" stroke="#258579" stroke-width="2"/>
+<circle cx="668.14" cy="213.00" r="5" fill="#258579"/>
+<rect x="681.38" y="218.00" width="10" height="10" fill="#258579"/>
+<path d="M683.72,227.00 L677.72,238.00 L689.72,238.00 Z" fill="#258579"/>
+<line x1="350" y1="246" x2="1190" y2="246" stroke="#a4a9b0"/>
+<text x="338" y="281" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Steady / +20 ms - Round Robin</text>
+<line x1="1046.86" y1="275" x2="1094.99" y2="275" stroke="#466A9A" stroke-width="2"/>
+<circle cx="1094.99" cy="265.00" r="5" fill="#466A9A"/>
+<rect x="1051.64" y="270.00" width="10" height="10" fill="#466A9A"/>
+<path d="M1046.86,279.00 L1040.86,290.00 L1052.86,290.00 Z" fill="#466A9A"/>
+<text x="338" y="324" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Steady / +20 ms - Compute-ECT</text>
+<line x1="907.46" y1="318" x2="935.34" y2="318" stroke="#C28A37" stroke-width="2"/>
+<circle cx="935.34" cy="308.00" r="5" fill="#C28A37"/>
+<rect x="914.73" y="313.00" width="10" height="10" fill="#C28A37"/>
+<path d="M907.46,322.00 L901.46,333.00 L913.46,333.00 Z" fill="#C28A37"/>
+<text x="338" y="367" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Steady / +20 ms - Network-ECT</text>
+<line x1="757.87" y1="361" x2="929.70" y2="361" stroke="#258579" stroke-width="2"/>
+<circle cx="899.56" cy="351.00" r="5" fill="#258579"/>
+<rect x="924.70" y="356.00" width="10" height="10" fill="#258579"/>
+<path d="M757.87,365.00 L751.87,376.00 L763.87,376.00 Z" fill="#258579"/>
+<line x1="350" y1="384" x2="1190" y2="384" stroke="#a4a9b0"/>
+<text x="338" y="419" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Burst / normal - Round Robin</text>
+<line x1="831.35" y1="413" x2="881.42" y2="413" stroke="#466A9A" stroke-width="2"/>
+<circle cx="869.48" cy="403.00" r="5" fill="#466A9A"/>
+<rect x="826.35" y="408.00" width="10" height="10" fill="#466A9A"/>
+<path d="M881.42,417.00 L875.42,428.00 L887.42,428.00 Z" fill="#466A9A"/>
+<text x="338" y="462" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Burst / normal - Compute-ECT</text>
+<line x1="717.47" y1="456" x2="751.21" y2="456" stroke="#C28A37" stroke-width="2"/>
+<circle cx="717.47" cy="446.00" r="5" fill="#C28A37"/>
+<rect x="746.21" y="451.00" width="10" height="10" fill="#C28A37"/>
+<path d="M730.69,460.00 L724.69,471.00 L736.69,471.00 Z" fill="#C28A37"/>
+<text x="338" y="505" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Burst / normal - Network-ECT</text>
+<line x1="734.55" y1="499" x2="739.18" y2="499" stroke="#258579" stroke-width="2"/>
+<circle cx="734.55" cy="489.00" r="5" fill="#258579"/>
+<rect x="732.10" y="494.00" width="10" height="10" fill="#258579"/>
+<path d="M739.18,503.00 L733.18,514.00 L745.18,514.00 Z" fill="#258579"/>
+<line x1="350" y1="522" x2="1190" y2="522" stroke="#a4a9b0"/>
+<text x="338" y="557" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Burst / +20 ms - Round Robin</text>
+<line x1="938.48" y1="551" x2="939.78" y2="551" stroke="#466A9A" stroke-width="2"/>
+<circle cx="939.78" cy="541.00" r="5" fill="#466A9A"/>
+<rect x="934.03" y="546.00" width="10" height="10" fill="#466A9A"/>
+<path d="M938.48,555.00 L932.48,566.00 L944.48,566.00 Z" fill="#466A9A"/>
+<text x="338" y="600" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Burst / +20 ms - Compute-ECT</text>
+<line x1="873.14" y1="594" x2="906.24" y2="594" stroke="#C28A37" stroke-width="2"/>
+<circle cx="884.70" cy="584.00" r="5" fill="#C28A37"/>
+<rect x="868.14" y="589.00" width="10" height="10" fill="#C28A37"/>
+<path d="M906.24,598.00 L900.24,609.00 L912.24,609.00 Z" fill="#C28A37"/>
+<text x="338" y="643" font-family="Georgia,serif" font-size="18" text-anchor="end" fill="#222">Burst / +20 ms - Network-ECT</text>
+<line x1="873.41" y1="637" x2="928.16" y2="637" stroke="#258579" stroke-width="2"/>
+<circle cx="873.41" cy="627.00" r="5" fill="#258579"/>
+<rect x="923.16" y="632.00" width="10" height="10" fill="#258579"/>
+<path d="M922.73,641.00 L916.73,652.00 L928.73,652.00 Z" fill="#258579"/>
+<text x="770.0" y="718" font-family="Georgia,serif" font-size="21" text-anchor="middle" fill="#222">Response from planned arrival (ms); line shows observed range</text>
 </svg>

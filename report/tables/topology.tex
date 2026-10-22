@@ -1,0 +1,15 @@
+\begin{table}[H]
+\centering
+\label{table:topology:start}
+\begin{tabular}{p{0.24\linewidth}p{0.54\linewidth}r}
+\toprule
+\textbf{Container} & \textbf{What it does} & \textbf{CPU quota} \\
+\midrule
+Gateway / orchestrator & Receives tasks and selects workers & 0.50 CPU \\
+Edge worker & Executes tasks locally & 0.25 CPU \\
+Fog worker & Executes tasks and forwards Cloud traffic & 0.50 CPU \\
+Cloud worker & Executes tasks after traffic passes through Fog & 1.00 CPU \\
+\bottomrule
+\end{tabular}
+\label{table:topology:end}
+\end{table}

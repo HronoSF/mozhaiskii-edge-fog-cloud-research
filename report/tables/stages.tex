@@ -1,0 +1,16 @@
+\begin{table}[H]
+\centering
+\label{table:stages:start}
+\begin{tabular}{lrl}
+\toprule
+\textbf{Stage} & \textbf{Per VM} & \textbf{What it checks} \\
+\midrule
+Calibration & 72 & Estimate worker and transfer times \\
+Queue check & 12 & Confirm waiting behind busy workers \\
+Warmup & 720 & Prepare every scenario equally \\
+Main comparison & 144 & 12 scenarios with 12 scored tasks each \\
+Total real work & 948 & Includes preparation and scored work \\
+\bottomrule
+\end{tabular}
+\label{table:stages:end}
+\end{table}
