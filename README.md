@@ -27,6 +27,7 @@ In the single completed VM session, all **144/144 scored results** were correct 
 
 ## Read the research
 
+- **[Download the academic PDF](report/scheduling-pilot.pdf)** - compiled from the versioned XeLaTeX template, with a color-coded latency chart and all 12 measured scenarios.
 - **[Pilot research report](report/scheduling-pilot.md)** - plain-language definitions, methodology, 12 measured scenarios, worked examples, experimental limitations and references.
 - **[Scenario results (CSV)](data/scenario-results.csv)** - one row per scenario from the successful VM session.
 - **[Scored tasks (CSV)](data/scored-tasks.csv)** - selected timing and placement fields for the 144 completed scored tasks.
