@@ -24,7 +24,7 @@ def compact_chart(filename,title,metric,divisor,maxv,step,axis_label):
  W,H=1300,755;left,right,top=350,1190,122
  p=start(W,H,title)
  for k,slot in enumerate(['A01','A02','A03']):
-  x=450+k*235;p.append(marker(x,73,k,'#444'));p.append(txt(x+18,79,slot,19))
+  x=450+k*235;p.append(marker(x,73,k,'#444'));p.append(txt(x+18,79,slot.replace('A0','Run '),19))
  for tick in range(0,maxv+1,step):
   x=left+(right-left)*tick/maxv;p.append(f'<line x1="{x}" y1="105" x2="{x}" y2="650" stroke="#d7dade"/>');p.append(txt(x,676,tick,18,'middle'))
  for i,(arr,net,label) in enumerate(contexts):
@@ -38,16 +38,16 @@ def compact_chart(filename,title,metric,divisor,maxv,step,axis_label):
   if i<3:
    yy=top+(i+1)*3*43+i*9-5;p.append(f'<line x1="{left}" y1="{yy}" x2="{right}" y2="{yy}" stroke="#a4a9b0"/>')
  p.append(txt((left+right)/2,718,axis_label,21,'middle'));save(filename,p)
-compact_chart('median-latency.svg','Median response in the three VM sessions','response_scheduled_ns_median',1e6,300,50,'Response from planned arrival (ms); line shows observed range')
-compact_chart('decision-overhead.svg','Scheduling decision wall time in the three VM sessions','decision_wall_ns_median',1000,180,30,'Decision wall median (microseconds); line shows observed range')
+compact_chart('median-latency.svg','Task response times across three fresh VM runs','response_scheduled_ns_median',1e6,300,50,'Task response time (ms)')
+compact_chart('decision-overhead.svg','Time spent making the scheduling decision','decision_wall_ns_median',1000,180,30,'Scheduling decision time (microseconds)')
 
 # A03 burst/unshaped Round Robin scored tasks, on the original common timeline.
 tasks=[r for r in rows('scored-tasks.csv') if r['slot']=='A03' and r['arrival_pattern']=='burst' and r['network_condition']=='unshaped' and r['scheduler']=='rr']
 assert len(tasks)==12
 stages=[('release_lag_ns','#409A86'),('global_queue_ns','#409A86'),('observation_ns','#3E84B4'),('decision_wall_ns','#3E84B4'),('commit_ns','#3E84B4'),('sender_queue_ns','#B49A4E'),('input_delivery_ns','#B49A4E'),('worker_queue_ns','#B49A4E'),('execution_wall_ns','#6658AD'),('result_delivery_ns','#83B1D7')]
-W,H=1600,810;left,right,limit=280,1510,6500;top=157; p=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="A03 Round Robin burst unshaped: twelve measured tasks grouped by Edge, Fog, and Cloud on a common timeline."><rect width="100%" height="100%" fill="white"/>']
+W,H=1600,810;left,right,limit=280,1510,6500;top=157; p=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Run 3 Round Robin burst unshaped: twelve measured tasks grouped by Edge, Fog, and Cloud on a common timeline."><rect width="100%" height="100%" fill="white"/>']
 p.append('<text x="48" y="55" font-family="Arial,sans-serif" font-size="32" font-weight="700" fill="#17283D">Where did the tasks spend their time?</text>')
-p.append('<text x="48" y="87" font-family="Arial,sans-serif" font-size="20" fill="#52677D">A03 · Round Robin · burst arrivals · unshaped network · 12 scored tasks</text>')
+p.append('<text x="48" y="87" font-family="Arial,sans-serif" font-size="20" fill="#52677D">Run 3 · Round Robin · burst arrivals · unshaped network · 12 scored tasks</text>')
 def at(ms):return left+(right-left)*ms/limit
 for tick in range(0,6501,1000):
  x=at(tick);p.append(f'<path d="M{x:.2f} 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>');p.append(f'<text x="{x:.2f}" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">{tick//1000} s</text>')

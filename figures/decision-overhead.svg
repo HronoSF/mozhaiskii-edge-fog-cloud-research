@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="755" viewBox="0 0 1300 755"><rect width="100%" height="100%" fill="white"/><text x="40" y="38" font-family="Georgia,serif" font-size="24" fill="#222">Scheduling decision wall time in the three VM sessions</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="755" viewBox="0 0 1300 755"><rect width="100%" height="100%" fill="white"/><text x="40" y="38" font-family="Georgia,serif" font-size="24" fill="#222">Time spent making the scheduling decision</text>
 <circle cx="450.00" cy="73.00" r="5" fill="#444"/>
-<text x="468" y="79" font-family="Georgia,serif" font-size="19" text-anchor="start" fill="#222">A01</text>
+<text x="468" y="79" font-family="Georgia,serif" font-size="19" text-anchor="start" fill="#222">Run 1</text>
 <rect x="680.00" y="68.00" width="10" height="10" fill="#444"/>
-<text x="703" y="79" font-family="Georgia,serif" font-size="19" text-anchor="start" fill="#222">A02</text>
+<text x="703" y="79" font-family="Georgia,serif" font-size="19" text-anchor="start" fill="#222">Run 2</text>
 <path d="M920.00,67.00 L914.00,78.00 L926.00,78.00 Z" fill="#444"/>
-<text x="938" y="79" font-family="Georgia,serif" font-size="19" text-anchor="start" fill="#222">A03</text>
+<text x="938" y="79" font-family="Georgia,serif" font-size="19" text-anchor="start" fill="#222">Run 3</text>
 <line x1="350.0" y1="105" x2="350.0" y2="650" stroke="#d7dade"/>
 <text x="350.0" y="676" font-family="Georgia,serif" font-size="18" text-anchor="middle" fill="#222">0</text>
 <line x1="490.0" y1="105" x2="490.0" y2="650" stroke="#d7dade"/>
@@ -82,5 +82,5 @@
 <circle cx="728.76" cy="627.00" r="5" fill="#258579"/>
 <rect x="545.67" y="632.00" width="10" height="10" fill="#258579"/>
 <path d="M729.36,641.00 L723.36,652.00 L735.36,652.00 Z" fill="#258579"/>
-<text x="770.0" y="718" font-family="Georgia,serif" font-size="21" text-anchor="middle" fill="#222">Decision wall median (microseconds); line shows observed range</text>
+<text x="770.0" y="718" font-family="Georgia,serif" font-size="21" text-anchor="middle" fill="#222">Scheduling decision time (microseconds)</text>
 </svg>

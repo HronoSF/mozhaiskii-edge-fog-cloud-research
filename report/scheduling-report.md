@@ -4,7 +4,7 @@
 
 **The idea.** An *orchestrator* is a program that receives computing tasks and decides which available machine should execute each one. I built a small prototype to study how network delay, computing power and queues affect that decision.
 
-The results below come from **three fresh Linux VM sessions, A01-A03**, each running the same experiment once. All three completed. They demonstrate a working implementation under repeated starts on one host; they do not establish which scheduling algorithm is best.
+The results below come from **three fresh Linux VM runs**, each running the same experiment once. All three completed. They demonstrate a working implementation under repeated starts on one host; they do not establish which scheduling algorithm is best.
 
 ## Research context and relation to Wang et al. (2026)
 
@@ -24,7 +24,7 @@ These are logical **roles**, not three separate physical locations in my experim
 
 **MADT (Distributed Application Modelling System)** is an open-source tool for deploying applications into an emulated IP-network topology and controlling network conditions such as delay and bandwidth. I use [MADT](https://github.com/dltcspbu/madt) to create the network connections and impairments while running real application code; this is **network emulation, not four independent physical sites**. To reproduce network conditions in a controlled way, I run four isolated **Docker containers inside one Linux virtual machine**, connected through a network emulator. A *CPU quota* limits how much processing time a container may use.
 
-![System topology](../figures/topology.svg)
+![System topology](../figures/topology.png)
 
 \input{report/tables/topology.tex}
 
@@ -65,7 +65,7 @@ That makes **3 algorithms × 2 arrival patterns × 2 network conditions = 12 sce
 
 ## 4. Three concrete examples
 
-Each example holds the arrival pattern and network condition fixed across policies. **A01, A02 and A03 are separate VM sessions.** Each latency is the median of 12 tasks in that session; 'On time' gives the descriptive total out of 36 offers across the three sessions. Those tasks are not 36 independent repetitions.
+Each example holds the arrival pattern and network condition fixed across policies. **Run 1, Run 2 and Run 3 each use a fresh VM.** Each latency is the median of 12 tasks in that session; 'On time' gives the descriptive total out of 36 offers across the three sessions. Those tasks are not 36 independent repetitions.
 
 \Needspace{110pt}
 
@@ -75,7 +75,7 @@ Each example holds the arrival pattern and network condition fixed across polici
 
 \Needspace{110pt}
 
-**Example B - Bursty arrivals, normal network.** The arrival stream is concentrated into two short bursts. The single missed deadline occurred in A03 with Round Robin.
+**Example B - Bursty arrivals, normal network.** The arrival stream is concentrated into two short bursts. The single missed deadline occurred in Run 3 with Round Robin.
 
 \input{report/tables/example-b.tex}
 
@@ -91,11 +91,11 @@ Each example holds the arrival pattern and network condition fixed across polici
 
 ### Complete set of 12 scenarios
 
-The table includes **all tested combinations in all three sessions**. +20 ms means nominal extra one-way Cloud ingress delay. Each A-column is a 12-task median in milliseconds, measured from planned arrival to verified response. 'On time' retains the one-second deadline and all 36 offers per row. Per-session placements and individual tasks are available in the public data.
+The table includes **all tested combinations in all three sessions**. +20 ms means nominal extra one-way Cloud ingress delay. Each run column is a 12-task median in milliseconds, measured from planned arrival to verified response. 'On time' retains the one-second deadline and all 36 offers per row. Per-run placements and individual tasks are available in the public data. In the graph, each symbol is one run's 12-task median. The horizontal segment connects the shortest and longest of the three medians: a wider separation means more variation between runs. It is not a confidence interval.
 
 \input{report/tables/all-scenarios.tex}
 
-![Median latency in all three VM sessions; the connecting range is descriptive, not a confidence interval](../figures/median-latency.svg)
+![Median task response time in each fresh VM run](../figures/median-latency.svg)
 
 ## 5. What did I measure?
 
@@ -133,15 +133,15 @@ The nominal settings were 20 ms added delay and a separate 10 Mbps qualification
 
 \Needspace{120pt}
 
-**Repeatability has limits.** Across the three VM medians for a fixed scenario, the relative range was **0.219%-31.267%**, calculated as (maximum minus minimum) divided by their median. The largest spread was Network-ECT with steady arrivals and added Cloud delay: **196.273, 207.037 and 145.668 ms**. The low A03 value remains visible in the graph. Three complete sessions establish this bounded correctness result, not identical timing or general future reliability.
+**Repeatability has limits.** Across the three VM medians for a fixed scenario, the relative range was **0.219%-31.267%**, calculated as (maximum minus minimum) divided by their median. The largest spread was Network-ECT with steady arrivals and added Cloud delay: **196.273, 207.037 and 145.668 ms**. The variation shows why completing the same experiment correctly does not imply identical response times.
 
-All scenarios completed 12 tasks inside the six-second window, giving **2 completed tasks/s**. This small offered workload does not measure maximum processing capacity. On-time goodput was 2 tasks/s except the A03 late-task scenario, where it was 11/6 tasks/s.
+All scenarios completed 12 tasks inside the six-second window, giving **2 completed tasks/s**. This small offered workload does not measure maximum processing capacity. On-time goodput was 2 tasks/s except the Run 3 late-task scenario, where it was 11/6 tasks/s.
 
 ## 7. How do individual tasks behave?
 
-A *timeline* shows when a task was released, waited, transferred, executed and returned. The figure uses **all 12 actual tasks from A03/Round Robin/burst/normal network**, chosen to show the only deadline miss rather than hide it. Each colored segment is measured elapsed time; the small scheduling stages remain included.
+A *timeline* shows when a task was released, waited, transferred, executed and returned. The figure uses **all 12 actual tasks from Run 3 with Round Robin, burst arrivals and normal networking**, chosen to show the only deadline miss rather than hide it. Each colored segment is measured elapsed time; the small scheduling stages remain included.
 
-![A03 task timeline for Round Robin with burst arrivals; the late task is retained](../figures/task-timeline.svg)
+![Run 3 task timeline for Round Robin with burst arrivals; the late task is retained](../figures/task-timeline.svg)
 
 **The late Edge task** took **1,002.318 ms** from planned arrival to verified response, exceeding the 1,000 ms deadline by **2.318 ms**. Its actual release was 4.019 ms late. Measuring from that actual release would give 998.299 ms and hide the miss, so the original planned-arrival rule is retained. Its answer was correct.
 
@@ -155,12 +155,10 @@ The measurements do not isolate the cause of this delay. Worker CPU limits, host
 
 **Still limited:** this is three small sessions on one physical host, with a fixed task stream and scenario order. Timing and placements are not identical. Fog couples routing and computation. Emulated links and CPU quotas are not separate physical sites. These data do not establish a scheduler winner, geographic portability or long-term operational reliability.
 
-**Next step:** use this reproducible prototype to agree a focused question with the supervisors, then specify a broader workload or validation setting before collecting more data. Increasing load, changing network information or adding physical hosts would be separate experimental decisions.
-
-*This report uses only the recorded A01-A03 cohort. The figures and tables were generated offline; no new experiment was run to prepare this update.*
+*This report uses only the three recorded VM runs. The figures and tables were generated offline; no new experiment was run to prepare this update.*
 
 ## References
 
 1. Z. Wang, B. Sedlak, J. L. Herrera, and S. Dustdar. 'Fair Comparison of Scheduling Algorithms on Heterogeneous Edge Clusters: A Continuous Adaptive Benchmark.' IEEE ICDCSW, pp. 232-237, 2026. [DOI: 10.1109/ICDCSW72724.2026.00054](https://doi.org/10.1109/ICDCSW72724.2026.00054). Open preprint: [arXiv:2606.12343](https://arxiv.org/abs/2606.12343).
 2. MADT project. 'Distributed Application Modelling System.' [Source repository](https://github.com/dltcspbu/madt), accessed 23 October 2026.
-3. [Public experiment source, data and execution instructions](https://github.com/HronoSF/mozhaiskii-edge-fog-cloud-research). A01-A03 data release, October 2026.
+3. [Public experiment source, data and execution instructions](https://github.com/HronoSF/mozhaiskii-edge-fog-cloud-research). three-run data release, October 2026.

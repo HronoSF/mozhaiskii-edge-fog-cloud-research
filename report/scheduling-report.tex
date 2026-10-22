@@ -15,10 +15,10 @@ computing tasks and decides which available machine should execute each
 one. I built a small prototype to study how network delay, computing
 power and queues affect that decision.
 
-The results below come from \textbf{three fresh Linux VM sessions,
-A01-A03}, each running the same experiment once. All three completed.
-They demonstrate a working implementation under repeated starts on one
-host; they do not establish which scheduling algorithm is best.
+The results below come from \textbf{three fresh Linux VM runs}, each
+running the same experiment once. All three completed. They demonstrate
+a working implementation under repeated starts on one host; they do not
+establish which scheduling algorithm is best.
 
 \subsection{Research context and relation to Wang et al.
 (2026)}\label{research-context-and-relation-to-wang-et-al.-2026}
@@ -74,7 +74,7 @@ processing time a container may use.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={System topology}]{build/figures/topology.pdf}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={System topology}]{build/figures/topology.png}
 \caption{System topology}
 \end{figure}
 
@@ -171,7 +171,7 @@ conditions = 12 scenarios}, each offering 12 tasks over 6 seconds.
 \subsection{4. Three concrete examples}\label{three-concrete-examples}
 
 Each example holds the arrival pattern and network condition fixed
-across policies. \textbf{A01, A02 and A03 are separate VM sessions.}
+across policies. \textbf{Run 1, Run 2 and Run 3 each use a fresh VM.}
 Each latency is the median of 12 tasks in that session;
 \textquotesingle On time\textquotesingle{} gives the descriptive total
 out of 36 offers across the three sessions. Those tasks are not 36
@@ -188,7 +188,7 @@ apart, so the workers have relatively little queueing.
 
 \textbf{Example B - Bursty arrivals, normal network.} The arrival stream
 is concentrated into two short bursts. The single missed deadline
-occurred in A03 with Round Robin.
+occurred in Run 3 with Round Robin.
 
 \input{report/tables/example-b.tex}
 
@@ -213,18 +213,21 @@ scenarios}\label{complete-set-of-12-scenarios}
 
 The table includes \textbf{all tested combinations in all three
 sessions}. +20 ms means nominal extra one-way Cloud ingress delay. Each
-A-column is a 12-task median in milliseconds, measured from planned
+run column is a 12-task median in milliseconds, measured from planned
 arrival to verified response. \textquotesingle On time\textquotesingle{}
-retains the one-second deadline and all 36 offers per row. Per-session
-placements and individual tasks are available in the public data.
+retains the one-second deadline and all 36 offers per row. Per-run
+placements and individual tasks are available in the public data. In the
+graph, each symbol is one run\textquotesingle s 12-task median. The
+horizontal segment connects the shortest and longest of the three
+medians: a wider separation means more variation between runs. It is not
+a confidence interval.
 
 \input{report/tables/all-scenarios.tex}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Median latency in all three VM sessions; the connecting range is descriptive, not a confidence interval}]{build/figures/median-latency.pdf}
-\caption{Median latency in all three VM sessions; the connecting range
-is descriptive, not a confidence interval}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Median task response time in each fresh VM run}]{build/figures/median-latency.pdf}
+\caption{Median task response time in each fresh VM run}
 \end{figure}
 
 \subsection{5. What did I measure?}\label{what-did-i-measure}
@@ -301,30 +304,29 @@ scheduling condition.
 fixed scenario, the relative range was \textbf{0.219\%-31.267\%},
 calculated as (maximum minus minimum) divided by their median. The
 largest spread was Network-ECT with steady arrivals and added Cloud
-delay: \textbf{196.273, 207.037 and 145.668 ms}. The low A03 value
-remains visible in the graph. Three complete sessions establish this
-bounded correctness result, not identical timing or general future
-reliability.
+delay: \textbf{196.273, 207.037 and 145.668 ms}. The variation shows why
+completing the same experiment correctly does not imply identical
+response times.
 
 All scenarios completed 12 tasks inside the six-second window, giving
 \textbf{2 completed tasks/s}. This small offered workload does not
 measure maximum processing capacity. On-time goodput was 2 tasks/s
-except the A03 late-task scenario, where it was 11/6 tasks/s.
+except the Run 3 late-task scenario, where it was 11/6 tasks/s.
 
 \subsection{7. How do individual tasks
 behave?}\label{how-do-individual-tasks-behave}
 
 A \emph{timeline} shows when a task was released, waited, transferred,
 executed and returned. The figure uses \textbf{all 12 actual tasks from
-A03/Round Robin/burst/normal network}, chosen to show the only deadline
-miss rather than hide it. Each colored segment is measured elapsed time;
-the small scheduling stages remain included.
+Run 3 with Round Robin, burst arrivals and normal networking}, chosen to
+show the only deadline miss rather than hide it. Each colored segment is
+measured elapsed time; the small scheduling stages remain included.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={A03 task timeline for Round Robin with burst arrivals; the late task is retained}]{build/figures/task-timeline.pdf}
-\caption{A03 task timeline for Round Robin with burst arrivals; the late
-task is retained}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Run 3 task timeline for Round Robin with burst arrivals; the late task is retained}]{build/figures/task-timeline.pdf}
+\caption{Run 3 task timeline for Round Robin with burst arrivals; the
+late task is retained}
 \end{figure}
 
 \textbf{The late Edge task} took \textbf{1,002.318 ms} from planned
@@ -355,13 +357,7 @@ and CPU quotas are not separate physical sites. These data do not
 establish a scheduler winner, geographic portability or long-term
 operational reliability.
 
-\textbf{Next step:} use this reproducible prototype to agree a focused
-question with the supervisors, then specify a broader workload or
-validation setting before collecting more data. Increasing load,
-changing network information or adding physical hosts would be separate
-experimental decisions.
-
-\emph{This report uses only the recorded A01-A03 cohort. The figures and
+\emph{This report uses only the three recorded VM runs. The figures and
 tables were generated offline; no new experiment was run to prepare this
 update.}
 
@@ -385,7 +381,7 @@ update.}
   23 October 2026.
 \item
   \href{https://github.com/HronoSF/mozhaiskii-edge-fog-cloud-research}{Public
-  experiment source, data and execution instructions}. A01-A03 data
+  experiment source, data and execution instructions}. three-run data
   release, October 2026.
 \end{enumerate}
 

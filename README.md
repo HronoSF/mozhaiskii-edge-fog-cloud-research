@@ -1,4 +1,4 @@
-# Edge-Fog-Cloud scheduling: A01-A03
+# Edge-Fog-Cloud scheduling: three fresh VM runs
 
 Gleb Mozhaiskii - personal preliminary research related to prospective doctoral studies at UPV/EHU. This is not an official university publication.
 
@@ -8,15 +8,15 @@ An application orchestrator assigns real CPU tasks to Edge, Fog and Cloud worker
 
 ## This release
 
-Only the **A01-A03 cohort** is presented here. Three sequential fresh ARM64 Lima VM sessions each ran the same 12 scenarios once: Round Robin, Compute-ECT and Network-ECT; steady and burst arrivals; unshaped networking and nominal 20 ms extra one-way Cloud ingress delay.
+The report presents **three fresh VM runs**. In the measurement files, the immutable source IDs A01, A02 and A03 correspond to reader-facing Run 1, Run 2 and Run 3; this display mapping does not rename an experiment. Three sequential fresh ARM64 Lima VM sessions each ran the same 12 scenarios once: Round Robin, Compute-ECT and Network-ECT; steady and burst arrivals; unshaped networking and nominal 20 ms extra one-way Cloud ingress delay.
 
 | Session | Correct worker outputs, including preparation | Scored on time / offered | Application / network |
 |---|---:|---:|---|
-| A01 |948|144/144|Complete / IN_SPEC|
-| A02 |948|144/144|Complete / IN_SPEC|
-| A03 |948|143/144|Complete / IN_SPEC|
+| Run 1 |948|144/144|Complete / IN_SPEC|
+| Run 2 |948|144/144|Complete / IN_SPEC|
+| Run 3 |948|143/144|Complete / IN_SPEC|
 
-All 432 scored tasks returned correct answers. The one late A03/RR/burst/unshaped Edge task took1002.317940 ms from planned arrival, exceeding the 1 s SLO by2.317940 ms. It is retained. All three evidence exports and scoped VM cleanups were verified.
+All 432 scored tasks returned correct answers. The one late Run 3 Round Robin/burst/unshaped Edge task took1002.317940 ms from planned arrival, exceeding the 1 s SLO by2.317940 ms. It is retained. All three evidence exports and scoped VM cleanups were verified.
 
 ![Per-session scenario medians](figures/median-latency.svg)
 
@@ -43,7 +43,7 @@ make PYTHON=.venv/bin/python
 make verify PYTHON=.venv/bin/python
 ```
 
-The original shared LaTeX template/style and topology figure are retained. Tables use indivisible `tabular` floats: a complete table moves to the next page if necessary. Colored SVG figures regenerate from the checked-in CSVs. The report body is available in both readable Markdown and complete generated LaTeX. Rebuilding need not produce an identical PDF binary across TeX versions; source/data hashes and numerical content are checked.
+The shared LaTeX template/style is unchanged. The topology image is extracted unchanged from the supplied reference PDF; it replaces the different diagram that had been in this repository. Tables use indivisible `tabular` floats: a complete table moves to the next page if necessary. Colored SVG figures regenerate from the checked-in CSVs. The report body is available in both readable Markdown and complete generated LaTeX. Rebuilding need not produce an identical PDF binary across TeX versions; source/data hashes and numerical content are checked.
 
 A new experiment is a separate privileged operation; see [the execution guide](experiment/README.md). **No new VM was launched for this publication.** The packaged public entrypoint has been checked offline, not independently rerun in another VM. Do not count an offline build as an experimental replication.
 

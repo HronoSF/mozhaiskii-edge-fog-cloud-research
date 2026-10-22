@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Build data tables and versioned XeLaTeX body without altering the shared style."""
-import csv,subprocess
+import csv,subprocess,shutil
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def read(n):
@@ -25,29 +25,30 @@ def main():
         rows=selected(arr,net,policy)
         return [f"{float(r['response_scheduled_ns_median'])/1e6:.1f}" for r in rows]+[f"{sum(int(r['on_time']) for r in rows)}/36"]
     for name,arr,net in [('example-a','steady','unshaped'),('example-b','burst','unshaped'),('example-c','burst','delay20')]:
-        table(name,['Scheduler','A01 (ms)','A02 (ms)','A03 (ms)','On time'],[[labels[p],*stats(arr,net,p)] for p in labels],'lrrrr')
+        table(name,['Scheduler','Run 1 (ms)','Run 2 (ms)','Run 3 (ms)','On time'],[[labels[p],*stats(arr,net,p)] for p in labels],'lrrrr')
     rows=[]
     for arr in ['steady','burst']:
         for net in ['unshaped','delay20']:
             for p in labels:rows.append([arr.title(),'Normal' if net=='unshaped' else '+20 ms',labels[p],*stats(arr,net,p)])
-    table('all-scenarios',['Arrival','Network','Scheduler','A01','A02','A03','On time'],rows,'lllrrrr')
+    table('all-scenarios',['Arrival','Network','Scheduler','Run 1','Run 2','Run 3','On time'],rows,'lllrrrr')
     table('stages',['Stage','Per VM','What it checks'],[
         ['Calibration','72','Estimate worker and transfer times'],['Queue check','12','Confirm waiting behind busy workers'],['Warmup','720','Prepare every scenario equally'],['Main comparison','144','12 scenarios with 12 scored tasks each'],['Total real work','948','Includes preparation and scored work']],'lrl')
-    table('sessions',['Session','Application','Network','Correct outputs','Scored on time'],[[r['slot'],'Complete',r['network'],r['worker_results'],r['on_time']+'/144'] for r in sessions],'lllrr')
+    table('sessions',['Session','Application','Network','Correct outputs','Scored on time'],[[r['slot'].replace('A0','Run '),'Complete',r['network'],r['worker_results'],r['on_time']+'/144'] for r in sessions],'lllrr')
     rows=[]
     for s in ['A01','A02','A03']:
         ns={r['node']:r for r in nodes if r['slot']==s}
-        rows.append([s,ns['G']['all_source_decisions']+' / '+ns['G']['scored_source_decisions'],*[ns[w]['all_worker_outputs']+' ('+ns[w]['scored_worker_outputs']+')' for w in ['E','F','C']]])
+        rows.append([s.replace('A0','Run '),ns['G']['all_source_decisions']+' / '+ns['G']['scored_source_decisions'],*[ns[w]['all_worker_outputs']+' ('+ns[w]['scored_worker_outputs']+')' for w in ['E','F','C']]])
     table('nodes',['Session','G all / scored','Edge','Fog','Cloud'],rows,'lrrrr')
-    table('network',['Session','Forward delta (ms)','Reverse delta (ms)','Limited rate (Mbps)'],[[r['slot'],f"{float(r['application_forward_increment_ms']):.3f}",f"{float(r['application_reverse_increment_ms']):.3f}",f"{float(r['application_impaired_receive_mbps']):.3f}"] for r in sessions],'lrrr')
+    table('network',['Session','Forward delta (ms)','Reverse delta (ms)','Limited rate (Mbps)'],[[r['slot'].replace('A0','Run '),f"{float(r['application_forward_increment_ms']):.3f}",f"{float(r['application_reverse_increment_ms']):.3f}",f"{float(r['application_impaired_receive_mbps']):.3f}"] for r in sessions],'lrrr')
     import cairosvg
-    for name in ['topology','median-latency','decision-overhead','task-timeline']:
+    shutil.copyfile(ROOT/'figures/topology.png',ROOT/'build/figures/topology.png')
+    for name in ['median-latency','decision-overhead','task-timeline']:
         cairosvg.svg2pdf(url=str(ROOT/'figures'/f'{name}.svg'),write_to=str(ROOT/'build/figures'/f'{name}.pdf'))
-    text=(ROOT/'report/scheduling-report.md').read_text().replace('../figures/','build/figures/').replace('.svg)', '.pdf){width=100%}')
+    text=(ROOT/'report/scheduling-report.md').read_text().replace('../figures/','build/figures/').replace('.svg)', '.pdf){width=100%}').replace('.png)', '.png){width=100%}')
     body=subprocess.check_output(['pandoc','-f','markdown-smart','-t','latex'],input=text,text=True,cwd=ROOT)
     body=body.replace(r'\begin{figure}',r'\begin{figure}[H]')
     template=(ROOT/'latex/research-report.tex').read_text()
     metadata=r'\hypersetup{pdftitle={Scheduling tasks across different computing resources},pdfauthor={Gleb Mozhaiskii}}'+'\n'
     (ROOT/'report/scheduling-report.tex').write_text(template.replace('$body$',metadata+body))
-    print('Built9indivisible data tables,4vector figures and the versioned LaTeX body; shared style unchanged.')
+    print('Built9indivisible tables,3vector charts,the original topology image and versioned LaTeX; shared style unchanged.')
 if __name__=='__main__':main()

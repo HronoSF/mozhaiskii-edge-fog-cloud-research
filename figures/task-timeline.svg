@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="810" viewBox="0 0 1600 810" role="img" aria-label="A03 Round Robin burst unshaped: twelve measured tasks grouped by Edge, Fog, and Cloud on a common timeline."><rect width="100%" height="100%" fill="white"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="810" viewBox="0 0 1600 810" role="img" aria-label="Run 3 Round Robin burst unshaped: twelve measured tasks grouped by Edge, Fog, and Cloud on a common timeline."><rect width="100%" height="100%" fill="white"/>
 <text x="48" y="55" font-family="Arial,sans-serif" font-size="32" font-weight="700" fill="#17283D">Where did the tasks spend their time?</text>
-<text x="48" y="87" font-family="Arial,sans-serif" font-size="20" fill="#52677D">A03 · Round Robin · burst arrivals · unshaped network · 12 scored tasks</text>
+<text x="48" y="87" font-family="Arial,sans-serif" font-size="20" fill="#52677D">Run 3 · Round Robin · burst arrivals · unshaped network · 12 scored tasks</text>
 <path d="M280.00 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
 <text x="280.00" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">0 s</text>
 <path d="M469.23 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
