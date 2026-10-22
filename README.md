@@ -27,7 +27,7 @@ The unit of replication is the **VM session: N=3 on one physical host**. Tasks a
 - [36 scenario rows](data/scenario-results.csv): every session, policy and condition; outcomes, placements, timing distributions and rates.
 - [432 scored tasks](data/scored-tasks.csv): all offered scored outcomes and elapsed timing components. Timestamps are offsets from the first planned arrival in the same cell.
 - [2,844 worker completions](data/worker-completions.csv), [all-node accounting](data/node-results.csv), [three session summaries](data/session-results.csv).
-- [Effective execution inputs and package pins](experiment/): the same 38-file payload used in all three acquired sessions, plus the original scoped VM lifecycle runner.
+- [Effective execution inputs and package pins](experiment/): 34 byte-identical runtime/support files from the common 38-file capture, plus the original scoped VM lifecycle runner.
 - [Source identities](experiment/SOURCE.json), [input hashes](experiment/INPUTS.sha256.json) and [release file hashes](MANIFEST.sha256).
 
 Measured execution revision: `b47689f644397018d408e97f83be5c587d7182ff`. Audited results revision: `33035e085988ce2165fdd46755ee8f75cb3a04e4`. These identifiers bind the provenance; public packaging is subsequent and does not repeat acquisition. The recorded cohort received independent raw-evidence scientific review. The public export contains measurement tables, not the full private host/authority logs or internal reviews. Research hypotheses, debugging and historical cohorts are maintained separately.

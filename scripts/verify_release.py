@@ -9,7 +9,7 @@ def require(ok,why):
     if not ok:raise ValueError(why)
 def main():
     manifest=json.loads((R/'experiment/INPUTS.sha256.json').read_text())
-    require(len(manifest)==38,'effective input count')
+    require(len(manifest)==34,'effective input count')
     for n,h in manifest.items():require(hashlib.sha256((R/'experiment'/n).read_bytes()).hexdigest()==h,'changed measured source: '+n)
     cells=read('scenario-results.csv');tasks=read('scored-tasks.csv');sessions=read('session-results.csv');workers=read('worker-completions.csv');nodes=read('node-results.csv')
     require((len(cells),len(tasks),len(sessions),len(workers),len(nodes))==(36,432,3,2844,12),'cohort conservation')
@@ -41,5 +41,5 @@ def main():
     if f.exists():
         for line in f.read_text().splitlines():
             h,n=line.split('  ',1);require(hashlib.sha256((R/n).read_bytes()).hexdigest()==h,'release hash: '+n)
-    print('Verified38input pins,3sessions,36cells,432scored tasks,2844worker outputs,all-node totals,timing identities,SLO miss and indivisible table sources; no VM started.')
+    print('Verified34published input pins,3sessions,36cells,432scored tasks,2844worker outputs,all-node totals,timing identities,SLO miss and indivisible table sources; no VM started.')
 if __name__=='__main__':main()

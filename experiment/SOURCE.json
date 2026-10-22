@@ -1,7 +1,14 @@
 {
   "measured_execution_sha": "b47689f644397018d408e97f83be5c587d7182ff",
   "audited_results_sha": "33035e085988ce2165fdd46755ee8f75cb3a04e4",
-  "effective_input_files": 38,
   "host_runner_sha256": "fc1745885be924981d10cf9a612b0bd5e7bb8724790a4b54e2c8cbdc4555a4a6",
-  "scope": "Byte-identical effective acquisition payload shared by A01-A03, plus its original owned-VM lifecycle runner. No internal authority, raw host log or earlier cohort is included. Public reruns produce new observations, not new A-series replicas."
+  "scope": "Byte-identical runtime/support source subset of the common A01-A03 capture, plus its original owned-VM lifecycle runner. Historical plan and unused host-context helpers omitted from the public tree. Complete original capture remains preserved separately; public reruns are new observations, not A-series replacements.",
+  "original_captured_input_files": 38,
+  "published_runtime_support_files": 34,
+  "omitted_non_runtime_context_files": {
+    "tests/scheduling/PLAN.md": "b3ba2a5fa8e530fdc8ecfe4fbb4c84512a4852dbf988d1b0b6db4142f7850efe",
+    "tests/scheduling/run_pilot.py": "5aed49d646458758a542e2b7c6e815fc9604b25920c64a92d0019f5fd8d5c207",
+    "tests/application-correctness/run.py": "acb3f12771f00aaa003451b4ef9ed1693d69aa807324d8237193848966e3b8b1",
+    "tests/application-correctness/layout.py": "06b9a432ed8b47becd89b886941614bafb7ebb2c2baaeb2e7ff5043d70389f8a"
+  }
 }

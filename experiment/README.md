@@ -1,6 +1,6 @@
 # Run the original application pilot
 
-This directory publishes the exact effective 38-file input payload shared by A01-A03. `run_session.py` is the original owned Lima lifecycle runner, unchanged apart from its public filename. `INPUTS.sha256.json` pins every payload file. Some captured support files are not standalone entrypoints; use the command below. No historical data, live approvals or internal reviews are execution inputs.
+This directory publishes the 34-file runtime/support subset of the common 38-file A01-A03 input capture. `run_session.py` is the original owned Lima lifecycle runner, unchanged apart from its public filename. `INPUTS.sha256.json` pins every payload file. Some captured support files are not standalone entrypoints; use the command below. The historical plan and unused host-study wrappers were omitted; no guest runtime imports them. Complete original captures are retained separately. No historical data, live approvals or internal reviews are execution inputs.
 
 ## Requirements and effects
 
