@@ -2,9 +2,10 @@ PYTHON ?= python3
 PANDOC ?= pandoc
 XELATEX ?= xelatex
 BUILD := build
-SOURCES := figures/topology.svg figures/scenarios.svg figures/task-timeline.svg
+SOURCES := figures/topology.svg figures/scenarios.svg figures/task-timeline.svg figures/median-latency.svg
 .PHONY: all clean
 all:
+	$(PYTHON) scripts/generate_median_latency.py
 	mkdir -p $(BUILD)/figures
 	$(PYTHON) -c "from pathlib import Path; import cairosvg; [(cairosvg.svg2pdf(url=str(p),write_to=str(Path('build')/p.with_suffix('.pdf')))) for p in map(Path, '$(SOURCES)'.split())]"
 	sed 's@../figures/@build/figures/@g; s@\.svg)@.pdf)@g' report/scheduling-pilot.md > $(BUILD)/scheduling-pilot.md
