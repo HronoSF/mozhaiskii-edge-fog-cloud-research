@@ -6,6 +6,12 @@
 
 The results below show a **working implementation and preliminary measurements**. They do not yet prove which scheduling algorithm is best.
 
+## Research context and relation to Wang et al. (2026)
+
+Wang et al. [1] motivate fair comparisons of scheduling algorithms on the same infrastructure, under different workload conditions, with service-level outcomes and decision overhead reported separately. I follow those **evaluation principles** in a smaller placement experiment with three CPU-limited workers, actual task queues, and emulated network delay.
+
+This is **not a reproduction** of their Continuous Multi-Mode Scheduling (CMMS) benchmark. Their system chooses both an execution node and an AI inference mode, and includes output quality in its objectives. My system chooses only a worker for a fixed CPU task. Their heterogeneous physical testbed and my single-VM emulation are also not equivalent. The present results demonstrate a working experimental prototype, not a general policy advantage.
+
 ## 1. The computing environment
 
 The three worker roles refer to **where computing resources are placed in a network**:
@@ -56,58 +62,58 @@ I compare these algorithms with two task-arrival patterns:
 - **Steady:** approximately one task every 0.5 seconds.
 - **Burst:** tasks arrive close together in two short bursts, creating opportunities for queueing.
 
-I also compare **normal networking** with a condition that adds a nominal **20 ms delay only toward Cloud** (not symmetrically to every link).
+I compare **normal networking** with a second condition in which the network emulator adds a nominal **20 ms one-way delay to packets entering Cloud from Fog**. It affects the input path toward Cloud, not every link or the return path. Measured end-to-end task latency can change by a different amount because execution and queue waiting also contribute.
 
 That makes **3 algorithms × 2 arrival patterns × 2 network conditions = 12 scenarios**, each offering 12 tasks over 6 seconds.
 
 ## 4. Three concrete examples
 
-Here are three comparisons under **matched conditions**: in each example, the arrival pattern and network setting are the same for all three schedulers. Every row represents **12 real tasks from one completed run**, not an independent VM session.
+Here are three comparisons under **matched conditions**: the arrival pattern and network setting are the same for all three schedulers in each example. Every row represents **12 real tasks from one completed run**, not an independent VM session. All three tables show the same four columns: worker placements, median completion latency, and tasks meeting the 1-second deadline.
 
-**Example A — Steady arrivals, normal network.** Tasks are spaced apart, so the workers have relatively little queueing.
+**Example A - Steady arrivals, normal network.** Tasks are spaced apart, so the workers have relatively little queueing.
 
-| Scheduler | Assigned tasks: Edge / Fog / Cloud | Median latency |
-|---|---:|---:|
-| Round Robin | 4 / 4 / 4 | 179.5 ms |
-| Compute-ECT | 0 / 0 / 12 | 124.1 ms |
-| Network-ECT | 0 / 0 / 12 | 119.3 ms |
+| Scheduler | Assigned E/F/C | Median (ms) | On time |
+|---|---:|---:|---:|
+| Round Robin | 4 / 4 / 4 | 179.5 | 12/12 |
+| Compute-ECT | 0 / 0 / 12 | 124.1 | 12/12 |
+| Network-ECT | 0 / 0 / 12 | 119.3 | 12/12 |
 
-**Example B — Bursty arrivals, normal network.** Tasks arrive closer together, making worker queues more important.
+**Example B - Bursty arrivals, normal network.** Tasks arrive closer together, making worker queues more important.
 
-| Scheduler | Assigned tasks: Edge / Fog / Cloud | Finished within 1 s |
-|---|---:|---:|
-| Round Robin | 4 / 4 / 4 | 11 / 12 |
-| Compute-ECT | 0 / 2 / 10 | 12 / 12 |
-| Network-ECT | 0 / 2 / 10 | 12 / 12 |
+| Scheduler | Assigned E/F/C | Median (ms) | On time |
+|---|---:|---:|---:|
+| Round Robin | 4 / 4 / 4 | 151.1 | **11/12** |
+| Compute-ECT | 0 / 2 / 10 | 140.9 | 12/12 |
+| Network-ECT | 0 / 2 / 10 | 117.4 | 12/12 |
 
-**Example C — Bursty arrivals, 20 ms added toward Cloud.** The Cloud input route now has an additional directional delay.
+**Example C - Bursty arrivals, +20 ms toward Cloud.** The Cloud input route has additional one-way delay.
 
-| Scheduler | Assigned tasks: Edge / Fog / Cloud | Median latency |
-|---|---:|---:|
-| Round Robin | 4 / 4 / 4 | 207.2 ms |
-| Compute-ECT | 0 / 2 / 10 | 167.8 ms |
-| Network-ECT | 0 / 2 / 10 | 176.0 ms |
+| Scheduler | Assigned E/F/C | Median (ms) | On time |
+|---|---:|---:|---:|
+| Round Robin | 4 / 4 / 4 | 207.2 | 12/12 |
+| Compute-ECT | 0 / 2 / 10 | 167.8 | 12/12 |
+| Network-ECT | 0 / 2 / 10 | 176.0 | 12/12 |
 
 **Interpretation:** Round Robin spreads work across available workers. Under this small workload, the ECT policies tend to choose Cloud, sometimes Fog, even when Cloud has added network latency. These are **descriptive examples**, not evidence that a policy is consistently better.
 
 ### Complete set of 12 scenarios
 
-The table below covers **every tested combination** in the one fully completed run. E/F/C are numbers of tasks assigned to Edge/Fog/Cloud. The latency column is the *median time from planned arrival to verified response*. A result of 11/12 means one task missed the 1-second deadline.
+The table below covers **every tested combination** in the one completed VM session. E/F/C means tasks assigned to Edge/Fog/Cloud. **+20 ms** means extra one-way Cloud ingress delay, not a round-trip increase. Median (ms) is the median time from planned arrival to verified response; 'On time' counts tasks meeting the 1-second deadline.
 
-| Arrival pattern | Network | Scheduler | Median latency | Tasks on time | E / F / C |
+| Arrival | Network | Scheduler | Median (ms) | On time | E/F/C |
 |---|---|---|---:|---:|---:|
-| Steady | Normal | Round Robin | 179.5 ms | 12/12 | 4 / 4 / 4 |
-| Steady | Normal | Compute-ECT | 124.1 ms | 12/12 | 0 / 0 / 12 |
-| Steady | Normal | Network-ECT | 119.3 ms | 12/12 | 0 / 0 / 12 |
-| Steady | +20 ms Cloud ingress | Round Robin | 267.2 ms | 12/12 | 4 / 4 / 4 |
-| Steady | +20 ms Cloud ingress | Compute-ECT | 203.0 ms | 12/12 | 0 / 0 / 12 |
-| Steady | +20 ms Cloud ingress | Network-ECT | 196.2 ms | 12/12 | 0 / 0 / 12 |
-| Burst | Normal | Round Robin | 151.1 ms | **11/12** | 4 / 4 / 4 |
-| Burst | Normal | Compute-ECT | 140.9 ms | 12/12 | 0 / 2 / 10 |
-| Burst | Normal | Network-ECT | 117.4 ms | 12/12 | 0 / 2 / 10 |
-| Burst | +20 ms Cloud ingress | Round Robin | 207.2 ms | 12/12 | 4 / 4 / 4 |
-| Burst | +20 ms Cloud ingress | Compute-ECT | 167.8 ms | 12/12 | 0 / 2 / 10 |
-| Burst | +20 ms Cloud ingress | Network-ECT | 176.0 ms | 12/12 | 0 / 2 / 10 |
+| Steady | Normal | Round Robin | 179.5 | 12/12 | 4 / 4 / 4 |
+| Steady | Normal | Compute-ECT | 124.1 | 12/12 | 0 / 0 / 12 |
+| Steady | Normal | Network-ECT | 119.3 | 12/12 | 0 / 0 / 12 |
+| Steady | +20 ms | Round Robin | 267.2 | 12/12 | 4 / 4 / 4 |
+| Steady | +20 ms | Compute-ECT | 203.0 | 12/12 | 0 / 0 / 12 |
+| Steady | +20 ms | Network-ECT | 196.2 | 12/12 | 0 / 0 / 12 |
+| Burst | Normal | Round Robin | 151.1 | **11/12** | 4 / 4 / 4 |
+| Burst | Normal | Compute-ECT | 140.9 | 12/12 | 0 / 2 / 10 |
+| Burst | Normal | Network-ECT | 117.4 | 12/12 | 0 / 2 / 10 |
+| Burst | +20 ms | Round Robin | 207.2 | 12/12 | 4 / 4 / 4 |
+| Burst | +20 ms | Compute-ECT | 167.8 | 12/12 | 0 / 2 / 10 |
+| Burst | +20 ms | Network-ECT | 176.0 | 12/12 | 0 / 2 / 10 |
 
 **What happened:** Round Robin distributed tasks evenly; the two predictive schedulers usually sent most tasks to Cloud. Adding delay changed measured completion times, but **these are single-session observations, not evidence of a general performance ranking**.
 
