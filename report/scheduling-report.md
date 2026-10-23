@@ -155,10 +155,8 @@ The measurements do not isolate the cause of this delay. Worker CPU limits, host
 
 **Still limited:** this is three small sessions on one physical host, with a fixed task stream and scenario order. Timing and placements are not identical. Fog couples routing and computation. Emulated links and CPU quotas are not separate physical sites. These data do not establish a scheduler winner, geographic portability or long-term operational reliability.
 
-*This report uses only the three recorded VM runs. The figures and tables were generated offline; no new experiment was run to prepare this update.*
 
 ## References
 
 1. Z. Wang, B. Sedlak, J. L. Herrera, and S. Dustdar. 'Fair Comparison of Scheduling Algorithms on Heterogeneous Edge Clusters: A Continuous Adaptive Benchmark.' IEEE ICDCSW, pp. 232-237, 2026. [DOI: 10.1109/ICDCSW72724.2026.00054](https://doi.org/10.1109/ICDCSW72724.2026.00054). Open preprint: [arXiv:2606.12343](https://arxiv.org/abs/2606.12343).
 2. MADT project. 'Distributed Application Modelling System.' [Source repository](https://github.com/dltcspbu/madt), accessed 23 October 2026.
-3. [Public experiment source, data and execution instructions](https://github.com/HronoSF/mozhaiskii-edge-fog-cloud-research). three-run data release, October 2026.

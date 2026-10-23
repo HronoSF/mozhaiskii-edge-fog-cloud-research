@@ -12,9 +12,9 @@ The report presents **three fresh VM runs**. In the measurement files, the immut
 
 | Session | Correct worker outputs, including preparation | Scored on time / offered | Application / network |
 |---|---:|---:|---|
-| Run 1 |948|144/144|Complete / IN_SPEC|
-| Run 2 |948|144/144|Complete / IN_SPEC|
-| Run 3 |948|143/144|Complete / IN_SPEC|
+| Run 1 |948|144/144|Complete / network checks passed|
+| Run 2 |948|144/144|Complete / network checks passed|
+| Run 3 |948|143/144|Complete / network checks passed|
 
 All 432 scored tasks returned correct answers. The one late Run 3 Round Robin/burst/unshaped Edge task took1002.317940 ms from planned arrival, exceeding the 1 s SLO by2.317940 ms. It is retained. All three evidence exports and scoped VM cleanups were verified.
 

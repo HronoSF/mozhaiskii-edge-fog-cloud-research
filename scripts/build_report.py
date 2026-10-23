@@ -33,7 +33,7 @@ def main():
     table('all-scenarios',['Arrival','Network','Scheduler','Run 1','Run 2','Run 3','On time'],rows,'lllrrrr')
     table('stages',['Stage','Per VM','What it checks'],[
         ['Calibration','72','Estimate worker and transfer times'],['Queue check','12','Confirm waiting behind busy workers'],['Warmup','720','Prepare every scenario equally'],['Main comparison','144','12 scenarios with 12 scored tasks each'],['Total real work','948','Includes preparation and scored work']],'lrl')
-    table('sessions',['Session','Application','Network','Correct outputs','Scored on time'],[[r['slot'].replace('A0','Run '),'Complete',r['network'],r['worker_results'],r['on_time']+'/144'] for r in sessions],'lllrr')
+    table('sessions',['Session','Application','Correct outputs','Scored on time'],[[r['slot'].replace('A0','Run '),'Complete',r['worker_results'],r['on_time']+'/144'] for r in sessions],'llrr')
     rows=[]
     for s in ['A01','A02','A03']:
         ns={r['node']:r for r in nodes if r['slot']==s}
