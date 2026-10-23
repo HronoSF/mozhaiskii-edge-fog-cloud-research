@@ -1,8 +1,12 @@
-# Edge-Fog-Cloud scheduling: three fresh VM runs
+# Edge-Fog-Cloud scheduling research
 
-Gleb Mozhaiskii - preliminary personal research related to prospective doctoral studies at UPV/EHU. This is not an official university publication.
+**Gleb Mozhaiskii** | Independent preliminary research related to prospective doctoral studies at the University of the Basque Country (UPV/EHU). **Not an official university publication.**
 
-An application orchestrator assigns real CPU tasks to Edge, Fog and Cloud workers with explicit queues and different CPU quotas. [MADT](https://github.com/dltcspbu/madt/tree/ca7df8460448ae515f17bfb3a594b30ef9503415) controls the routed network. Each run uses one fresh Linux VM with four Docker containers, on a shared physical host.
+**Start here:** [Nine-page research report (PDF)](report/UPV-EHU_Scheduling_Report_A01-A03.pdf) | [Measurements](data/) | [Reproduction instructions](experiment/README.md) | [Verification scope](docs/VERIFYING_A_SESSION.md)
+
+An application orchestrator assigns real CPU tasks to Edge, Fog and Cloud workers with explicit queues and different CPU quotas. [MADT](https://github.com/dltcspbu/madt/tree/ca7df8460448ae515f17bfb3a594b30ef9503415) controls the routed network. Each run uses one fresh Linux VM with four Docker containers, on a shared physical host. Edge, Fog and Cloud are logical roles in an emulated network, **not separate physical sites**.
+
+![Gateway, Edge, Fog and Cloud topology](figures/topology.png)
 
 ## Quick Start 1: read the recorded results
 
@@ -22,14 +26,12 @@ The immutable file keys A01/A02/A03 map to Run 1/2/3. The [36 scenario rows](dat
 
 ## Quick Start 2: rebuild and check the report
 
-Clone the repository and select the desired reviewed revision before running commands:
+Clone the published default branch:
 
 ```sh
 git clone https://github.com/HronoSF/mozhaiskii-edge-fog-cloud-research.git
 cd mozhaiskii-edge-fog-cloud-research
 ```
-
-This cleanup is proposed against branch `codex/a01-a03-public-release`. Until it is merged, check out the cleanup PR branch `codex/public-reproducibility-cleanup` to use the commands below.
 
 Offline integrity and scheduling/checker tests need **Python 3.12 or newer** and its standard library only:
 
@@ -76,4 +78,4 @@ Expected outputs include a guest archive, its recorded SHA-256, copied input sou
 
 The 34 [published runtime/support inputs](experiment/INPUTS.sha256.json) are unchanged bytes from the original common 38-file capture. Four non-runtime historical/context files are intentionally omitted. The original host lifecycle runner is also unchanged. [Source identities](experiment/SOURCE.json) retain measured revision `b47689f644397018d408e97f83be5c587d7182ff` and audited results revision `33035e085988ce2165fdd46755ee8f75cb3a04e4`; packaging changes do not retroactively change acquisition provenance. [MANIFEST.sha256](MANIFEST.sha256) covers this public snapshot.
 
-[Wang et al. (2026)](https://doi.org/10.1109/ICDCSW72724.2026.00054) informs comparison methodology; this CPU-task pilot does not reproduce its multi-mode AI benchmark. See [the cleanup audit](docs/REPRODUCIBILITY_AUDIT.md) for scope, checks and remaining limits, and [licensing notes](docs/LICENSING.md) for upstream obligations and the unapproved original-work license recommendation.
+[Wang et al. (2026)](https://doi.org/10.1109/ICDCSW72724.2026.00054) informs comparison methodology; this CPU-task pilot does not reproduce its multi-mode AI benchmark. See [the reproducibility audit](docs/REPRODUCIBILITY_AUDIT.md) for scope, checks and remaining limits. **No general reuse license has yet been granted for the original code, report or data**; see [licensing and upstream attribution notes](docs/LICENSING.md).

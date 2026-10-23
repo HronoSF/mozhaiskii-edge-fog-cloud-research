@@ -1,0 +1,29 @@
+name: Offline checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify release data and pinned sources
+        run: python scripts/verify_release.py
+      - name: Run synthetic and scheduling tests
+        run: make test PYTHON=python
+      - name: Check public command entry points without launching a VM
+        run: |
+          python experiment/run_session.py --help
+          python scripts/verify_session.py --help
