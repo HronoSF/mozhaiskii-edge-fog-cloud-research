@@ -4,7 +4,7 @@ This directory publishes the 34-file runtime/support subset of the common 38-fil
 
 ## Requirements and effects
 
-The measured host was an Apple Silicon Mac with32 GiB RAM. The runner supports macOS ARM64 with Apple's Virtualization.framework. Each invocation creates **one fresh Lima 2.2.1 ARM64 VM with4 vCPU,4 GiB RAM and a 20 GiB sparse disk**, without host mounts, forwarded SSH agents, Rosetta or guest port forwarding. Allow at least30 GiB free host disk and RAM headroom for the guest. About 1.98 GB of pinned Lima/Ubuntu assets plus guest packages are downloaded per fresh session; measured wrapper durations were roughly 13-15 minutes, not a promised runtime.
+Use host Python 3.12 or newer; the standard library is sufficient for collection and offline session verification. The measured host was an Apple Silicon Mac with32 GiB RAM. Linux-host and Windows execution are not implemented or verified. The runner supports macOS ARM64 with Apple's Virtualization.framework. Each invocation creates **one fresh Lima 2.2.1 ARM64 VM with4 vCPU,4 GiB RAM and a 20 GiB sparse disk**, without host mounts, forwarded SSH agents, Rosetta or guest port forwarding. Allow at least30 GiB free host disk and RAM headroom for the guest. About 1.98 GB of pinned Lima/Ubuntu assets plus guest packages are downloaded per fresh session; measured wrapper durations were roughly 13-15 minutes, not a promised runtime.
 
 The guest installs pinned Docker 28.5.2/containerd 1.7.29, Python dependencies and MADT revision `ca7df8460448ae515f17bfb3a594b30ef9503415`. It uses guest root operations, Docker and `tc/netem` routing/delay/rate/cut/recovery operations. **Run only after explicitly deciding to create this disposable VM. Do not execute bootstrap or proof scripts directly on your Mac, shared Linux host or an existing Docker server.** No host Docker configuration is required or changed by the runner.
 
@@ -43,6 +43,14 @@ The sequence is:
 The underlying application adapter records functional correctness separately from the original network thresholds. A numerically OUT_OF_SPEC network treatment is not strictly comparable performance evidence. No criterion or workload should be changed after inspecting outcomes.
 
 ## Preserve and interpret all outcomes
+
+First run the public offline checker from the repository root:
+
+```sh
+python3 scripts/verify_session.py new-results/session-01 --json new-results/session-01-verification.json
+```
+
+See [verification scope and statuses](../docs/VERIFYING_A_SESSION.md). A PASS covers implemented file checks; final scientific eligibility and independent live host cleanup remain UNVERIFIED. The checker does not expect the historical latency values or miss count. Missing, corrupt and failed evidence is retained and never becomes PASS.
 
 Inspect `host-summary.json`, `vm-ledger.json`, `input-sha256.json` and `guest-evidence.tar.gz`. Verify the exported hash recorded by the runner, and inspect guest `scheduling/state.json`, its per-cell summaries/tasks, network measurements and resource readbacks. A wrapper exit 0 alone is not an independent scientific audit or proof that every original numerical condition passed. The public CSVs are an audited export of A01-A03; fresh outputs require their own complete validation before publication.
 

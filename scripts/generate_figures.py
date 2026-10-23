@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 """Render publication SVGs from the checked-in public CSV files only."""
-import csv
+import argparse,csv
 from pathlib import Path
 from xml.sax.saxutils import escape
 R=Path(__file__).resolve().parents[1]
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--output-dir',type=Path,default=R/'build/generated/figures')
+OUTPUT=parser.parse_args().output_dir
+OUTPUT.mkdir(parents=True,exist_ok=True)
 COL={'rr':'#466A9A','compute_ect':'#C28A37','network_ect':'#258579'}
 LABEL={'rr':'Round Robin','compute_ect':'Compute-ECT','network_ect':'Network-ECT'}
 def rows(p):
  with (R/'data'/p).open(newline='') as f:return list(csv.DictReader(f))
 def start(w,h,title):return [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><rect width="100%" height="100%" fill="white"/><text x="40" y="38" font-family="Georgia,serif" font-size="24" fill="#222">{escape(title)}</text>']
 def txt(x,y,s,size=16,anchor='start',color='#222'):return f'<text x="{x}" y="{y}" font-family="Georgia,serif" font-size="{size}" text-anchor="{anchor}" fill="{color}">{escape(str(s))}</text>'
-def save(n,p): (R/'figures'/n).write_text('\n'.join(p+['</svg>'])+'\n')
+def save(n,p): (OUTPUT/n).write_text('\n'.join(p+['</svg>'])+'\n')
 
 cells=rows('scenario-results.csv')
 assert len(cells)==36
@@ -91,5 +95,5 @@ p.append(line(lowx(1000),390,lowx(1000),888,'#b53f36','5 4'))
 p.append(ttext((left+right)/2,945,'Task response time (ms); dashed line = 1 s deadline',21,'middle'))
 for (fields,label,color),x in zip(groups,[180,420,660,875,1050]):
  p.append(f'<rect x="{x}" y="974" width="23" height="12" fill="{color}"/>');p.append(ttext(x+30,986,label,18))
-p.append('</svg>');(R/'figures/task-timeline.svg').write_text('\n'.join(p)+'\n')
+p.append('</svg>');(OUTPUT/'task-timeline.svg').write_text('\n'.join(p)+'\n')
 print('Rendered all three-run medians and the reference-style two-panel task timeline from unchanged CSVs.')

@@ -1,52 +1,79 @@
 # Edge-Fog-Cloud scheduling: three fresh VM runs
 
-Gleb Mozhaiskii - personal preliminary research related to prospective doctoral studies at UPV/EHU. This is not an official university publication.
+Gleb Mozhaiskii - preliminary personal research related to prospective doctoral studies at UPV/EHU. This is not an official university publication.
 
-**[Read the updated report (PDF)](report/UPV-EHU_Scheduling_Report_A01-A03.pdf)** · [Report source](report/scheduling-report.md) · [Execution instructions](experiment/README.md)
+An application orchestrator assigns real CPU tasks to Edge, Fog and Cloud workers with explicit queues and different CPU quotas. [MADT](https://github.com/dltcspbu/madt/tree/ca7df8460448ae515f17bfb3a594b30ef9503415) controls the routed network. Each run uses one fresh Linux VM with four Docker containers, on a shared physical host.
 
-An application orchestrator assigns real CPU tasks to Edge, Fog and Cloud workers with different CPU quotas and explicit queues. [MADT](https://github.com/dltcspbu/madt) controls the routed network. Each session uses one fresh Linux VM containing four Docker containers, not four physical sites.
+## Quick Start 1: read the recorded results
 
-## This release
+**[Open the nine-page report](report/UPV-EHU_Scheduling_Report_A01-A03.pdf)**. No software installation is needed. [Markdown](report/scheduling-report.md), [complete LaTeX](report/scheduling-report.tex), [figures](figures/) and [five measurement CSVs](data/) are versioned.
 
-The report presents **three fresh VM runs**. In the measurement files, the immutable source IDs A01, A02 and A03 correspond to reader-facing Run 1, Run 2 and Run 3; this display mapping does not rename an experiment. Three sequential fresh ARM64 Lima VM sessions each ran the same 12 scenarios once: Round Robin, Compute-ECT and Network-ECT; steady and burst arrivals; unshaped networking and nominal 20 ms extra one-way Cloud ingress delay.
+| Run | Correct outputs, including preparation | Scored tasks on time / offered |
+|---|---:|---:|
+| Run 1 |948|144/144|
+| Run 2 |948|144/144|
+| Run 3 |948|143/144|
 
-| Session | Correct worker outputs, including preparation | Scored on time / offered | Application / network |
-|---|---:|---:|---|
-| Run 1 |948|144/144|Complete / network checks passed|
-| Run 2 |948|144/144|Complete / network checks passed|
-| Run 3 |948|143/144|Complete / network checks passed|
+All 432 scored tasks returned correct answers. The retained late Round Robin/burst/normal-network Edge task took 1002.317940 ms from planned arrival, exceeding the original 1 s deadline by 2.317940 ms. Network checks, exports and cleanups passed the original cohort's separate audit.
 
-All 432 scored tasks returned correct answers. The one late Run 3 Round Robin/burst/unshaped Edge task took1002.317940 ms from planned arrival, exceeding the 1 s SLO by2.317940 ms. It is retained. All three evidence exports and scoped VM cleanups were verified.
+The unit of replication is **one fresh VM session: three sessions on one physical host**. The 12 scenarios combine Round Robin, Compute-ECT and Network-ECT; steady/burst arrivals; normal networking/nominal 20 ms extra one-way Cloud ingress delay. They are nested measurements, not 36 independent replications. ECT decision overhead was higher in all observed matched median contrasts. These results do not establish policy superiority or general platform reliability.
 
-![Per-session scenario medians](figures/median-latency.svg)
+The immutable file keys A01/A02/A03 map to Run 1/2/3. The [36 scenario rows](data/scenario-results.csv), [432 scored-task rows](data/scored-tasks.csv), [2,844 worker outputs](data/worker-completions.csv), [all-node counts](data/node-results.csv) and [three session summaries](data/session-results.csv) are publication tables, not full acquisition archives. Raw host logs, approvals and internal reviews are not public inputs.
 
-The unit of replication is the **VM session: N=3 on one physical host**. Tasks and scenarios are nested measurements. Timings and placements vary; these data establish a bounded correctness screen, not general platform reliability, physical multi-site realism or scheduler superiority. ECT decision overhead was higher than matched RR in all observed median contrasts; response medians alone do not establish a winner.
+## Quick Start 2: rebuild and check the report
 
-## Data and source
+Clone the repository and select the desired reviewed revision before running commands:
 
-- [36 scenario rows](data/scenario-results.csv): every session, policy and condition; outcomes, placements, timing distributions and rates.
-- [432 scored tasks](data/scored-tasks.csv): all offered scored outcomes and elapsed timing components. Timestamps are offsets from the first planned arrival in the same cell.
-- [2,844 worker completions](data/worker-completions.csv), [all-node accounting](data/node-results.csv), [three session summaries](data/session-results.csv).
-- [Effective execution inputs and package pins](experiment/): 34 byte-identical runtime/support files from the common 38-file capture, plus the original scoped VM lifecycle runner.
-- [Source identities](experiment/SOURCE.json), [input hashes](experiment/INPUTS.sha256.json) and [release file hashes](MANIFEST.sha256).
+```sh
+git clone https://github.com/HronoSF/mozhaiskii-edge-fog-cloud-research.git
+cd mozhaiskii-edge-fog-cloud-research
+```
 
-Measured execution revision: `b47689f644397018d408e97f83be5c587d7182ff`. Audited results revision: `33035e085988ce2165fdd46755ee8f75cb3a04e4`. These identifiers bind the provenance; public packaging is subsequent and does not repeat acquisition. The recorded cohort received independent raw-evidence scientific review. The public export contains measurement tables, not the full private host/authority logs or internal reviews. Research hypotheses, debugging and historical cohorts are maintained separately.
+This cleanup is proposed against branch `codex/a01-a03-public-release`. Until it is merged, check out the cleanup PR branch `codex/public-reproducibility-cleanup` to use the commands below.
 
-## Rebuild the report offline
+Offline integrity and scheduling/checker tests need **Python 3.12 or newer** and its standard library only:
 
-Use Python 3, Pandoc and XeLaTeX (TeX Live with Latin Modern and the packages in `latex/research-report.sty`). CairoSVG also requires Cairo. On Apple Silicon with Homebrew Cairo, the Makefile uses `/opt/homebrew/lib`; override `CAIRO_LIBDIR` if Cairo is installed elsewhere. No VM or Docker is needed for these commands:
+```sh
+python3 scripts/verify_release.py
+make test PYTHON=python3
+python3 experiment/run_session.py --help
+```
+
+The PDF build additionally needs Make, Pandoc, XeLaTeX/TeX Live, Cairo and the pinned Python packages. TeX must provide the packages listed in [the shared style](latex/research-report.sty), Latin Modern fonts and `newunicodechar`. Charts require Georgia and Times New Roman through Cairo/fontconfig; font binaries are not distributed. The audited build uses macOS 27.0.1 ARM64, Python 3.12.14, Pandoc 3.9.0.2 and TeX Live 2026. Other report-build platforms/toolchains are not verified here. The canonical PDF remains readable everywhere with a PDF reader.
 
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-report.txt
 make PYTHON=.venv/bin/python
+make report-verify PYTHON=.venv/bin/python
 make verify PYTHON=.venv/bin/python
 ```
 
-The shared LaTeX template/style is unchanged. The topology image is extracted unchanged from the supplied reference PDF; it replaces the different diagram that had been in this repository. Tables use indivisible `tabular` floats: a complete table moves to the next page if necessary. Colored SVG figures regenerate from the checked-in CSVs. The report body is available in both readable Markdown and complete generated LaTeX. Rebuilding need not produce an identical PDF binary across TeX versions; source/data hashes and numerical content are checked.
+**Rebuilt PDF: `build/scheduling-report.pdf`.** The canonical PDF and versioned sources are never overwritten by this workflow. Regenerated tables, LaTeX and SVGs appear under `build/generated/` and are compared with the versioned sources before compilation. Rebuilding uses no VM, Docker or private files. Package installation needs Internet; the subsequent build uses local inputs.
 
-A new experiment is a separate privileged operation; see [the execution guide](experiment/README.md). **No new VM was launched for this publication.** The packaged public entrypoint has been checked offline, not independently rerun in another VM. Do not count an offline build as an experimental replication.
+On Apple Silicon with Homebrew Cairo the Makefile uses `/opt/homebrew/lib`; set `CAIRO_LIBDIR` for a different Cairo installation. Set `XELATEX` to an explicit compiler path if necessary. Report verification checks nine pages, exact per-page text/geometry, whole tables, embedded fonts and links. Different PDF metadata or encoding can change bytes; inspect rendered pages before accepting a different toolchain. Do not alter scientific values or typography to force a matching hash.
 
-## Context
+## Quick Start 3: collect and verify a new session
 
-Wang et al. (2026), [DOI 10.1109/ICDCSW72724.2026.00054](https://doi.org/10.1109/ICDCSW72724.2026.00054), informs matched comparisons, service-level accounting and decision-overhead measurement. This CPU-task experiment does not reproduce their multi-mode AI benchmark. Upstream MADT and tcconfig retain their own licenses; the tcconfig patch attribution/license is included. No new general software license is asserted by this publication.
+**VM execution supports macOS ARM64 only**, using Apple's Virtualization.framework. There is no implemented/verified Linux-host or Windows runner. A Linux guest is created by Lima; this is distinct from Linux-host support.
+
+Read [the execution guide](experiment/README.md) first. Each invocation uses one disposable ARM64 Ubuntu VM with **4 vCPU, 4 GiB RAM and a 20 GiB sparse disk**. Reserve RAM headroom beyond the guest and at least 30 GiB free host disk. The measured host had 32 GiB RAM. Approximately 1.98 GB of pinned VM assets plus guest packages are downloaded. One measured session took roughly 13-15 minutes; availability and runtime are not guaranteed. The host needs Python 3.12+, Internet and working Apple virtualization; host Docker, Rosetta and a preinstalled Lima are not required.
+
+After a separate explicit decision to authorize the documented guest-root/Docker/network operations, run **one session at a time**:
+
+```sh
+python3 experiment/run_session.py --stage calibration --output "$PWD/new-results/session-01"
+python3 scripts/verify_session.py "$PWD/new-results/session-01" --json "$PWD/new-results/session-01-verification.json"
+```
+
+The existing `calibration` stage runs health qualification **and the full original scheduling pilot**. Its name does not mean calibration-only. Do not use `full` or `timing` with this payload. Never reuse an output directory, retry a consumed session until green, or append a new session to the closed three-run cohort.
+
+Expected outputs include a guest archive, its recorded SHA-256, copied input sources, host summary, scoped VM ledger and local host logs. Keep them together, including failed/partial attempts. [Fresh-output verification](docs/VERIFYING_A_SESSION.md) checks application records, original numerical network bounds, export integrity, package/resource records and **recorded** cleanup separately. Its PASS is bounded file validation, not independent live teardown, a new replication claim or final scientific performance eligibility. It does not require historical latency values or the same number of deadline misses.
+
+**No new VM has been executed to validate this public packaging.** The complete path has been inspected and checked offline; a separately authorized clean-room VM run remains outstanding. If export or cleanup fails, preserve all available files and stop before another session.
+
+## Provenance and licensing
+
+The 34 [published runtime/support inputs](experiment/INPUTS.sha256.json) are unchanged bytes from the original common 38-file capture. Four non-runtime historical/context files are intentionally omitted. The original host lifecycle runner is also unchanged. [Source identities](experiment/SOURCE.json) retain measured revision `b47689f644397018d408e97f83be5c587d7182ff` and audited results revision `33035e085988ce2165fdd46755ee8f75cb3a04e4`; packaging changes do not retroactively change acquisition provenance. [MANIFEST.sha256](MANIFEST.sha256) covers this public snapshot.
+
+[Wang et al. (2026)](https://doi.org/10.1109/ICDCSW72724.2026.00054) informs comparison methodology; this CPU-task pilot does not reproduce its multi-mode AI benchmark. See [the cleanup audit](docs/REPRODUCIBILITY_AUDIT.md) for scope, checks and remaining limits, and [licensing notes](docs/LICENSING.md) for upstream obligations and the unapproved original-work license recommendation.
