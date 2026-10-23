@@ -3,6 +3,7 @@
 import csv,subprocess,shutil
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+GENERATED=ROOT/'build/generated'
 def read(n):
     with (ROOT/'data'/n).open(newline='') as f:return list(csv.DictReader(f))
 def esc(v):return str(v).replace('&',r'\&').replace('%',r'\%').replace('_',r'\_')
@@ -11,9 +12,9 @@ def table(name,headers,rows,align):
     lines=[r'\begin{table}[H]',r'\centering',r'\label{table:'+name+':start}',r'\begin{tabular}{'+align+'}',r'\toprule',' & '.join(r'\textbf{'+esc(x)+'}' for x in headers)+r' \\',r'\midrule']
     lines+=[' & '.join(esc(x) for x in row)+r' \\' for row in rows]
     lines += [r'\bottomrule',r'\end{tabular}',r'\label{table:'+name+':end}',r'\end{table}']
-    (ROOT/'report/tables'/f'{name}.tex').write_text('\n'.join(lines)+'\n')
+    (GENERATED/'report/tables'/f'{name}.tex').write_text('\n'.join(lines)+'\n')
 def main():
-    (ROOT/'report/tables').mkdir(exist_ok=True)
+    (GENERATED/'report/tables').mkdir(parents=True,exist_ok=True)
     (ROOT/'build/figures').mkdir(parents=True,exist_ok=True)
     table('topology',['Container','What it does','CPU quota'],[['Gateway / orchestrator','Receives tasks and selects workers','0.50 CPU'],['Edge worker','Executes tasks locally','0.25 CPU'],['Fog worker','Executes tasks and forwards Cloud traffic','0.50 CPU'],['Cloud worker','Executes tasks after traffic passes through Fog','1.00 CPU']],r'p{0.24\linewidth}p{0.54\linewidth}r')
     cells=read('scenario-results.csv');sessions=read('session-results.csv');nodes=read('node-results.csv')
@@ -49,6 +50,9 @@ def main():
     body=body.replace(r'\begin{figure}',r'\begin{figure}[H]')
     template=(ROOT/'latex/research-report.tex').read_text()
     metadata=r'\hypersetup{pdftitle={Scheduling tasks across different computing resources},pdfauthor={Gleb Mozhaiskii}}'+'\n'
-    (ROOT/'report/scheduling-report.tex').write_text(template.replace('$body$',metadata+body))
-    print('Built9indivisible tables,3vector charts,the original topology image and versioned LaTeX; shared style unchanged.')
+    (GENERATED/'report/scheduling-report.tex').write_text(template.replace('$body$',metadata+body))
+    for name in ['report/scheduling-report.tex']+[f'report/tables/{p.name}' for p in (GENERATED/'report/tables').glob('*.tex')]+[f'figures/{name}.svg' for name in ['median-latency','decision-overhead','task-timeline']]:
+        if (GENERATED/name).read_bytes() != (ROOT/name).read_bytes():
+            raise ValueError('Generated source differs from canonical source: '+name+'; inspect toolchain/content, do not overwrite the published report')
+    print('Verified9indivisible tables,3vector charts,the original topology image and versioned LaTeX; shared style unchanged.')
 if __name__=='__main__':main()
