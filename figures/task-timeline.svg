@@ -1,176 +1,173 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="810" viewBox="0 0 1600 810" role="img" aria-label="Run 3 Round Robin burst unshaped: twelve measured tasks grouped by Edge, Fog, and Cloud on a common timeline."><rect width="100%" height="100%" fill="white"/>
-<text x="48" y="55" font-family="Arial,sans-serif" font-size="32" font-weight="700" fill="#17283D">Where did the tasks spend their time?</text>
-<text x="48" y="87" font-family="Arial,sans-serif" font-size="20" fill="#52677D">Run 3 · Round Robin · burst arrivals · unshaped network · 12 scored tasks</text>
-<path d="M280.00 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
-<text x="280.00" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">0 s</text>
-<path d="M469.23 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
-<text x="469.23" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">1 s</text>
-<path d="M658.46 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
-<text x="658.46" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">2 s</text>
-<path d="M847.69 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
-<text x="847.69" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">3 s</text>
-<path d="M1036.92 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
-<text x="1036.92" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">4 s</text>
-<path d="M1226.15 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
-<text x="1226.15" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">5 s</text>
-<path d="M1415.38 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>
-<text x="1415.38" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">6 s</text>
-<rect x="30" y="129" width="1538" height="167" rx="10" fill="#F0F8F6"/>
-<text x="55" y="158" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#157F83">EDGE</text>
-<text x="154" y="189" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 0</text>
-<rect x="280.0000" y="172" width="0.0044" height="19" fill="#409A86"/>
-<rect x="280.0044" y="172" width="0.0088" height="19" fill="#409A86"/>
-<rect x="280.0132" y="172" width="0.0006" height="19" fill="#3E84B4"/>
-<rect x="280.0138" y="172" width="0.0017" height="19" fill="#3E84B4"/>
-<rect x="280.0154" y="172" width="0.0033" height="19" fill="#3E84B4"/>
-<rect x="280.0187" y="172" width="0.0122" height="19" fill="#B49A4E"/>
-<rect x="280.0309" y="172" width="0.2168" height="19" fill="#B49A4E"/>
-<rect x="280.2478" y="172" width="0.0469" height="19" fill="#B49A4E"/>
-<rect x="280.2946" y="172" width="152.7919" height="19" fill="#6658AD"/>
-<rect x="433.0865" y="172" width="0.0750" height="19" fill="#83B1D7"/>
-<path d="M469.23 168 V196" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<text x="154" y="220" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 3</text>
-<rect x="658.4615" y="203" width="2.5907" height="19" fill="#409A86"/>
-<rect x="661.0522" y="203" width="0.1983" height="19" fill="#409A86"/>
-<rect x="661.2506" y="203" width="0.0011" height="19" fill="#3E84B4"/>
-<rect x="661.2517" y="203" width="0.0026" height="19" fill="#3E84B4"/>
-<rect x="661.2542" y="203" width="0.0109" height="19" fill="#3E84B4"/>
-<rect x="661.2652" y="203" width="0.0550" height="19" fill="#B49A4E"/>
-<rect x="661.3202" y="203" width="0.9412" height="19" fill="#B49A4E"/>
-<rect x="662.2614" y="203" width="0.0711" height="19" fill="#B49A4E"/>
-<rect x="662.3325" y="203" width="33.2627" height="19" fill="#6658AD"/>
-<rect x="695.5952" y="203" width="0.0539" height="19" fill="#83B1D7"/>
-<path d="M847.69 199 V227" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<text x="154" y="251" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 6</text>
-<rect x="847.6923" y="234" width="0.7605" height="19" fill="#409A86"/>
-<rect x="848.4529" y="234" width="0.0395" height="19" fill="#409A86"/>
-<rect x="848.4923" y="234" width="0.0069" height="19" fill="#3E84B4"/>
-<rect x="848.4992" y="234" width="0.0045" height="19" fill="#3E84B4"/>
-<rect x="848.5038" y="234" width="0.0118" height="19" fill="#3E84B4"/>
-<rect x="848.5155" y="234" width="0.0470" height="19" fill="#B49A4E"/>
-<rect x="848.5625" y="234" width="0.1144" height="19" fill="#B49A4E"/>
-<rect x="848.6769" y="234" width="0.1190" height="19" fill="#B49A4E"/>
-<rect x="848.7959" y="234" width="188.4954" height="19" fill="#6658AD"/>
-<rect x="1037.2913" y="234" width="0.0704" height="19" fill="#83B1D7"/>
-<path d="M1036.92 230 V258" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<circle cx="1037.36" cy="243.5" r="7" fill="#B94537" stroke="white" stroke-width="2"/>
-<text x="154" y="282" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 9</text>
-<rect x="1068.4615" y="265" width="0.9498" height="19" fill="#409A86"/>
-<rect x="1069.4113" y="265" width="0.0208" height="19" fill="#409A86"/>
-<rect x="1069.4322" y="265" width="0.0006" height="19" fill="#3E84B4"/>
-<rect x="1069.4327" y="265" width="0.0013" height="19" fill="#3E84B4"/>
-<rect x="1069.4341" y="265" width="0.0042" height="19" fill="#3E84B4"/>
-<rect x="1069.4383" y="265" width="0.0194" height="19" fill="#B49A4E"/>
-<rect x="1069.4577" y="265" width="0.3127" height="19" fill="#B49A4E"/>
-<rect x="1069.7704" y="265" width="0.0229" height="19" fill="#B49A4E"/>
-<rect x="1069.7933" y="265" width="102.0747" height="19" fill="#6658AD"/>
-<rect x="1171.8681" y="265" width="0.0708" height="19" fill="#83B1D7"/>
-<path d="M1257.69 261 V289" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<rect x="30" y="308" width="1538" height="167" rx="10" fill="#FCF7EF"/>
-<text x="55" y="337" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#B17B35">FOG</text>
-<text x="154" y="368" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 1</text>
-<rect x="469.2308" y="351" width="0.9726" height="19" fill="#409A86"/>
-<rect x="470.2034" y="351" width="0.0315" height="19" fill="#409A86"/>
-<rect x="470.2349" y="351" width="0.0013" height="19" fill="#3E84B4"/>
-<rect x="470.2362" y="351" width="0.0034" height="19" fill="#3E84B4"/>
-<rect x="470.2396" y="351" width="0.0060" height="19" fill="#3E84B4"/>
-<rect x="470.2456" y="351" width="0.0243" height="19" fill="#B49A4E"/>
-<rect x="470.2699" y="351" width="0.0854" height="19" fill="#B49A4E"/>
-<rect x="470.3553" y="351" width="0.0791" height="19" fill="#B49A4E"/>
-<rect x="470.4344" y="351" width="11.4990" height="19" fill="#6658AD"/>
-<rect x="481.9334" y="351" width="0.0694" height="19" fill="#83B1D7"/>
-<path d="M658.46 347 V375" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<text x="154" y="399" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 4</text>
-<rect x="690.0000" y="382" width="0.5942" height="19" fill="#409A86"/>
-<rect x="690.5942" y="382" width="0.0200" height="19" fill="#409A86"/>
-<rect x="690.6141" y="382" width="0.0007" height="19" fill="#3E84B4"/>
-<rect x="690.6148" y="382" width="0.0016" height="19" fill="#3E84B4"/>
-<rect x="690.6164" y="382" width="0.0055" height="19" fill="#3E84B4"/>
-<rect x="690.6219" y="382" width="0.0198" height="19" fill="#B49A4E"/>
-<rect x="690.6417" y="382" width="0.3635" height="19" fill="#B49A4E"/>
-<rect x="691.0051" y="382" width="0.0285" height="19" fill="#B49A4E"/>
-<rect x="691.0336" y="382" width="8.3634" height="19" fill="#6658AD"/>
-<rect x="699.3970" y="382" width="0.0573" height="19" fill="#83B1D7"/>
-<path d="M879.23 378 V406" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<text x="154" y="430" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 7</text>
-<rect x="1036.9231" y="413" width="0.1489" height="19" fill="#409A86"/>
-<rect x="1037.0719" y="413" width="0.0207" height="19" fill="#409A86"/>
-<rect x="1037.0927" y="413" width="0.0014" height="19" fill="#3E84B4"/>
-<rect x="1037.0941" y="413" width="0.0017" height="19" fill="#3E84B4"/>
-<rect x="1037.0958" y="413" width="0.0063" height="19" fill="#3E84B4"/>
-<rect x="1037.1021" y="413" width="0.0295" height="19" fill="#B49A4E"/>
-<rect x="1037.1316" y="413" width="0.0607" height="19" fill="#B49A4E"/>
-<rect x="1037.1923" y="413" width="0.0639" height="19" fill="#B49A4E"/>
-<rect x="1037.2562" y="413" width="52.1889" height="19" fill="#6658AD"/>
-<rect x="1089.4451" y="413" width="0.0513" height="19" fill="#83B1D7"/>
-<path d="M1226.15 409 V437" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<text x="154" y="461" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 10</text>
-<rect x="1100.0000" y="444" width="0.8542" height="19" fill="#409A86"/>
-<rect x="1100.8542" y="444" width="0.0165" height="19" fill="#409A86"/>
-<rect x="1100.8707" y="444" width="0.0006" height="19" fill="#3E84B4"/>
-<rect x="1100.8713" y="444" width="0.0011" height="19" fill="#3E84B4"/>
-<rect x="1100.8724" y="444" width="0.0044" height="19" fill="#3E84B4"/>
-<rect x="1100.8767" y="444" width="0.0183" height="19" fill="#B49A4E"/>
-<rect x="1100.8951" y="444" width="0.2826" height="19" fill="#B49A4E"/>
-<rect x="1101.1777" y="444" width="0.0216" height="19" fill="#B49A4E"/>
-<rect x="1101.1993" y="444" width="61.0683" height="19" fill="#6658AD"/>
-<rect x="1162.2676" y="444" width="0.0447" height="19" fill="#83B1D7"/>
-<path d="M1289.23 440 V468" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<rect x="30" y="487" width="1538" height="167" rx="10" fill="#F5F4FB"/>
-<text x="55" y="516" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#6B5A9F">CLOUD</text>
-<text x="154" y="547" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 2</text>
-<rect x="658.4615" y="530" width="2.2719" height="19" fill="#409A86"/>
-<rect x="660.7335" y="530" width="0.1695" height="19" fill="#409A86"/>
-<rect x="660.9029" y="530" width="0.0057" height="19" fill="#3E84B4"/>
-<rect x="660.9086" y="530" width="0.0079" height="19" fill="#3E84B4"/>
-<rect x="660.9166" y="530" width="0.0194" height="19" fill="#3E84B4"/>
-<rect x="660.9359" y="530" width="0.1362" height="19" fill="#B49A4E"/>
-<rect x="661.0721" y="530" width="0.2841" height="19" fill="#B49A4E"/>
-<rect x="661.3563" y="530" width="0.2213" height="19" fill="#B49A4E"/>
-<rect x="661.5775" y="530" width="11.8677" height="19" fill="#6658AD"/>
-<rect x="673.4452" y="530" width="0.1036" height="19" fill="#83B1D7"/>
-<path d="M847.69 526 V554" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<text x="154" y="578" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 5</text>
-<rect x="721.5385" y="561" width="2.0137" height="19" fill="#409A86"/>
-<rect x="723.5522" y="561" width="0.0419" height="19" fill="#409A86"/>
-<rect x="723.5940" y="561" width="0.0015" height="19" fill="#3E84B4"/>
-<rect x="723.5955" y="561" width="0.0025" height="19" fill="#3E84B4"/>
-<rect x="723.5980" y="561" width="0.0110" height="19" fill="#3E84B4"/>
-<rect x="723.6090" y="561" width="0.0526" height="19" fill="#B49A4E"/>
-<rect x="723.6616" y="561" width="0.0698" height="19" fill="#B49A4E"/>
-<rect x="723.7313" y="561" width="0.0372" height="19" fill="#B49A4E"/>
-<rect x="723.7685" y="561" width="32.3424" height="19" fill="#6658AD"/>
-<rect x="756.1110" y="561" width="0.0686" height="19" fill="#83B1D7"/>
-<path d="M910.77 557 V585" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<text x="154" y="609" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 8</text>
-<rect x="1036.9231" y="592" width="0.2025" height="19" fill="#409A86"/>
-<rect x="1037.1256" y="592" width="0.0299" height="19" fill="#409A86"/>
-<rect x="1037.1555" y="592" width="0.0005" height="19" fill="#3E84B4"/>
-<rect x="1037.1560" y="592" width="0.0036" height="19" fill="#3E84B4"/>
-<rect x="1037.1595" y="592" width="0.0064" height="19" fill="#3E84B4"/>
-<rect x="1037.1660" y="592" width="0.0256" height="19" fill="#B49A4E"/>
-<rect x="1037.1916" y="592" width="0.4153" height="19" fill="#B49A4E"/>
-<rect x="1037.6069" y="592" width="0.0284" height="19" fill="#B49A4E"/>
-<rect x="1037.6353" y="592" width="9.1291" height="19" fill="#6658AD"/>
-<rect x="1046.7644" y="592" width="0.0457" height="19" fill="#83B1D7"/>
-<path d="M1226.15 588 V616" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<text x="154" y="640" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task 11</text>
-<rect x="1226.1538" y="623" width="1.5456" height="19" fill="#409A86"/>
-<rect x="1227.6995" y="623" width="0.1450" height="19" fill="#409A86"/>
-<rect x="1227.8445" y="623" width="0.0047" height="19" fill="#3E84B4"/>
-<rect x="1227.8492" y="623" width="0.0060" height="19" fill="#3E84B4"/>
-<rect x="1227.8551" y="623" width="0.0187" height="19" fill="#3E84B4"/>
-<rect x="1227.8738" y="623" width="0.0874" height="19" fill="#B49A4E"/>
-<rect x="1227.9612" y="623" width="0.6051" height="19" fill="#B49A4E"/>
-<rect x="1228.5663" y="623" width="0.1160" height="19" fill="#B49A4E"/>
-<rect x="1228.6823" y="623" width="11.8880" height="19" fill="#6658AD"/>
-<rect x="1240.5702" y="623" width="0.1055" height="19" fill="#83B1D7"/>
-<path d="M1415.38 619 V647" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>
-<rect x="52" y="718" width="24" height="16" rx="3" fill="#409A86"/><text x="86" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">Gateway / release wait</text>
-<rect x="330" y="718" width="24" height="16" rx="3" fill="#3E84B4"/><text x="364" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">Observation, decision, commit</text>
-<rect x="700" y="718" width="24" height="16" rx="3" fill="#B49A4E"/><text x="734" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">Sender, input, worker queue</text>
-<rect x="1115" y="718" width="24" height="16" rx="3" fill="#6658AD"/><text x="1149" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">Execution</text>
-<rect x="1295" y="718" width="24" height="16" rx="3" fill="#83B1D7"/><text x="1329" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">Result return</text>
-<text x="50" y="777" font-family="Arial,sans-serif" font-size="18" fill="#51677C">Bars start at planned arrival; dashed red ticks mark each task deadline. Very short measured stages may not resolve at this scale.</text>
-<text x="1550" y="795" font-family="Arial,sans-serif" font-size="15" text-anchor="end" fill="#B94537">Task 6 / E: 1002.318 ms response vs 1000 ms deadline (miss)</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="1000" viewBox="0 0 1300 1000" role="img" aria-label="Run 3 Round Robin burst tasks: planned releases and execution intervals above; measured response-time stages below."><rect width="100%" height="100%" fill="white"/>
+<text x="690.0" y="35" font-family="Times New Roman,serif" font-size="24" text-anchor="middle" fill="#333">a. Planned releases (circles) and execution intervals (bars)</text>
+<line x1="180.00000" y1="65.00000" x2="180.00000" y2="260.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="180.0" y="287" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">0 s</text>
+<line x1="350.00000" y1="65.00000" x2="350.00000" y2="260.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="350.0" y="287" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">1 s</text>
+<line x1="520.00000" y1="65.00000" x2="520.00000" y2="260.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="520.0" y="287" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">2 s</text>
+<line x1="690.00000" y1="65.00000" x2="690.00000" y2="260.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="690.0" y="287" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">3 s</text>
+<line x1="860.00000" y1="65.00000" x2="860.00000" y2="260.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="860.0" y="287" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">4 s</text>
+<line x1="1030.00000" y1="65.00000" x2="1030.00000" y2="260.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="1030.0" y="287" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">5 s</text>
+<line x1="1200.00000" y1="65.00000" x2="1200.00000" y2="260.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="1200.0" y="287" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">6 s</text>
+<line x1="180.00000" y1="112.00000" x2="1200.00000" y2="112.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="166" y="110" font-family="Times New Roman,serif" font-size="20" text-anchor="end" fill="#333">EDGE</text>
+<circle cx="180.00000" cy="100" r="4" fill="white" stroke="#1e7c83"/>
+<rect x="180.26470" y="90" width="137.26424" height="20" fill="#1e7c83"/>
+<text x="180.26469731" y="85" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">0</text>
+<circle cx="520.00000" cy="100" r="4" fill="white" stroke="#1e7c83"/>
+<rect x="523.47759" y="90" width="29.88234" height="20" fill="#1e7c83"/>
+<text x="523.47758647" y="85" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">3</text>
+<circle cx="690.00000" cy="100" r="4" fill="white" stroke="#1e7c83"/>
+<rect x="690.99144" y="90" width="169.33935" height="20" fill="#1e7c83"/>
+<text x="690.9914425499999" y="85" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">6</text>
+<circle cx="888.33333" cy="100" r="4" fill="white" stroke="#1e7c83"/>
+<rect x="889.52978" y="90" width="91.70128" height="20" fill="#1e7c83"/>
+<text x="889.52977809" y="85" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">9</text>
+<line x1="180.00000" y1="182.00000" x2="1200.00000" y2="182.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="166" y="180" font-family="Times New Roman,serif" font-size="20" text-anchor="end" fill="#333">FOG</text>
+<circle cx="350.00000" cy="170" r="4" fill="white" stroke="#b07837"/>
+<rect x="351.08128" y="160" width="10.33042" height="20" fill="#b07837"/>
+<text x="351.08127853999997" y="155" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">1</text>
+<circle cx="548.33333" cy="170" r="4" fill="white" stroke="#b07837"/>
+<rect x="549.26191" y="160" width="7.51342" height="20" fill="#b07837"/>
+<text x="549.2619113" y="155" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">4</text>
+<circle cx="860.00000" cy="170" r="4" fill="white" stroke="#b07837"/>
+<rect x="860.29924" y="160" width="46.88514" height="20" fill="#b07837"/>
+<text x="860.29923944" y="155" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">7</text>
+<circle cx="916.66667" cy="170" r="4" fill="white" stroke="#b07837"/>
+<rect x="917.74406" y="160" width="54.86217" height="20" fill="#b07837"/>
+<text x="917.7440633699999" y="155" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">10</text>
+<line x1="180.00000" y1="252.00000" x2="1200.00000" y2="252.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="166" y="250" font-family="Times New Roman,serif" font-size="20" text-anchor="end" fill="#333">CLOUD</text>
+<circle cx="520.00000" cy="240" r="4" fill="white" stroke="#6355a4"/>
+<rect x="522.79931" y="230" width="10.66167" height="20" fill="#6355a4"/>
+<text x="522.79930721" y="225" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">2</text>
+<circle cx="576.66667" cy="240" r="4" fill="white" stroke="#6355a4"/>
+<rect x="578.67011" y="230" width="29.05559" height="20" fill="#6355a4"/>
+<text x="578.67010709" y="225" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">5</text>
+<circle cx="860.00000" cy="240" r="4" fill="white" stroke="#6355a4"/>
+<rect x="860.63987" y="230" width="8.20132" height="20" fill="#6355a4"/>
+<text x="860.6398699700001" y="225" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">8</text>
+<circle cx="1030.00000" cy="240" r="4" fill="white" stroke="#6355a4"/>
+<rect x="1032.27147" y="230" width="10.67985" height="20" fill="#6355a4"/>
+<text x="1032.27146962" y="225" font-family="Times New Roman,serif" font-size="16" text-anchor="start" fill="#333">11</text>
+<text x="690.0" y="320" font-family="Times New Roman,serif" font-size="20" text-anchor="middle" fill="#333">Time since the first scheduled task</text>
+<text x="690.0" y="367" font-family="Times New Roman,serif" font-size="24" text-anchor="middle" fill="#333">b. The same tasks: elapsed response time by measured stage</text>
+<line x1="180.00000" y1="390.00000" x2="180.00000" y2="888.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="180.0" y="915" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">0</text>
+<line x1="365.45455" y1="390.00000" x2="365.45455" y2="888.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="365.4545454545455" y="915" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">200</text>
+<line x1="550.90909" y1="390.00000" x2="550.90909" y2="888.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="550.909090909091" y="915" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">400</text>
+<line x1="736.36364" y1="390.00000" x2="736.36364" y2="888.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="736.3636363636364" y="915" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">600</text>
+<line x1="921.81818" y1="390.00000" x2="921.81818" y2="888.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="921.8181818181819" y="915" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">800</text>
+<line x1="1107.27273" y1="390.00000" x2="1107.27273" y2="888.00000" stroke="#d7dade" stroke-width="1"/>
+<text x="1107.2727272727273" y="915" font-family="Times New Roman,serif" font-size="18" text-anchor="middle" fill="#333">1000</text>
+<text x="168" y="422" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">E - task 0</text>
+<rect x="180.00000" y="405" width="0.15161" height="23" fill="#9aa5af"/>
+<rect x="180.15161" y="405" width="1.06254" height="23" fill="#3a83b7"/>
+<rect x="181.21415" y="405" width="0.22965" height="23" fill="#d6a24b"/>
+<rect x="181.44380" y="405" width="748.71406" height="23" fill="#6757a8"/>
+<rect x="930.15786" y="405" width="0.36743" height="23" fill="#2d9487"/>
+<text x="937.5252931272728" y="422" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">809.4</text>
+<text x="168" y="460" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">E - task 3</text>
+<rect x="180.00000" y="443" width="14.00809" height="23" fill="#9aa5af"/>
+<rect x="194.00809" y="443" width="4.61199" height="23" fill="#3a83b7"/>
+<rect x="198.62008" y="443" width="0.34858" height="23" fill="#d6a24b"/>
+<rect x="198.96865" y="443" width="162.99458" height="23" fill="#6757a8"/>
+<rect x="361.96324" y="443" width="0.26404" height="23" fill="#2d9487"/>
+<text x="369.22727658181816" y="460" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">196.5</text>
+<text x="168" y="498" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">E - task 6</text>
+<rect x="180.00000" y="481" width="4.26427" height="23" fill="#9aa5af"/>
+<rect x="184.26427" y="481" width="0.56054" height="23" fill="#3a83b7"/>
+<rect x="184.82481" y="481" width="0.58306" height="23" fill="#d6a24b"/>
+<rect x="185.40787" y="481" width="923.66916" height="23" fill="#6757a8"/>
+<rect x="1109.07703" y="481" width="0.34506" height="23" fill="#2d9487"/>
+<text x="1116.4220898181816" y="498" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#b53f36">1002.318</text>
+<rect x="180" y="479" width="929.42209" height="27" fill="none" stroke="#b53f36" stroke-width="1.7"/>
+<text x="1210" y="498" font-family="Times New Roman,serif" font-size="18" text-anchor="start" fill="#b53f36">LATE</text>
+<text x="168" y="536" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">E - task 9</text>
+<rect x="180.00000" y="519" width="4.88135" height="23" fill="#9aa5af"/>
+<rect x="184.88135" y="519" width="1.53240" height="23" fill="#3a83b7"/>
+<rect x="186.41375" y="519" width="0.11232" height="23" fill="#d6a24b"/>
+<rect x="186.52606" y="519" width="500.18881" height="23" fill="#6757a8"/>
+<rect x="686.71487" y="519" width="0.34715" height="23" fill="#2d9487"/>
+<text x="694.062016109091" y="536" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">546.8</text>
+<line x1="165.00000" y1="552.00000" x2="1200.00000" y2="552.00000" stroke="#b8bec7" stroke-width="1"/>
+<text x="168" y="587" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">F - task 1</text>
+<rect x="180.00000" y="570" width="5.09208" height="23" fill="#9aa5af"/>
+<rect x="185.09208" y="570" width="0.41839" height="23" fill="#3a83b7"/>
+<rect x="185.51048" y="570" width="0.38741" height="23" fill="#d6a24b"/>
+<rect x="185.89788" y="570" width="56.34777" height="23" fill="#6757a8"/>
+<rect x="242.24565" y="570" width="0.33992" height="23" fill="#2d9487"/>
+<text x="249.5855735636364" y="587" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">67.5</text>
+<text x="168" y="625" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">F - task 4</text>
+<rect x="180.00000" y="608" width="3.14428" height="23" fill="#9aa5af"/>
+<rect x="183.14428" y="608" width="1.78118" height="23" fill="#3a83b7"/>
+<rect x="184.92546" y="608" width="0.13952" height="23" fill="#d6a24b"/>
+<rect x="185.06497" y="608" width="40.98227" height="23" fill="#6757a8"/>
+<rect x="226.04724" y="608" width="0.28065" height="23" fill="#2d9487"/>
+<text x="233.3278964909091" y="625" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">50.0</text>
+<text x="168" y="663" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">F - task 7</text>
+<rect x="180.00000" y="646" width="1.02180" height="23" fill="#9aa5af"/>
+<rect x="181.02180" y="646" width="0.29727" height="23" fill="#3a83b7"/>
+<rect x="181.31907" y="646" width="0.31315" height="23" fill="#d6a24b"/>
+<rect x="181.63222" y="646" width="255.73713" height="23" fill="#6757a8"/>
+<rect x="437.36935" y="646" width="0.25121" height="23" fill="#2d9487"/>
+<text x="444.6205589636363" y="663" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">277.8</text>
+<text x="168" y="701" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">F - task 10</text>
+<rect x="180.00000" y="684" width="4.38604" height="23" fill="#9aa5af"/>
+<rect x="184.38604" y="684" width="1.38496" height="23" fill="#3a83b7"/>
+<rect x="185.77100" y="684" width="0.10571" height="23" fill="#d6a24b"/>
+<rect x="185.87671" y="684" width="299.24819" height="23" fill="#6757a8"/>
+<rect x="485.12490" y="684" width="0.21911" height="23" fill="#2d9487"/>
+<text x="492.3440074" y="701" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">329.3</text>
+<line x1="165.00000" y1="717.00000" x2="1200.00000" y2="717.00000" stroke="#b8bec7" stroke-width="1"/>
+<text x="168" y="752" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">C - task 2</text>
+<rect x="180.00000" y="735" width="12.79255" height="23" fill="#9aa5af"/>
+<rect x="192.79255" y="735" width="1.39219" height="23" fill="#3a83b7"/>
+<rect x="194.18473" y="735" width="1.08421" height="23" fill="#d6a24b"/>
+<rect x="195.26895" y="735" width="58.15456" height="23" fill="#6757a8"/>
+<rect x="253.42351" y="735" width="0.50749" height="23" fill="#2d9487"/>
+<text x="260.93099647272726" y="752" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">79.7</text>
+<text x="168" y="790" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">C - task 5</text>
+<rect x="180.00000" y="773" width="10.40375" height="23" fill="#9aa5af"/>
+<rect x="190.40375" y="773" width="0.34182" height="23" fill="#3a83b7"/>
+<rect x="190.74557" y="773" width="0.18229" height="23" fill="#d6a24b"/>
+<rect x="190.92786" y="773" width="158.48502" height="23" fill="#6757a8"/>
+<rect x="349.41288" y="773" width="0.33618" height="23" fill="#2d9487"/>
+<text x="356.74905279999996" y="790" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">183.1</text>
+<text x="168" y="828" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">C - task 8</text>
+<rect x="180.00000" y="811" width="1.31582" height="23" fill="#9aa5af"/>
+<rect x="181.31582" y="811" width="2.03517" height="23" fill="#3a83b7"/>
+<rect x="183.35099" y="811" width="0.13921" height="23" fill="#d6a24b"/>
+<rect x="183.49020" y="811" width="44.73448" height="23" fill="#6757a8"/>
+<rect x="228.22468" y="811" width="0.22394" height="23" fill="#2d9487"/>
+<text x="235.44861836363637" y="828" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">52.2</text>
+<text x="168" y="866" font-family="Times New Roman,serif" font-size="19" text-anchor="end" fill="#333">C - task 11</text>
+<rect x="180.00000" y="849" width="8.85658" height="23" fill="#9aa5af"/>
+<rect x="188.85658" y="849" width="2.96503" height="23" fill="#3a83b7"/>
+<rect x="191.82161" y="849" width="0.56823" height="23" fill="#d6a24b"/>
+<rect x="192.38983" y="849" width="58.25374" height="23" fill="#6757a8"/>
+<rect x="250.64357" y="849" width="0.51699" height="23" fill="#2d9487"/>
+<text x="258.1605670545455" y="866" font-family="Times New Roman,serif" font-size="17" text-anchor="start" fill="#666">76.7</text>
+<line x1="1107.27273" y1="390.00000" x2="1107.27273" y2="888.00000" stroke="#b53f36" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="690.0" y="945" font-family="Times New Roman,serif" font-size="21" text-anchor="middle" fill="#333">Task response time (ms); dashed line = 1 s deadline</text>
+<rect x="180" y="974" width="23" height="12" fill="#9aa5af"/>
+<text x="210" y="986" font-family="Times New Roman,serif" font-size="18" text-anchor="start" fill="#333">Gateway / sender</text>
+<rect x="420" y="974" width="23" height="12" fill="#3a83b7"/>
+<text x="450" y="986" font-family="Times New Roman,serif" font-size="18" text-anchor="start" fill="#333">Input transfer</text>
+<rect x="660" y="974" width="23" height="12" fill="#d6a24b"/>
+<text x="690" y="986" font-family="Times New Roman,serif" font-size="18" text-anchor="start" fill="#333">Worker queue</text>
+<rect x="875" y="974" width="23" height="12" fill="#6757a8"/>
+<text x="905" y="986" font-family="Times New Roman,serif" font-size="18" text-anchor="start" fill="#333">Execution</text>
+<rect x="1050" y="974" width="23" height="12" fill="#2d9487"/>
+<text x="1080" y="986" font-family="Times New Roman,serif" font-size="18" text-anchor="start" fill="#333">Result return</text>
 </svg>

@@ -41,37 +41,55 @@ def compact_chart(filename,title,metric,divisor,maxv,step,axis_label):
 compact_chart('median-latency.svg','Task response times across three fresh VM runs','response_scheduled_ns_median',1e6,300,50,'Task response time (ms)')
 compact_chart('decision-overhead.svg','Time spent making the scheduling decision','decision_wall_ns_median',1000,180,30,'Scheduling decision time (microseconds)')
 
-# A03 burst/unshaped Round Robin scored tasks, on the original common timeline.
+# The reference report uses two plain serif panels, not a dashboard illustration.
 tasks=[r for r in rows('scored-tasks.csv') if r['slot']=='A03' and r['arrival_pattern']=='burst' and r['network_condition']=='unshaped' and r['scheduler']=='rr']
 assert len(tasks)==12
-stages=[('release_lag_ns','#409A86'),('global_queue_ns','#409A86'),('observation_ns','#3E84B4'),('decision_wall_ns','#3E84B4'),('commit_ns','#3E84B4'),('sender_queue_ns','#B49A4E'),('input_delivery_ns','#B49A4E'),('worker_queue_ns','#B49A4E'),('execution_wall_ns','#6658AD'),('result_delivery_ns','#83B1D7')]
-W,H=1600,810;left,right,limit=280,1510,6500;top=157; p=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Run 3 Round Robin burst unshaped: twelve measured tasks grouped by Edge, Fog, and Cloud on a common timeline."><rect width="100%" height="100%" fill="white"/>']
-p.append('<text x="48" y="55" font-family="Arial,sans-serif" font-size="32" font-weight="700" fill="#17283D">Where did the tasks spend their time?</text>')
-p.append('<text x="48" y="87" font-family="Arial,sans-serif" font-size="20" fill="#52677D">Run 3 · Round Robin · burst arrivals · unshaped network · 12 scored tasks</text>')
-def at(ms):return left+(right-left)*ms/limit
-for tick in range(0,6501,1000):
- x=at(tick);p.append(f'<path d="M{x:.2f} 133 V654" stroke="#D4DEE7" stroke-dasharray="4 6"/>');p.append(f'<text x="{x:.2f}" y="687" font-family="Arial,sans-serif" font-size="17" fill="#51677C" text-anchor="middle">{tick//1000} s</text>')
-groups=[('E','EDGE','#F0F8F6','#157F83'),('F','FOG','#FCF7EF','#B17B35'),('C','CLOUD','#F5F4FB','#6B5A9F')]
-ordered=[]
-for wi,(worker,label,bg,accent) in enumerate(groups):
- y0=129+wi*179;p.append(f'<rect x="30" y="{y0}" width="1538" height="167" rx="10" fill="{bg}"/>');p.append(f'<text x="55" y="{y0+29}" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="{accent}">{label}</text>')
- rr=sorted((r for r in tasks if r['worker']==worker),key=lambda q:int(q['task_id']));assert len(rr)==4
- for j,r in enumerate(rr):
-  ordered.append(r);y=y0+43+j*31;p.append(f'<text x="154" y="{y+17}" font-family="Arial,sans-serif" font-size="18" fill="#33465A">Task {r["task_id"]}</text>')
-  planned=int(r['planned_release_offset_ns'])/1e6;cur=planned
-  total=0
-  for col,color in stages:
-   dur=int(r[col])/1e6; x=at(cur); x2=at(cur+dur); total+=int(r[col])
-   if dur>0:p.append(f'<rect x="{x:.4f}" y="{y}" width="{x2-x:.4f}" height="19" fill="{color}"/>')
-   cur+=dur
-  response=int(r['verified_response_offset_ns'])-int(r['planned_release_offset_ns']);assert total==response,(r['task_id'],total,response)
-  deadline=at(planned+1000);p.append(f'<path d="M{deadline:.2f} {y-4} V{y+24}" stroke="#B94537" stroke-width="1.5" stroke-dasharray="3 3"/>')
-  if r['on_time']=='False':
-   p.append(f'<circle cx="{at(cur):.2f}" cy="{y+9.5}" r="7" fill="#B94537" stroke="white" stroke-width="2"/>')
-legend=[('#409A86','Gateway / release wait'),('#3E84B4','Observation, decision, commit'),('#B49A4E','Sender, input, worker queue'),('#6658AD','Execution'),('#83B1D7','Result return')]
-positions=[52,330,700,1115,1295]
-for (color,label),x in zip(legend,positions):p.append(f'<rect x="{x}" y="718" width="24" height="16" rx="3" fill="{color}"/><text x="{x+34}" y="733" font-family="Arial,sans-serif" font-size="17" fill="#33465A">{label}</text>')
-p.append('<text x="50" y="777" font-family="Arial,sans-serif" font-size="18" fill="#51677C">Bars start at planned arrival; dashed red ticks mark each task deadline. Very short measured stages may not resolve at this scale.</text>')
-p.append(f'<text x="1550" y="795" font-family="Arial,sans-serif" font-size="15" text-anchor="end" fill="#B94537">Task 6 / E: 1002.318 ms response vs 1000 ms deadline (miss)</text>')
+ordered=[r for worker in ('E','F','C') for r in sorted((t for t in tasks if t['worker']==worker),key=lambda t:int(t['task_id']))]
+W,H=1300,1000;left,right=180,1200
+p=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Run 3 Round Robin burst tasks: planned releases and execution intervals above; measured response-time stages below."><rect width="100%" height="100%" fill="white"/>']
+def ttext(x,y,value,size=19,anchor='start',color='#333'):
+ return f'<text x="{x}" y="{y}" font-family="Times New Roman,serif" font-size="{size}" text-anchor="{anchor}" fill="{color}">{escape(str(value))}</text>'
+def line(x1,y1,x2,y2,color='#d7dade',dash=''):
+ return f'<line x1="{x1:.5f}" y1="{y1:.5f}" x2="{x2:.5f}" y2="{y2:.5f}" stroke="{color}" stroke-width="1"'+(f' stroke-dasharray="{dash}"' if dash else '')+'/>'
+def topx(ms):return left+(right-left)*ms/6000
+p.append(ttext((left+right)/2,35,'a. Planned releases (circles) and execution intervals (bars)',24,'middle'))
+for tick in range(7):
+ x=topx(tick*1000);p.append(line(x,65,x,260));p.append(ttext(x,287,f'{tick} s',18,'middle'))
+colors={'E':'#1e7c83','F':'#b07837','C':'#6355a4'}
+for j,worker in enumerate(('E','F','C')):
+ y=90+j*70;p.append(line(left,y+22,right,y+22));p.append(ttext(left-14,y+20,{'E':'EDGE','F':'FOG','C':'CLOUD'}[worker],20,'end'))
+ for r in [q for q in ordered if q['worker']==worker]:
+  planned=int(r['planned_release_offset_ns'])/1e6
+  preceding=sum(int(r[k]) for k in ['release_lag_ns','global_queue_ns','observation_ns','decision_wall_ns','commit_ns','sender_queue_ns','input_delivery_ns','worker_queue_ns'])/1e6
+  execution_start=planned+preceding;execution_end=execution_start+int(r['execution_wall_ns'])/1e6
+  assert execution_end<=6000
+  p.append(f'<circle cx="{topx(planned):.5f}" cy="{y+10}" r="4" fill="white" stroke="{colors[worker]}"/>')
+  p.append(f'<rect x="{topx(execution_start):.5f}" y="{y}" width="{topx(execution_end)-topx(execution_start):.5f}" height="20" fill="{colors[worker]}"/>')
+  p.append(ttext(topx(execution_start),y-5,r['task_id'],16))
+p.append(ttext((left+right)/2,320,'Time since the first scheduled task',20,'middle'))
+p.append(ttext((left+right)/2,367,'b. The same tasks: elapsed response time by measured stage',24,'middle'))
+limit=1100
+def lowx(ms):return left+(right-left)*ms/limit
+for tick in range(0,1101,200):
+ x=lowx(tick);p.append(line(x,390,x,888));p.append(ttext(x,915,tick,18,'middle'))
+groups=[(['release_lag_ns','global_queue_ns','observation_ns','decision_wall_ns','commit_ns','sender_queue_ns'],'Gateway / sender','#9aa5af'),(['input_delivery_ns'],'Input transfer','#3a83b7'),(['worker_queue_ns'],'Worker queue','#d6a24b'),(['execution_wall_ns'],'Execution','#6757a8'),(['result_delivery_ns'],'Result return','#2d9487')]
+for i,r in enumerate(ordered):
+ y=405+i*38+(i//4)*13
+ p.append(ttext(left-12,y+17,f"{r['worker']} - task {r['task_id']}",19,'end'))
+ cur=0;total=0
+ for fields,label,color in groups:
+  ns=sum(int(r[k]) for k in fields);duration=ns/1e6
+  if ns:p.append(f'<rect x="{lowx(cur):.5f}" y="{y}" width="{lowx(cur+duration)-lowx(cur):.5f}" height="23" fill="{color}"/>')
+  total+=ns;cur+=duration
+ assert total==int(r['response_scheduled_ns'])==int(r['verified_response_offset_ns'])-int(r['planned_release_offset_ns'])
+ p.append(ttext(lowx(cur)+7,y+17,f'{cur:.3f}' if r['on_time']=='False' else f'{cur:.1f}',17,color='#b53f36' if r['on_time']=='False' else '#666'))
+ if r['on_time']=='False':
+  p.append(f'<rect x="{left}" y="{y-2}" width="{lowx(cur)-left:.5f}" height="27" fill="none" stroke="#b53f36" stroke-width="1.7"/>')
+  p.append(ttext(right+10,y+17,'LATE',18,color='#b53f36'))
+ if i in (3,7):p.append(line(left-15,y+33,right,y+33,'#b8bec7'))
+p.append(line(lowx(1000),390,lowx(1000),888,'#b53f36','5 4'))
+p.append(ttext((left+right)/2,945,'Task response time (ms); dashed line = 1 s deadline',21,'middle'))
+for (fields,label,color),x in zip(groups,[180,420,660,875,1050]):
+ p.append(f'<rect x="{x}" y="974" width="23" height="12" fill="{color}"/>');p.append(ttext(x+30,986,label,18))
 p.append('</svg>');(R/'figures/task-timeline.svg').write_text('\n'.join(p)+'\n')
-print('Rendered median latency, decision overhead, and task timeline from public CSVs.')
+print('Rendered all three-run medians and the reference-style two-panel task timeline from unchanged CSVs.')
