@@ -96,7 +96,7 @@ def build_members(slow=False):
             h, value = verifier.reference(task_id, task['iterations'], task['size'], task['seed'])
             row['payload_hash'] = h
             msg = {k: row[k] for k in ['id','worker','sequence','payload_hash','f','x','y','cpu_ns']}
-            msg.update(run_id='SYNTHETIC',value=base64.b64encode(value).decode())
+            msg.update(type='result',run_id='SYNTHETIC',value=base64.b64encode(value).decode())
             events.append(dict(event='release',id=task_id,a_star=row['a_star'],a=row['a'],phase=phase))
             events.append(dict(event='placement',id=task_id,worker=worker,snapshot_time=row['b'],d=row['d']))
             events.append(dict(event='validated_result', id=task_id, worker=worker, z=row['z'], message=msg))
@@ -106,16 +106,18 @@ def build_members(slow=False):
         clock=dict(boot='SYNTHETIC-BOOT-NOT-A-VM',time_namespace='time:[synthetic]',offsets='monotonic 0 0\nboottime 0 0')
         events.append(dict(event='scored_start',start=origin))
         for w in core.WORKERS:
-            events.append(dict(event='worker_hello',worker=w,source_clock=clock,hello={'clock':clock}))
-            for i in range(5):events.append(dict(event='clock_validated',worker=w,start=1,receipt=4,reply=dict(probe=i,received=2,sent=3)))
+            events.append(dict(event='worker_hello',worker=w,source_clock=clock,hello=dict(clock=clock,type='hello',run_id='SYNTHETIC',worker=w,epoch='SYNTHETIC-'+w,pid=123)))
+            for i in range(5):events.append(dict(event='clock_validated',worker=w,start=1,receipt=4,reply=dict(type='clock_reply',run_id='SYNTHETIC',worker=w,probe=i,received=2,sent=3)))
         counts={k:sum(r['phase']=='scored' and r['outcome']==k for r in rows) for k in verifier.OUTCOMES}
         summary=dict(status='RUN_FINISHED',errors=[],kind=config['kind'],policy=config['policy'],offered=len(config['tasks']),
                      outcomes=counts,on_time=sum(r['phase']=='scored' and r['on_time'] for r in rows),start=origin,profiles=config['profiles'])
         base='scheduling/'+name+'/'
+        events.append(dict(event='shutdown',summary=summary))
         save(base+'source/tasks.json',rows);save(base+'source/summary.json',summary);lines(base+'source/events.jsonl',events)
         save(base+'exec-status.json',{'statuses':{w:dict(Running=False,ExitCode=0) for w in (*core.WORKERS,'source')}})
         for w in core.WORKERS:
             save(base+w+'/summary.json',dict(errors=[],remaining=0,censored_shutdown=False))
+            worker_events[w].append(dict(event='shutdown',worker=w,errors=[],remaining=0))
             lines(base+w+'/events.jsonl',worker_events[w])
         return rows,summary
     calibrations={}
@@ -138,12 +140,16 @@ def build_members(slow=False):
     for prefix,kind in [('patched-calibration/','calibration'),('scheduling/network/','application-qualification')]:
         measures,checks=qualification(kind,gates)
         save(prefix+'measurements.json',measures)
-        lines(prefix+'events.jsonl',[dict(action='acceptance_check',**c) for c in checks])
+        aggregate='calibration passes without threshold changes' if kind=='calibration' else 'application network calibration unchanged criteria'
+        receipt=gates.assess(measures,checks,aggregate,finished=kind=='calibration')
+        lines(prefix+'events.jsonl',[dict(action='acceptance_check',**c) for c in checks]+[dict(action='application_correctness_gate',**receipt)])
         save(prefix+'ledger.json',{'cleanup_errors':[]})
         save(prefix+'docker-inventory-before.json',{'containers':[],'networks':['SYNTHETIC-DEFAULT']})
         after=prefix+'docker-inventory-after.json' if kind=='calibration' else 'scheduling/docker-inventory-after.json'
         save(after,{'containers':[],'networks':['SYNTHETIC-DEFAULT']})
-        if kind=='calibration':save(prefix+'summary.json',dict(failure=None,cleanup_errors=[],checks=checks))
+        if kind=='calibration':
+            save(prefix+'summary.json',dict(status='PASSED',failure=None,cleanup_errors=[],checks=checks))
+            save(prefix+'application-gate-completion.json',dict(receipt,original_status='PASSED',entry_returncode=0))
     for name in ['python-lock.txt','debian-packages.txt','endpoint-packages.txt']:
         members[name]=(ROOT/'experiment/tests/runtime-baseline'/name).read_bytes()
     resources={w:{'cpu.max':f'{q} 100000\n','memory.max':str(256*1048576)} for w,q in [('G',50000),('E',25000),('F',50000),('C',100000)]}

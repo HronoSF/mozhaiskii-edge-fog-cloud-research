@@ -78,7 +78,8 @@ class SessionTests(unittest.TestCase):
     def test_network_out_of_spec_preserves_application_pass(self):
         _,_,_,gates=verifier.contracts();m,c=qualification('application-qualification',gates,low_rate=True)
         self.members['scheduling/network/measurements.json']=encoded(m)
-        self.members['scheduling/network/events.jsonl']=b''.join(encoded(dict(action='acceptance_check',**r)) for r in c)
+        receipt=gates.assess(m,c,'application network calibration unchanged criteria')
+        self.members['scheduling/network/events.jsonl']=b''.join(encoded(dict(action='acceptance_check',**r)) for r in c)+encoded(dict(action='application_correctness_gate',**receipt))
         r=self.run_fixture();self.assert_status(r,'application','PASS');self.assert_status(r,'network_fidelity','FAIL')
         self.assertEqual(r['checks']['network_fidelity']['details']['network_fidelity'],'OUT_OF_SPEC')
 
@@ -92,7 +93,7 @@ class SessionTests(unittest.TestCase):
 
     def test_missing_partition_predicate(self):
         n='scheduling/network/events.jsonl'
-        self.members[n]=b''.join(encoded(e) for e in (json.loads(l) for l in self.members[n].splitlines()) if e['description']!='gateway cut/control')
+        self.members[n]=b''.join(encoded(e) for e in (json.loads(l) for l in self.members[n].splitlines()) if e.get('description')!='gateway cut/control')
         self.assert_status(self.run_fixture(),'network_fidelity','FAIL')
 
     def test_dependency_drift(self):
@@ -100,6 +101,15 @@ class SessionTests(unittest.TestCase):
 
     def test_resource_drift(self):
         self.mutate_json('scheduling/cell-05-after-resources.json',lambda m:m['C'].update({'cpu.max':'200000 100000'}))
+        self.assert_status(self.run_fixture(),'environment','FAIL')
+
+    def test_malformed_host_object_returns_fail(self):
+        self.run_fixture();(self.output/'host-summary.json').write_text('[]')
+        r=verifier.verify(self.output);self.assertEqual(r['overall'],'FAIL')
+        self.assert_status(r,'export_integrity','FAIL')
+
+    def test_malformed_resource_field_returns_fail(self):
+        self.mutate_json('scheduling/initial-resources.json',lambda m:m['E'].update({'cpu.max':7}))
         self.assert_status(self.run_fixture(),'environment','FAIL')
 
     def test_cleanup_false(self):
@@ -154,6 +164,58 @@ class SessionTests(unittest.TestCase):
         n='scheduling/cell-00/source/events.jsonl';rows=[json.loads(l) for l in self.members[n].splitlines()]
         e=next(e for e in rows if e['event']=='worker_hello');e['source_clock']['offsets']='';e['hello']['clock']['offsets']=''
         self.members[n]=b''.join(encoded(e) for e in rows);self.assert_status(self.run_fixture(),'application','FAIL')
+
+    def test_explicit_source_error_event(self):
+        self.members['scheduling/cell-00/source/events.jsonl']+=encoded(dict(event='instrument_error',error='SYNTHETIC failure'))
+        self.assert_status(self.run_fixture(),'application','FAIL')
+
+    def test_explicit_worker_error_event(self):
+        self.members['scheduling/cell-00/E/events.jsonl']+=encoded(dict(event='upload_error',worker='E',error='SYNTHETIC failure'))
+        self.assert_status(self.run_fixture(),'application','FAIL')
+
+    def test_boolean_config_seed_is_not_integer_zero(self):
+        self.mutate_json('scheduling/cell-00/declared-source-config.json',lambda c:c.update(seed=False))
+        self.assert_status(self.run_fixture(),'application','FAIL')
+
+    def test_boolean_task_seed_is_not_integer_zero(self):
+        self.mutate_json('scheduling/cell-00/source/tasks.json',lambda rows:rows[0]['task'].update(seed=False))
+        self.assert_status(self.run_fixture(),'application','FAIL')
+
+    def test_boolean_profile_is_not_integer_one(self):
+        self.mutate_json('scheduling/calibration-unshaped/declared-source-config.json',lambda c:c['profiles']['service']['E'].update({'200000:65536':True}))
+        self.assert_status(self.run_fixture(),'application','FAIL')
+
+    def test_health_failed_status(self):
+        self.mutate_json('patched-calibration/summary.json',lambda s:s.update(status='FAILED'))
+        self.assert_status(self.run_fixture(),'network_fidelity','FAIL')
+
+    def change_events(self,name,fn):
+        events=[json.loads(line) for line in self.members[name].splitlines()]
+        fn(events);self.members[name]=b''.join(encoded(e) for e in events)
+
+    def test_wrong_hello_identity(self):
+        self.change_events('scheduling/cell-00/source/events.jsonl',lambda es:[e['hello'].update(type='WRONG',worker='WRONG',run_id='WRONG') for e in es if e['event']=='worker_hello'])
+        self.assert_status(self.run_fixture(),'application','FAIL')
+
+    def test_wrong_clock_reply_identity(self):
+        self.change_events('scheduling/cell-00/source/events.jsonl',lambda es:[e['reply'].update(worker='WRONG',run_id='WRONG') for e in es if e['event']=='clock_validated'])
+        self.assert_status(self.run_fixture(),'application','FAIL')
+
+    def test_contradictory_source_shutdown(self):
+        self.change_events('scheduling/cell-00/source/events.jsonl',lambda es:es[-1]['summary'].update(errors=['SYNTHETIC hidden failure']))
+        self.assert_status(self.run_fixture(),'application','FAIL')
+
+    def test_contradictory_worker_shutdown(self):
+        self.change_events('scheduling/cell-00/E/events.jsonl',lambda es:es[-1].update(errors=['SYNTHETIC hidden failure']))
+        self.assert_status(self.run_fixture(),'application','FAIL')
+
+    def test_missing_gate_completion_receipt(self):
+        self.members.pop('patched-calibration/application-gate-completion.json')
+        self.assert_status(self.run_fixture(),'network_fidelity','UNVERIFIED')
+
+    def test_contradictory_gate_completion_receipt(self):
+        self.mutate_json('patched-calibration/application-gate-completion.json',lambda s:s.update(network_fidelity='OUT_OF_SPEC'))
+        self.assert_status(self.run_fixture(),'network_fidelity','FAIL')
 
     def test_changed_captured_input(self):
         self.run_fixture();(self.output/'inputs/guest_export.py').write_text('SYNTHETIC TAMPER')

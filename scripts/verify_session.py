@@ -151,6 +151,8 @@ def check_cell(archive, name, expected, core, profiles):
             name + ': changed planned-arrival deadline')
     require(cfg.get('credits', 32) == 32 and cfg.get('memory', 64*1048576) == 64*1048576
             and cfg['upload_port'] == 41000 and cfg['event_port'] == 41001, name + ': changed finite limits or ports')
+    core.Profiles.from_dict(cfg['profiles'])
+    require(type(cfg['seed']) is int, name + ': seed must be an integer')
     require(cfg['profiles'] == profiles and cfg['require_linux_clock'] is True
             and cfg['tie_order'] == list(WORKERS) and cfg['seed'] == 0,
             name + ': profiles, clock or tie order changed')
@@ -167,6 +169,10 @@ def check_cell(archive, name, expected, core, profiles):
     require(all(e['Running'] is False and type(e['ExitCode']) is int and e['ExitCode'] == 0
                 for e in exits['statuses'].values()), name + ': process failure')
     events = archive.lines(prefix + 'source/events.jsonl')
+    require(not any(e['event'] == 'instrument_error' for e in events), name + ': explicit source instrument error')
+    shutdowns = [e for e in events if e['event'] == 'shutdown']
+    require(len(shutdowns) == 1 and events[-1]['event'] == 'shutdown'
+            and shutdowns[0]['summary'] == summary, name + ': source shutdown/summary contradiction')
     validated = [e for e in events if e['event'] == 'validated_result']
     require(len(validated) == len(rows) and len({e['id'] for e in validated}) == len(rows),
             name + ': missing or duplicate source completion')
@@ -179,6 +185,10 @@ def check_cell(archive, name, expected, core, profiles):
     require(collections.Counter(e['worker'] for e in hellos) == collections.Counter(WORKERS), name + ': missing clock identity')
     require(all(e['source_clock'] == hellos[0]['source_clock'] for e in hellos), name + ': workers use different source clocks')
     for event in hellos:
+        hello = event['hello']
+        require(hello['type'] == 'hello' and hello['run_id'] == cfg['run_id']
+                and hello['worker'] == event['worker'] and isinstance(hello['epoch'], str) and hello['epoch']
+                and integer(hello['pid']) > 0, name + ': invalid worker hello identity')
         identity = event['source_clock']
         require(identity == event['hello']['clock'] and identity['boot'] and identity['time_namespace']
                 and identity['offsets'] is not None, name + ': inconsistent clock identity')
@@ -189,8 +199,20 @@ def check_cell(archive, name, expected, core, profiles):
     require(len(probes) == 15 and {(e['worker'], e['reply']['probe']) for e in probes}
             == {(w, i) for w in WORKERS for i in range(5)}, name + ': incomplete clock probes')
     for e in probes:
+        require(e['reply']['type'] == 'clock_reply' and e['reply']['run_id'] == cfg['run_id']
+                and e['reply']['worker'] == e['worker'], name + ': invalid clock reply identity')
         stamps = [integer(e['start']), integer(e['reply']['received']), integer(e['reply']['sent']), integer(e['receipt'])]
         require(stamps == sorted(stamps), name + ': impossible clock probe')
+    epochs = {e['worker']: e['hello']['epoch'] for e in hellos}
+    for e in events:
+        if e['event'] in ['telemetry_received', 'result_received', 'validated_result']:
+            message = e['message']
+            require(e['worker'] in WORKERS and message['run_id'] == cfg['run_id']
+                    and message['worker'] == e['worker'], name + ': source message identity mismatch')
+            expected_type = 'telemetry' if e['event'] == 'telemetry_received' else 'result'
+            require(message['type'] == expected_type, name + ': source message type mismatch')
+            if expected_type == 'telemetry':
+                require(message['epoch'] == epochs[e['worker']], name + ': worker epoch changed')
     releases = [e for e in events if e['event'] == 'release']
     placements = [e for e in events if e['event'] == 'placement']
     for observed in [releases, placements]:
@@ -200,6 +222,7 @@ def check_cell(archive, name, expected, core, profiles):
     for row in rows:
         integer(row['id'])
         task, phase, forced = jobs[row['id']]
+        core.Task(**row['task'])
         require(row['task'] == task and row['phase'] == phase and row['forced'] == forced,
                 name + ': task/workload identity changed')
         require(row['outcome'] == 'completed' and row['worker'] in WORKERS,
@@ -233,6 +256,11 @@ def check_cell(archive, name, expected, core, profiles):
         require(ws['errors'] == [] and ws['remaining'] == 0 and ws.get('censored_shutdown') is False,
                 name + ': worker failed or censored')
         we = archive.lines(prefix + worker + '/events.jsonl')
+        require(not any(e['event'] in ['upload_error', 'control_error'] for e in we), name + ': explicit worker error')
+        shutdowns = [e for e in we if e['event'] == 'shutdown']
+        require(len(shutdowns) == 1 and we[-1]['event'] == 'shutdown'
+                and shutdowns[0]['errors'] == ws['errors'] and shutdowns[0]['remaining'] == ws['remaining']
+                and all(e['worker'] == worker for e in we), name + ': worker shutdown/summary or identity contradiction')
         assigned = sorted((r for r in rows if r['worker'] == worker), key=lambda r: r['sequence'])
         require([r['sequence'] for r in assigned] == list(range(1, len(assigned) + 1)), name + ': commitment sequence gap')
         for kind in ['input_admitted', 'execution_ended']:
@@ -328,6 +356,19 @@ def network(archive, gates):
                 require(raw['bytes'] == transfer['receive_bytes'] and raw['bits_per_second'] / 1e6 == m['receive_mbps'],
                         'iperf raw/cooked rate disagreement')
         result = gates.assess(measurements, checks, aggregate, finished=label == 'health')
+        receipts = [e for e in events if e['action'] == 'application_correctness_gate']
+        require(len(receipts) == 1, 'Missing or duplicate application-correctness gate receipt')
+        keys = ['rule', 'application_eligible', 'original_aggregate', 'original_qualification_passed',
+                'network_fidelity', 'failed_numerical_checks']
+        require(all(receipts[0][k] == result[k] for k in keys), 'Recorded gate contradicts recomputed qualification')
+        if label == 'health':
+            expected_status = 'PASSED' if result['original_qualification_passed'] else 'FAILED_ACCEPTANCE'
+            require(summary['status'] == expected_status, 'Health terminal status contradicts qualification')
+            completion = archive.json(prefix + 'application-gate-completion.json')
+            require(all(completion[k] == result[k] for k in keys)
+                    and completion['original_status'] == expected_status
+                    and type(completion['entry_returncode']) is int and completion['entry_returncode'] == 0,
+                    'Health completion receipt contradicts qualification')
         results[label] = result
     # Keep the qualifications separate: a numerical deviation does not erase correct application results.
     fidelity = 'IN_SPEC' if all(r['network_fidelity'] == 'IN_SPEC' for r in results.values()) else 'OUT_OF_SPEC'
@@ -391,7 +432,7 @@ def verify(output):
             report['checks'][name] = {'status': status, 'details': details or {}}
         except Missing as error:
             report['checks'][name] = {'status': 'UNVERIFIED', 'reason': str(error)}
-        except (ValueError, KeyError, TypeError, IndexError, OSError, EOFError, tarfile.TarError) as error:
+        except (ValueError, KeyError, TypeError, AttributeError, IndexError, OSError, EOFError, tarfile.TarError) as error:
             report['checks'][name] = {'status': 'FAIL', 'reason': type(error).__name__ + ': ' + str(error)}
     def provenance():
         nonlocal loaded, host
