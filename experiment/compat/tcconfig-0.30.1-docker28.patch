@@ -1,0 +1,172 @@
+diff --git a/tcconfig/_docker.py b/tcconfig/_docker.py
+index df6ef83..28720ff 100644
+--- a/tcconfig/_docker.py
++++ b/tcconfig/_docker.py
+@@ -3,6 +3,7 @@
+ """
+ 
+ import errno
++import json
+ import os
+ import re
+ import sys
+@@ -28,9 +29,10 @@ ContainerInfo = namedtuple("ContainerInfo", "id name pid ipaddr image state")
+ 
+ class IfIndex(Model):
+     host = Text(not_null=True)
+-    ifindex = Integer(primary_key=True)
++    record_key = Text(primary_key=True)
++    ifindex = Integer(not_null=True)
+     ifname = Text(not_null=True)
+-    peer_ifindex = Integer(not_null=True, unique=True)
++    peer_ifindex = Integer(not_null=True)
+ 
+ 
+ class DockerClient:
+@@ -40,7 +42,7 @@ class DockerClient:
+ 
+     def __init__(self, tc_command_output=TcCommandOutput.NOT_SET):
+         self.__client = APIClient(version="auto")
+-        self.__host_name = os.uname()[1]
++        self.__host_name = "host:" + os.readlink("/proc/self/ns/net")
+         self.__tc_command_output = tc_command_output
+ 
+         self.__con = connect_memdb()
+@@ -109,17 +111,21 @@ class DockerClient:
+         container_info = self.extract_container_info(container)
+         logger.debug(f"found container: name={container_info.name}, pid={container_info.pid}")
+ 
++        netns_path = self.__get_netns_path(container_info.name)
++        # A foreign named namespace must never be reused or deleted by tcconfig.
++        if os.path.lexists(netns_path):
++            raise FileExistsError(errno.EEXIST, "Named namespace already exists", str(netns_path))
++        created = False
+         try:
+-            netns_path = self.__get_netns_path(container_info.name)
+-
+-            if not os.path.lexists(netns_path):
+-                logger.debug(f"make symlink to {netns_path}")
+-
+-                try:
+-                    Path(f"/proc/{container_info.pid:d}/ns/net").symlink(netns_path)
+-                except PermissionError as e:
+-                    logger.error(e)
+-                    sys.exit(errno.EPERM)
++            logger.debug(f"make symlink to {netns_path}")
++            try:
++                # Creation itself is exclusive; do not use a foreign link that
++                # appeared after the preflight ownership check.
++                Path(f"/proc/{container_info.pid:d}/ns/net").symlink(netns_path)
++                created = True
++            except PermissionError as e:
++                logger.error(e)
++                sys.exit(errno.EPERM)
+ 
+             return_code = self.__create_ifindex_table(container_info.name)
+             if return_code != 0:
+@@ -127,18 +133,24 @@ class DockerClient:
+ 
+             return return_code
+         finally:
+-            netns_path.remove_p()
++            if created:
++                netns_path.remove_p()
+ 
+     def select_veth(self, container_name):
+-        for container_record in IfIndex.select(where=Where("host", container_name)):
+-            yield from IfIndex.select(
+-                where=And(
+-                    [
+-                        Where("host", self.__host_name),
+-                        Where("ifindex", container_record.peer_ifindex),
+-                    ]
+-                )
+-            )
++        records = list(IfIndex.select(where=Where("host", container_name)))
++        if not records:
++            raise ValueError("No veth interfaces found for target container")
++        for container_record in records:
++            matches = list(IfIndex.select(
++                where=And([
++                    Where("host", self.__host_name),
++                    Where("ifindex", container_record.peer_ifindex),
++                    Where("peer_ifindex", container_record.ifindex),
++                ])
++            ))
++            if len(matches) != 1:
++                raise ValueError("Missing or ambiguous reciprocal host veth")
++            yield matches[0]
+ 
+     def fetch_veth_list(self, container_name):
+         return [veth_record.ifname for veth_record in self.select_veth(container_name)]
+@@ -188,6 +200,7 @@ class DockerClient:
+         peer_ifindex_prefix_regexp = re.compile("^if")
+ 
+         try:
++            i = -1
+             for i, line in enumerate(proc.stdout.splitlines()):
+                 match = veth_groups_regexp.search(line)
+                 if not match:
+@@ -197,6 +210,7 @@ class DockerClient:
+                 ifindex, ifname, peer_ifindex = match.groups()
+                 IfIndex.insert(
+                     IfIndex(
++                        record_key=json.dumps([container_name, int(ifindex)]),
+                         host=container_name,
+                         ifindex=int(ifindex),
+                         ifname=ifname,
+@@ -219,6 +233,7 @@ class DockerClient:
+                 try:
+                     IfIndex.insert(
+                         IfIndex(
++                            record_key=json.dumps([self.__host_name, int(ifindex)]),
+                             host=self.__host_name,
+                             ifindex=int(ifindex),
+                             ifname=ifname,
+@@ -227,13 +242,9 @@ class DockerClient:
+                     )
+                 except OperationalError as e:
+                     logger.error(msgfy.to_error_message(e))
++                    return errno.EINVAL
+         finally:
+             IfIndex.commit()
+ 
+-            try:
+-                netns_path.remove_p()
+-            except PermissionError as e:
+-                logger.error(msgfy.to_error_message(e))
+-                return errno.EPERM
+ 
+         return 0
+diff --git a/tcconfig/_main.py b/tcconfig/_main.py
+index 59ebe84..4a7c26f 100644
+--- a/tcconfig/_main.py
++++ b/tcconfig/_main.py
+@@ -1,3 +1,4 @@
++import errno
+ import sys
+ from typing import Optional
+ 
+@@ -46,16 +47,12 @@ class Main:
+ 
+         return self._dclient.fetch_veth_list(self._dclient.extract_container_info(container).name)
+ 
+-    def _get_return_code(self, return_code_list: list[int]) -> Optional[int]:
+-        error_return_code: Optional[int] = None
+-
+-        for return_code in return_code_list:
+-            if return_code == 0:
+-                return return_code
+-
+-            error_return_code = return_code
+-
+-        return error_return_code
++    def _get_return_code(self, return_code_list: list[int]) -> int:
++        if not return_code_list:
++            logger.error("No traffic-control targets were processed")
++            return errno.ENODEV
++        # Partial success is still failure; do not hide another target's error.
++        return next((code for code in return_code_list if code != 0), 0)
+ 
+     def _dump_history(self, tc: TrafficControl, tc_command: str) -> None:
+         command_history = "\n".join(tc.get_command_history())

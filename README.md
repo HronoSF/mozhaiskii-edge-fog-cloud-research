@@ -1,39 +1,52 @@
-# Edge-Fog-Cloud Scheduling Research
+# Edge-Fog-Cloud scheduling: three fresh VM runs
 
-**Gleb Mozhaiskii**  
-Preliminary independent research related to planned doctoral studies at the University of the Basque Country (UPV/EHU). This is a personal research project, not an official university publication.
+Gleb Mozhaiskii - personal preliminary research related to prospective doctoral studies at UPV/EHU. This is not an official university publication.
 
-## The problem
+**[Read the updated report (PDF)](report/UPV-EHU_Scheduling_Report_A01-A03.pdf)** · [Report source](report/scheduling-report.md) · [Execution instructions](experiment/README.md)
 
-When a computing task arrives, an **orchestrator** decides which worker should execute it. The decision can depend on processing power, tasks already waiting in queues, and network transfer time.
+An application orchestrator assigns real CPU tasks to Edge, Fog and Cloud workers with different CPU quotas and explicit queues. [MADT](https://github.com/dltcspbu/madt) controls the routed network. Each session uses one fresh Linux VM containing four Docker containers, not four physical sites.
 
-- **Edge** - a computing node close to the request source.
-- **Fog** - an intermediate computing node. In this prototype, Fog also routes traffic.
-- **Cloud** - a more distant node with a higher assigned CPU quota.
+## This release
 
-I implemented a real-task experimental baseline with one Gateway and three workers, running as four Docker containers inside one Linux VM. [MADT](https://github.com/dltcspbu/madt) emulates the network and its directional delay. This is not an experiment on four separate physical machines.
+The report presents **three fresh VM runs**. In the measurement files, the immutable source IDs A01, A02 and A03 correspond to reader-facing Run 1, Run 2 and Run 3; this display mapping does not rename an experiment. Three sequential fresh ARM64 Lima VM sessions each ran the same 12 scenarios once: Round Robin, Compute-ECT and Network-ECT; steady and burst arrivals; unshaped networking and nominal 20 ms extra one-way Cloud ingress delay.
 
-![Experiment network topology](figures/topology.svg)
+| Session | Correct worker outputs, including preparation | Scored on time / offered | Application / network |
+|---|---:|---:|---|
+| Run 1 |948|144/144|Complete / network checks passed|
+| Run 2 |948|144/144|Complete / network checks passed|
+| Run 3 |948|143/144|Complete / network checks passed|
 
-## What I compared
+All 432 scored tasks returned correct answers. The one late Run 3 Round Robin/burst/unshaped Edge task took1002.317940 ms from planned arrival, exceeding the 1 s SLO by2.317940 ms. It is retained. All three evidence exports and scoped VM cleanups were verified.
 
-I ran deterministic PBKDF2-HMAC-SHA256 tasks, which perform repeated cryptographic hashing on the CPU and return a verifiable answer. Three schedulers - Round Robin, Compute-ECT and Network-ECT - were compared with steady/bursty arrivals and without/with nominal +20 ms toward Cloud: **12 scenarios**.
+![Per-session scenario medians](figures/median-latency.svg)
 
-In the single completed VM session, all **144/144 scored results** were correct and **143/144** met a 1-second deadline. Edge, Fog and Cloud received **16, 24 and 104** scored tasks, respectively. Two preceding fresh VM attempts stopped at strict network qualification, so **cross-session application repeatability is not established**.
+The unit of replication is the **VM session: N=3 on one physical host**. Tasks and scenarios are nested measurements. Timings and placements vary; these data establish a bounded correctness screen, not general platform reliability, physical multi-site realism or scheduler superiority. ECT decision overhead was higher than matched RR in all observed median contrasts; response medians alone do not establish a winner.
 
-![Outcomes of all 12 experimental scenarios](figures/scenarios.svg)
+## Data and source
 
-![A measured Round Robin task timeline](figures/task-timeline.svg)
+- [36 scenario rows](data/scenario-results.csv): every session, policy and condition; outcomes, placements, timing distributions and rates.
+- [432 scored tasks](data/scored-tasks.csv): all offered scored outcomes and elapsed timing components. Timestamps are offsets from the first planned arrival in the same cell.
+- [2,844 worker completions](data/worker-completions.csv), [all-node accounting](data/node-results.csv), [three session summaries](data/session-results.csv).
+- [Effective execution inputs and package pins](experiment/): 34 byte-identical runtime/support files from the common 38-file capture, plus the original scoped VM lifecycle runner.
+- [Source identities](experiment/SOURCE.json), [input hashes](experiment/INPUTS.sha256.json) and [release file hashes](MANIFEST.sha256).
 
-## Released experimental data
+Measured execution revision: `b47689f644397018d408e97f83be5c587d7182ff`. Audited results revision: `33035e085988ce2165fdd46755ee8f75cb3a04e4`. These identifiers bind the provenance; public packaging is subsequent and does not repeat acquisition. The recorded cohort received independent raw-evidence scientific review. The public export contains measurement tables, not the full private host/authority logs or internal reviews. Research hypotheses, debugging and historical cohorts are maintained separately.
 
-- **[Scenario results (CSV)](data/scenario-results.csv)** - one row per scenario from the successful VM session.
-- **[Scored tasks (CSV)](data/scored-tasks.csv)** - selected timing and placement fields for the 144 completed scored tasks.
+## Rebuild the report offline
 
-This is a **correctness-first research prototype**, not evidence of a generally superior scheduling algorithm, physical multi-site portability, or statistically established reproducibility. A new, prospectively specified repetition study is being prepared. Raw guest/provenance archives and internal experimental workflows are not distributed in this public summary.
+Use Python 3, Pandoc and XeLaTeX (TeX Live with Latin Modern and the packages in `latex/research-report.sty`). CairoSVG also requires Cairo. On Apple Silicon with Homebrew Cairo, the Makefile uses `/opt/homebrew/lib`; override `CAIRO_LIBDIR` if Cairo is installed elsewhere. No VM or Docker is needed for these commands:
 
-## Research context
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-report.txt
+make PYTHON=.venv/bin/python
+make verify PYTHON=.venv/bin/python
+```
 
-Wang et al., 'Fair Comparison of Scheduling Algorithms on Heterogeneous Edge Clusters: A Continuous Adaptive Benchmark', IEEE ICDCSW 2026 ([DOI](https://doi.org/10.1109/ICDCSW72724.2026.00054)), motivates careful matched scheduling comparisons. My CPU-task pilot does not reproduce its multi-mode AI benchmark.
+The shared LaTeX template/style is unchanged. The topology image is extracted unchanged from the supplied reference PDF; it replaces the different diagram that had been in this repository. Tables use indivisible `tabular` floats: a complete table moves to the next page if necessary. Colored SVG figures regenerate from the checked-in CSVs. The report body is available in both readable Markdown and complete generated LaTeX. Rebuilding need not produce an identical PDF binary across TeX versions; source/data hashes and numerical content are checked.
 
-No software license is implied by this research-summary release. A runnable software artifact will be licensed separately if published.
+A new experiment is a separate privileged operation; see [the execution guide](experiment/README.md). **No new VM was launched for this publication.** The packaged public entrypoint has been checked offline, not independently rerun in another VM. Do not count an offline build as an experimental replication.
+
+## Context
+
+Wang et al. (2026), [DOI 10.1109/ICDCSW72724.2026.00054](https://doi.org/10.1109/ICDCSW72724.2026.00054), informs matched comparisons, service-level accounting and decision-overhead measurement. This CPU-task experiment does not reproduce their multi-mode AI benchmark. Upstream MADT and tcconfig retain their own licenses; the tcconfig patch attribution/license is included. No new general software license is asserted by this publication.

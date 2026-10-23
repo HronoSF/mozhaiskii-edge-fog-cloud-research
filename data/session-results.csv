@@ -1,0 +1,4 @@
+slot,application,network,strict_final,groups,worker_results,scored_offered,on_time,late,slo_attainment,runner_elapsed_seconds,cleanup_verified,health_forward_increment_ms,health_reverse_increment_ms,health_impaired_receive_mbps,application_forward_increment_ms,application_reverse_increment_ms,application_impaired_receive_mbps
+A01,COMPLETE,IN_SPEC,True,15,948,144,144,0,1.0,770.624680916,True,23.527,21.5495,9.014397797254306,22.139000000000003,20.779,9.072434643837747
+A02,COMPLETE,IN_SPEC,True,15,948,144,144,0,1.0,889.620797291,True,21.019,22.166,9.335363193646893,21.2225,21.5705,9.320224185311485
+A03,COMPLETE,IN_SPEC,True,15,948,144,143,1,0.9930555555555556,775.615568833,True,23.412,22.241500000000002,8.377904904257699,22.045,21.967,8.35667521553792
