@@ -141,7 +141,7 @@ def build_members(slow=False):
         measures,checks=qualification(kind,gates)
         save(prefix+'measurements.json',measures)
         aggregate='calibration passes without threshold changes' if kind=='calibration' else 'application network calibration unchanged criteria'
-        receipt=gates.assess(measures,checks,aggregate,finished=kind=='calibration')
+        receipt=gates.assess(measures,checks,aggregate) if kind!='calibration' else gates.assess(measures[:6],checks,aggregate)
         lines(prefix+'events.jsonl',[dict(action='acceptance_check',**c) for c in checks]+[dict(action='application_correctness_gate',**receipt)])
         save(prefix+'ledger.json',{'cleanup_errors':[]})
         save(prefix+'docker-inventory-before.json',{'containers':[],'networks':['SYNTHETIC-DEFAULT']})
@@ -149,7 +149,8 @@ def build_members(slow=False):
         save(after,{'containers':[],'networks':['SYNTHETIC-DEFAULT']})
         if kind=='calibration':
             save(prefix+'summary.json',dict(status='PASSED',failure=None,cleanup_errors=[],checks=checks))
-            save(prefix+'application-gate-completion.json',dict(receipt,original_status='PASSED',entry_returncode=0))
+            completed=gates.assess(measures,checks,aggregate,finished=True)
+            save(prefix+'application-gate-completion.json',dict(completed,original_status='PASSED',original_cli_returncode=0,entry_returncode=0))
     for name in ['python-lock.txt','debian-packages.txt','endpoint-packages.txt']:
         members[name]=(ROOT/'experiment/tests/runtime-baseline'/name).read_bytes()
     resources={w:{'cpu.max':f'{q} 100000\n','memory.max':str(256*1048576)} for w,q in [('G',50000),('E',25000),('F',50000),('C',100000)]}

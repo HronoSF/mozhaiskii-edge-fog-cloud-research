@@ -217,6 +217,28 @@ class SessionTests(unittest.TestCase):
         self.mutate_json('patched-calibration/application-gate-completion.json',lambda s:s.update(network_fidelity='OUT_OF_SPEC'))
         self.assert_status(self.run_fixture(),'network_fidelity','FAIL')
 
+    def test_original_health_cli_exit_is_bound(self):
+        for i,code in enumerate([1,False,0.0]):
+            with self.subTest(code=code,type=type(code).__name__):
+                self.output=Path(self.temp.name)/f'exit-{i}';self.members=copy.deepcopy(self.base)
+                self.mutate_json('patched-calibration/application-gate-completion.json',lambda s:s.update(original_cli_returncode=code))
+                self.assert_status(self.run_fixture(),'network_fidelity','FAIL')
+
+    def test_health_numerical_failure_has_original_exit_one(self):
+        _,_,_,gates=verifier.contracts();m,c=qualification('calibration',gates,low_rate=True)
+        gate=gates.assess(m[:6],c,'calibration passes without threshold changes')
+        complete=gates.assess(m,c,'calibration passes without threshold changes',finished=True)
+        self.members['patched-calibration/measurements.json']=encoded(m)
+        self.members['patched-calibration/events.jsonl']=b''.join(encoded(dict(action='acceptance_check',**r)) for r in c)+encoded(dict(action='application_correctness_gate',**gate))
+        self.members['patched-calibration/summary.json']=encoded(dict(status='FAILED_ACCEPTANCE',failure=None,cleanup_errors=[],checks=c))
+        self.members['patched-calibration/application-gate-completion.json']=encoded(dict(complete,original_status='FAILED_ACCEPTANCE',original_cli_returncode=1,entry_returncode=0))
+        r=self.run_fixture();self.assert_status(r,'application','PASS');self.assert_status(r,'network_fidelity','FAIL')
+        self.assertEqual(r['checks']['network_fidelity']['details']['network_fidelity'],'OUT_OF_SPEC')
+
+    def test_gate_phase_count_cannot_contradict_prefix(self):
+        self.change_events('patched-calibration/events.jsonl',lambda es:[e.update(measurement_phases=999) for e in es if e['action']=='application_correctness_gate'])
+        self.assert_status(self.run_fixture(),'network_fidelity','FAIL')
+
     def test_changed_captured_input(self):
         self.run_fixture();(self.output/'inputs/guest_export.py').write_text('SYNTHETIC TAMPER')
         self.assert_status(verifier.verify(self.output),'source_provenance','FAIL')

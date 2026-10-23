@@ -358,17 +358,22 @@ def network(archive, gates):
         result = gates.assess(measurements, checks, aggregate, finished=label == 'health')
         receipts = [e for e in events if e['action'] == 'application_correctness_gate']
         require(len(receipts) == 1, 'Missing or duplicate application-correctness gate receipt')
-        keys = ['rule', 'application_eligible', 'original_aggregate', 'original_qualification_passed',
-                'network_fidelity', 'failed_numerical_checks']
-        require(all(receipts[0][k] == result[k] for k in keys), 'Recorded gate contradicts recomputed qualification')
+        def matches(receipt, expected):
+            actual = {key: receipt[key] for key in expected}
+            return json.dumps(actual, sort_keys=True, allow_nan=False) == json.dumps(expected, sort_keys=True, allow_nan=False)
+        boundary = next(i for i, check in enumerate(checks) if check['description'] == aggregate)
+        gate = gates.assess(measurements[:6], checks[:boundary+1], aggregate)
+        require(matches(receipts[0], gate), 'Recorded gate contradicts its acquisition prefix')
         if label == 'health':
             expected_status = 'PASSED' if result['original_qualification_passed'] else 'FAILED_ACCEPTANCE'
+            expected_exit = 0 if result['original_qualification_passed'] else 1
             require(summary['status'] == expected_status, 'Health terminal status contradicts qualification')
             completion = archive.json(prefix + 'application-gate-completion.json')
-            require(all(completion[k] == result[k] for k in keys)
-                    and completion['original_status'] == expected_status
+            require(matches(completion, result) and completion['original_status'] == expected_status
+                    and type(completion['original_cli_returncode']) is int
+                    and completion['original_cli_returncode'] == expected_exit
                     and type(completion['entry_returncode']) is int and completion['entry_returncode'] == 0,
-                    'Health completion receipt contradicts qualification')
+                    'Health completion receipt contradicts qualification or original exit')
         results[label] = result
     # Keep the qualifications separate: a numerical deviation does not erase correct application results.
     fidelity = 'IN_SPEC' if all(r['network_fidelity'] == 'IN_SPEC' for r in results.values()) else 'OUT_OF_SPEC'
