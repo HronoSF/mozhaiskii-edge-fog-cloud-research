@@ -149,7 +149,9 @@ computation finishes before the acknowledgement arrives.
 
 Traverse the remaining assigned tasks in assignment order and append the
 candidate. Skip tasks already executing, returning or completed. For
-each remaining task \(k\), predict input readiness as
+each remaining task \(k\), use the first applicable case below. A task
+already in the worker FIFO is ready at \(t\) even while its sender ACK
+remains outstanding:
 
 \[
 A_{jk}=\left\{\begin{array}{ll}

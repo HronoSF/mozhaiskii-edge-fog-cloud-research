@@ -56,7 +56,7 @@ This is the implemented predictor with input, acknowledgement and result-transfe
 
 **Network-ECT.** The predictor retains sender serialization and overlap between input delivery and execution. Initialize the execution frontier $C_j=t+R_j(t)$ and upload frontier $U_j=t$. If an upload started at $e$ and its acknowledgement is outstanding, initialize $U_j=\max\{t,e+u_j(b)+a_j(b)\}$ instead. This also applies when its computation finishes before the acknowledgement arrives.
 
-Traverse the remaining assigned tasks in assignment order and append the candidate. Skip tasks already executing, returning or completed. For each remaining task $k$, predict input readiness as
+Traverse the remaining assigned tasks in assignment order and append the candidate. Skip tasks already executing, returning or completed. For each remaining task $k$, use the first applicable case below. A task already in the worker FIFO is ready at $t$ even while its sender ACK remains outstanding:
 
 $$
 A_{jk}=\left\{\begin{array}{ll}
