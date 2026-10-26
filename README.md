@@ -2,7 +2,7 @@
 
 **Gleb Mozhaiskii** | Independent preliminary research related to prospective doctoral studies at the University of the Basque Country (UPV/EHU). **Not an official university publication.**
 
-**Start here:** [Nine-page research report (PDF)](report/UPV-EHU_Scheduling_Report_A01-A03.pdf) | [Measurements](data/) | [Reproduction instructions](experiment/README.md) | [Verification scope](docs/VERIFYING_A_SESSION.md)
+**Start here:** [Testbed validation note (PDF)](report/UPV-EHU_Testbed_Validation_Note.pdf) | [Measurements](data/) | [Reproduction instructions](experiment/README.md) | [Verification scope](docs/VERIFYING_A_SESSION.md)
 
 An application orchestrator assigns real CPU tasks to Edge, Fog and Cloud workers with explicit queues and different CPU quotas. [MADT](https://github.com/dltcspbu/madt/tree/ca7df8460448ae515f17bfb3a594b30ef9503415) controls the routed network. Each run uses one fresh Linux VM with four Docker containers, on a shared physical host. Edge, Fog and Cloud are logical roles in an emulated network, **not separate physical sites**.
 
@@ -10,7 +10,9 @@ An application orchestrator assigns real CPU tasks to Edge, Fog and Cloud worker
 
 ## Quick Start 1: read the recorded results
 
-**[Open the nine-page report](report/UPV-EHU_Scheduling_Report_A01-A03.pdf)**. No software installation is needed. [Markdown](report/scheduling-report.md), [complete LaTeX](report/scheduling-report.tex), [figures](figures/) and [five measurement CSVs](data/) are versioned.
+**[Open the testbed validation note](report/UPV-EHU_Testbed_Validation_Note.pdf)**. No software installation is needed. Its [Markdown](report/testbed-validation-note.md) and [complete LaTeX](report/testbed-validation-note.tex) are versioned. The [previous scheduling-report iteration](report/UPV-EHU_Scheduling_Report_A01-A03.pdf) remains available, with its [Markdown](report/scheduling-report.md) and [complete LaTeX](report/scheduling-report.tex). [Figures](figures/) and [five measurement CSVs](data/) are versioned.
+
+The [scheduling model](docs/scheduling-model.md) specifies the implementation's calibration, queue accounting, transport overlap and observation limits.
 
 | Run | Correct outputs, including preparation | Scored tasks on time / offered |
 |---|---:|---:|
@@ -51,9 +53,9 @@ make report-verify PYTHON=.venv/bin/python
 make verify PYTHON=.venv/bin/python
 ```
 
-**Rebuilt PDF: `build/scheduling-report.pdf`.** The canonical PDF and versioned sources are never overwritten by this workflow. Regenerated tables, LaTeX and SVGs appear under `build/generated/` and are compared with the versioned sources before compilation. Rebuilding uses no VM, Docker or private files. Package installation needs Internet; the subsequent build uses local inputs.
+**Rebuilt PDF: `build/testbed-validation-note.pdf`.** The canonical PDF and versioned sources are never overwritten by this workflow. Regenerated tables, LaTeX and SVGs appear under `build/generated/` and are compared with the versioned sources before compilation. Rebuilding uses no VM, Docker or private files. Package installation needs Internet; the subsequent build uses local inputs.
 
-On Apple Silicon with Homebrew Cairo the Makefile uses `/opt/homebrew/lib`; set `CAIRO_LIBDIR` for a different Cairo installation. Set `XELATEX` to an explicit compiler path if necessary. Report verification checks nine pages, exact per-page text/geometry, whole tables, embedded fonts and links. Different PDF metadata or encoding can change bytes; inspect rendered pages before accepting a different toolchain. Do not alter scientific values or typography to force a matching hash.
+On Apple Silicon with Homebrew Cairo the Makefile uses `/opt/homebrew/lib`; set `CAIRO_LIBDIR` for a different Cairo installation. Set `XELATEX` to an explicit compiler path if necessary. Report verification checks the canonical page count, exact per-page text/geometry, whole tables, embedded fonts and links. Different PDF metadata or encoding can change bytes; inspect rendered pages before accepting a different toolchain. Do not alter scientific values or typography to force a matching hash.
 
 ## Quick Start 3: collect and verify a new session
 

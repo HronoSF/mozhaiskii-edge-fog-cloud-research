@@ -67,19 +67,19 @@ That makes **3 algorithms × 2 arrival patterns × 2 network conditions = 12 sce
 
 Each example holds the arrival pattern and network condition fixed across policies. **Run 1, Run 2 and Run 3 each use a fresh VM.** Each latency is the median of 12 tasks in that session; 'On time' gives the descriptive total out of 36 offers across the three sessions. Those tasks are not 36 independent repetitions.
 
-\Needspace{110pt}
+\Needspace{230pt}
 
 **Example A - Steady arrivals, normal network.** Tasks are spaced apart, so the workers have relatively little queueing.
 
 \input{report/tables/example-a.tex}
 
-\Needspace{110pt}
+\Needspace{230pt}
 
 **Example B - Bursty arrivals, normal network.** The arrival stream is concentrated into two short bursts. The single missed deadline occurred in Run 3 with Round Robin.
 
 \input{report/tables/example-b.tex}
 
-\Needspace{110pt}
+\Needspace{230pt}
 
 **Example C - Bursty arrivals, +20 ms toward Cloud.** The input route to Cloud has additional one-way delay.
 

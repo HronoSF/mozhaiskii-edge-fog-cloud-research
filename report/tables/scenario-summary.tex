@@ -1,0 +1,23 @@
+\begin{table}[H]
+\centering
+\label{table:scenario-summary:start}
+\begin{tabular}{lllrrrr}
+\toprule
+\textbf{Arrival} & \textbf{Network} & \textbf{Scheduler} & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{On time} \\
+\midrule
+Steady & Normal & Round Robin & \shortstack[r]{181.7\\4 / 4 / 4} & \shortstack[r]{236.7\\4 / 4 / 4} & \shortstack[r]{227.2\\4 / 4 / 4} & 36/36 \\
+Steady & Normal & Compute-ECT & \shortstack[r]{118.0\\0 / 0 / 12} & \shortstack[r]{121.2\\0 / 0 / 12} & \shortstack[r]{119.2\\0 / 0 / 12} & 36/36 \\
+Steady & Normal & Network-ECT & \shortstack[r]{113.6\\0 / 0 / 12} & \shortstack[r]{120.1\\0 / 0 / 12} & \shortstack[r]{119.2\\0 / 0 / 12} & 36/36 \\
+Steady & +20 ms & Round Robin & \shortstack[r]{266.1\\4 / 4 / 4} & \shortstack[r]{252.4\\4 / 4 / 4} & \shortstack[r]{248.9\\4 / 4 / 4} & 36/36 \\
+Steady & +20 ms & Compute-ECT & \shortstack[r]{209.0\\0 / 0 / 12} & \shortstack[r]{203.5\\0 / 0 / 12} & \shortstack[r]{199.1\\0 / 0 / 12} & 36/36 \\
+Steady & +20 ms & Network-ECT & \shortstack[r]{196.3\\0 / 3 / 9} & \shortstack[r]{207.0\\0 / 3 / 9} & \shortstack[r]{145.7\\0 / 6 / 6} & 36/36 \\
+Burst & Normal & Round Robin & \shortstack[r]{185.5\\4 / 4 / 4} & \shortstack[r]{171.9\\4 / 4 / 4} & \shortstack[r]{189.8\\4 / 4 / 4} & 35/36 \\
+Burst & Normal & Compute-ECT & \shortstack[r]{131.2\\0 / 1 / 11} & \shortstack[r]{143.3\\0 / 1 / 11} & \shortstack[r]{136.0\\0 / 1 / 11} & 36/36 \\
+Burst & Normal & Network-ECT & \shortstack[r]{137.3\\0 / 1 / 11} & \shortstack[r]{138.3\\0 / 1 / 11} & \shortstack[r]{139.0\\0 / 1 / 11} & 36/36 \\
+Burst & +20 ms & Round Robin & \shortstack[r]{210.6\\4 / 4 / 4} & \shortstack[r]{210.4\\4 / 4 / 4} & \shortstack[r]{210.2\\4 / 4 / 4} & 36/36 \\
+Burst & +20 ms & Compute-ECT & \shortstack[r]{191.0\\0 / 1 / 11} & \shortstack[r]{186.8\\0 / 1 / 11} & \shortstack[r]{198.7\\0 / 1 / 11} & 36/36 \\
+Burst & +20 ms & Network-ECT & \shortstack[r]{186.9\\0 / 4 / 8} & \shortstack[r]{206.5\\0 / 4 / 8} & \shortstack[r]{204.5\\0 / 5 / 7} & 36/36 \\
+\bottomrule
+\end{tabular}
+\label{table:scenario-summary:end}
+\end{table}
