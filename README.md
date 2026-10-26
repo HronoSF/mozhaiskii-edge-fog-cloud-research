@@ -12,6 +12,8 @@ An application orchestrator assigns real CPU tasks to Edge, Fog and Cloud worker
 
 **[Open the testbed validation note](report/UPV-EHU_Testbed_Validation_Note.pdf)**. No software installation is needed. Its [Markdown](report/testbed-validation-note.md) and [complete LaTeX](report/testbed-validation-note.tex) are versioned. The [previous scheduling-report iteration](report/UPV-EHU_Scheduling_Report_A01-A03.pdf) remains available, with its [Markdown](report/scheduling-report.md) and [complete LaTeX](report/scheduling-report.tex). [Figures](figures/) and [five measurement CSVs](data/) are versioned.
 
+The [scheduling model](docs/scheduling-model.md) specifies the implementation's calibration, queue accounting, transport overlap and observation limits.
+
 | Run | Correct outputs, including preparation | Scored tasks on time / offered |
 |---|---:|---:|
 | Run 1 |948|144/144|

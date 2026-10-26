@@ -2,11 +2,9 @@
 
 **Gleb Mozhaiskii · Research note · October 2026**
 
-Prepared for discussion with José Pascual and Unai Garciarena (UPV/EHU).
-
 ## Abstract
 
-I evaluated whether an application-level scheduling testbed could be reconstructed and execute the same workload correctly across three fresh Linux VM sessions. Each session contained a Gateway orchestrator and three CPU-limited workers connected through MADT, with global, sender and worker queues. The prospective protocol fixed the runtime baseline, 12 scheduling scenarios, validation criteria and stopping rules before collection. All three sessions completed: 2,844 worker outputs were reference-checked, including 432 scored tasks. Of these, 431 met the one-second deadline measured from planned arrival; one correct result was late. Network qualification, evidence preservation and cleanup passed their separate checks. These results establish a bounded same-host correctness and repeatability screen. Placement, latency and decision-cost observations are reported separately from that validation objective.
+I evaluated whether an application-level scheduling testbed could be rebuilt and execute the same workload correctly across three fresh Linux VM sessions. Each session contained a Gateway orchestrator and three CPU-limited workers connected through MADT, with global, sender and worker queues. The runtime, 12 scheduling scenarios, validation criteria and stopping rules were fixed before collection. All three sessions completed, producing 2,844 reference-checked outputs, including 432 scored tasks. Of these, 431 met the one-second deadline measured from planned arrival; one correct result was late. The configured network conditions, evidence export and cleanup also passed their checks. The results support repeatable execution of this workload on the tested host. Placement, latency and decision overhead are reported as exploratory observations.
 
 ## 1. Research Objective
 
@@ -34,48 +32,15 @@ The workload is deterministic PBKDF2-HMAC-SHA256 computation over a digest of th
 
 ## 3. Scheduling Policies
 
-All policies use the same eligibility rule: the worker must be online, below its unresolved-assignment limit and able to reserve the input plus 1 MiB. A busy CPU does not by itself make a worker ineligible; work can wait in its queues. RR advances through E, F and C, skipping ineligible workers. The ECT policies select the eligible worker with the lowest predicted response-completion time; ties use the same E/F/C order. RR supplies a profile-free baseline. The two ECT variants keep service and queue accounting fixed while changing whether transport estimates enter the score.
+All policies require an online worker with a free assignment credit and enough reservation capacity. A busy CPU remains eligible because work can wait in its queues.
 
-For task $k$ and worker $j$, let $s_j(k)$ be calibrated execution wall time. Let $u_j(b)$, $a_j(b)$ and $v_j(b)$ be the calibrated input-delivery, subsequent acknowledgement and result-return durations for input size $b$. Service estimates are ceiling-rounded arithmetic means of three unshaped calibration samples per worker/task class. Transport estimates use all six samples per worker/input size in each network condition. The profiles are frozen before comparison and shared across policies; transport profiles are condition-specific.
+**Round Robin (RR)** cycles through E, F and C, skipping ineligible workers. It provides a baseline without completion-time prediction.
 
-At decision time $t$, the residual estimate for a reported executing task with start time $x$ is
+**Compute-ECT** minimizes predicted completion time using the current task's remaining execution estimate, assigned waiting work and the new task's calibrated service time. Transport estimates are deliberately set to zero, providing a compute-only control with the same queue accounting.
 
-$$
-R_j(t)=\max\{0,\ s_j(k_{\rm run})-(t-x)\}.
-$$
+**Network-ECT** adds calibrated input delivery, admission acknowledgement and result-return costs. It tracks sender serialization separately from worker execution, allowing the next input transfer to overlap the current computation. Result return extends the response estimate without occupying the worker's execution slot.
 
-It is zero when no task is reported executing. An exhausted estimate contributes zero residual, but the assignment remains unresolved until its result is verified.
-
-**Compute-ECT.** If $W_j$ contains assigned tasks still waiting for transfer or execution, the candidate $i$ is scored as
-
-$$
-\widehat F^{\rm C}_j(i)=t+R_j(t)+\sum_{k\in W_j}s_j(k)+s_j(i).
-$$
-
-This is the implemented predictor with input, acknowledgement and result-transfer estimates set to zero. Tasks already executing, returning results or completed are excluded from $W_j$.
-
-**Network-ECT.** The predictor retains sender serialization and overlap between input delivery and execution. Initialize the execution frontier $C_j=t+R_j(t)$ and upload frontier $U_j=t$. If an upload started at $e$ and its acknowledgement is outstanding, initialize $U_j=\max\{t,e+u_j(b)+a_j(b)\}$ instead. This also applies when its computation finishes before the acknowledgement arrives.
-
-Traverse the remaining assigned tasks in assignment order and append the candidate. Skip tasks already executing, returning or completed. For each remaining task $k$, use the first applicable case below. A task already in the worker FIFO is ready at $t$ even while its sender ACK remains outstanding:
-
-$$
-A_{jk}=\left\{\begin{array}{ll}
-t & \mathrm{already\ in\ worker\ FIFO},\\
-\max\{t,e_k+u_j(b_k)\} & \mathrm{active\ upload},\\
-U_j+u_j(b_k) & \mathrm{upload\ not\ yet\ started}.
-\end{array}\right.
-$$
-
-\Needspace{90pt}
-
-Only a not-yet-started upload advances $U_j\leftarrow A_{jk}+a_j(b_k)$; the active upload is already represented in the initial frontier. After each task, update
-
-$$
-C_j\leftarrow\max\{C_j,A_{jk}\}+s_j(k),\qquad
-\widehat F^{\rm N}_j(i)=C_j+v_j(b_i)
-$$
-
-where the final score uses $C_j$ after appending the candidate. Result return contributes to the candidate's response estimate without occupying its worker's CPU slot. These recurrences describe the frozen implementation; they use no future completion observations.
+Both ECT policies use only controller-known state and calibration profiles frozen before comparison, with fixed E/F/C tie-breaking. The exact equations, profile construction and observation limits are documented in `docs/scheduling-model.md` in the accompanying repository.
 
 \Needspace{120pt}
 
@@ -113,6 +78,8 @@ Of the 432 scored tasks, **431 met the one-second planned-arrival deadline**. Th
 
 ![Run 3 task timeline for Round Robin with burst arrivals; the late task is retained](../figures/task-timeline.svg)
 
+\Needspace{500pt}
+
 ## 6. Exploratory Observations
 
 The **VM session is the replication unit: N=3 on one host**. Each run cell below gives median response time in milliseconds and, beneath it, assignments to Edge / Fog / Cloud, out of 12 tasks. 'On time' is a descriptive total over all 36 offers in that row. The rows and tasks are nested observations, not additional independent replications. All 12 scenario combinations are shown.
@@ -143,13 +110,15 @@ Every scenario completed its 12 scored tasks within the six-second window: obser
 
 **Workload and models.** Twelve scored tasks per scenario and four deterministic CPU classes provide a correctness workload. They do not cover stateful services, application dependency graphs, migration, recovery of interrupted work or sustained saturation. Service profiles come from unshaped calibration; transport profiles are condition-specific and fixed. Model error under changing load or stale state was not experimentally isolated. Fog also couples forwarding and execution.
 
+\Needspace{65pt}
+
 **Reconstruction.** Source, versions and package manifests were pinned and checked, but the environment was not rebuilt from a hermetic package mirror. Future dependency availability remains an operational risk. All three collected sessions are included; preparation and warmup outputs are distinguished from scored outcomes.
 
 ## 8. Conclusion and Research Directions
 
 The predefined same-host application screen passed in three fresh VM sessions, with complete task accounting and verified outputs on every worker. The configured network treatments passed their separate qualifications, and preserved evidence and cleanup supported final comparison eligibility. The scored outcome was 431 on-time results and one late correct result under the original planned-arrival deadline.
 
-The next scientific question is how placement quality changes when queue and network observations become stale, and what information-update cost is justified by the resulting service-level benefit. The present implementation provides a measured baseline for designing that study. Extending the question to temporary worker loss or recovery would require an explicit failure and task-state model; the current cohort supplies no recovery evidence.
+A proposed follow-up would introduce controlled delays in worker-state updates while holding the workload, policies and configured network conditions fixed. It would measure completion-time prediction error, task placement, planned-arrival deadline attainment and the CPU and traffic costs of state updates. Varying update delay and frequency separately would help distinguish the effect of stale information from the cost of collecting it. This would test a research question; the current cohort does not establish a stale-telemetry defect. Temporary worker loss and recovery would require a separate failure and task-state model.
 
 ## References
 
