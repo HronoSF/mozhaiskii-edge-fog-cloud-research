@@ -51,14 +51,41 @@ def main():
     shutil.copyfile(ROOT/'figures/topology.png',ROOT/'build/figures/topology.png')
     for name in ['median-latency','decision-overhead','task-timeline']:
         cairosvg.svg2pdf(url=str(ROOT/'figures'/f'{name}.svg'),write_to=str(ROOT/'build/figures'/f'{name}.pdf'))
-    text=(ROOT/'report/scheduling-report.md').read_text().replace('../figures/','build/figures/').replace('.svg)', '.pdf){width=100%}').replace('.png)', '.png){width=100%}')
-    body=subprocess.check_output(['pandoc','-f','markdown-smart','-t','latex'],input=text,text=True,cwd=ROOT)
-    body=body.replace(r'\begin{figure}',r'\begin{figure}[H]')
     template=(ROOT/'latex/research-report.tex').read_text()
-    metadata=r'\hypersetup{pdftitle={Scheduling tasks across different computing resources},pdfauthor={Gleb Mozhaiskii}}'+'\n'
-    (GENERATED/'report/scheduling-report.tex').write_text(template.replace('$body$',metadata+body))
-    for name in ['report/scheduling-report.tex']+[f'report/tables/{p.name}' for p in (GENERATED/'report/tables').glob('*.tex')]+[f'figures/{name}.svg' for name in ['median-latency','decision-overhead','task-timeline']]:
+    def make_body(md, title, output):
+        text=(ROOT/md).read_text().replace('../figures/','build/figures/').replace('.svg)', '.pdf){width=100%}').replace('.png)', '.png){width=100%}')
+        body=subprocess.check_output(['pandoc','-f','markdown-smart','-t','latex'],input=text,text=True,cwd=ROOT)
+        body=body.replace(r'\begin{figure}',r'\begin{figure}[H]')
+        metadata=r'\hypersetup{pdftitle={'+title+r'},pdfauthor={Gleb Mozhaiskii}}'+'\n'
+        path=GENERATED/'report'/output
+        path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_text(template.replace('$body$',metadata+body))
+    make_body('report/scheduling-report.md','Scheduling tasks across different computing resources','scheduling-report.tex')
+    make_body('report/testbed-validation-note.md','Validation of an Edge-Fog-Cloud Scheduling Testbed','testbed-validation-note.tex')
+    # The validation note's scenario summary combines the existing medians with
+    # exact worker placements while retaining the original scenario ordering.
+    cells=read('scenario-results.csv')
+    scenario_rows=[]
+    for arr in ['steady','burst']:
+        for net in ['unshaped','delay20']:
+            for policy in ['rr','compute_ect','network_ect']:
+                runs=sorted((r for r in cells if r['arrival_pattern']==arr and r['network_condition']==net and r['scheduler']==policy),key=lambda r:r['slot'])
+                assert [r['slot'] for r in runs]==['A01','A02','A03']
+                run_cells=[]
+                for r in runs:
+                    latency=f"{float(r['response_scheduled_ns_median'])/1e6:.1f}"
+                    counts=' / '.join(r['placement_'+w] for w in ['E','F','C'])
+                    run_cells.append(r'\shortstack[r]{'+latency+r'\\'+counts+'}')
+                scenario_rows.append([arr.title(),'Normal' if net=='unshaped' else '+20 ms',labels[policy],*run_cells,f"{sum(int(r['on_time']) for r in runs)}/36"])
+    table('scenario-summary',['Arrival','Network','Scheduler','Run 1','Run 2','Run 3','On time'],scenario_rows,'lllrrrr')
+    for name in ['report/scheduling-report.tex']+[f'report/tables/{p.name}' for p in (GENERATED/'report/tables').glob('*.tex') if p.name!='scenario-summary.tex']+[f'figures/{name}.svg' for name in ['median-latency','decision-overhead','task-timeline']]:
         if (GENERATED/name).read_bytes() != (ROOT/name).read_bytes():
             raise ValueError('Generated source differs from canonical source: '+name+'; inspect toolchain/content, do not overwrite the published report')
-    print('Verified9indivisible tables,3vector charts,the original topology image and versioned LaTeX; shared style unchanged.')
+    if not (ROOT/'report/testbed-validation-note.md').exists():
+        raise FileNotFoundError('report/testbed-validation-note.md is not available yet')
+    if (GENERATED/'report/testbed-validation-note.tex').read_bytes() != (ROOT/'report/testbed-validation-note.tex').read_bytes():
+        raise ValueError('Generated source differs from canonical source: report/testbed-validation-note.tex; copy the generated source after review')
+    if (GENERATED/'report/tables/scenario-summary.tex').read_bytes() != (ROOT/'report/tables/scenario-summary.tex').read_bytes():
+        raise ValueError('Generated source differs from canonical source: report/tables/scenario-summary.tex; copy the generated table after review')
+    print('Verified original report inputs and generated the validation note body and scenario summary; shared style unchanged.')
 if __name__=='__main__':main()

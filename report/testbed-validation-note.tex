@@ -1,0 +1,405 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{latex/research-report}
+\usepackage{newunicodechar}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{×}{\ensuremath{\times}}
+\begin{document}
+\hypersetup{pdftitle={Validation of an Edge-Fog-Cloud Scheduling Testbed},pdfauthor={Gleb Mozhaiskii}}
+\section{Validation of an Edge-Fog-Cloud Scheduling
+Testbed}\label{validation-of-an-edge-fog-cloud-scheduling-testbed}
+
+\textbf{Gleb Mozhaiskii · Research note · October 2026}
+
+Prepared for discussion with José Pascual and Unai Garciarena (UPV/EHU).
+
+\subsection{Abstract}\label{abstract}
+
+I evaluated whether an application-level scheduling testbed could be
+reconstructed and execute the same workload correctly across three fresh
+Linux VM sessions. Each session contained a Gateway orchestrator and
+three CPU-limited workers connected through MADT, with global, sender
+and worker queues. The prospective protocol fixed the runtime baseline,
+12 scheduling scenarios, validation criteria and stopping rules before
+collection. All three sessions completed: 2,844 worker outputs were
+reference-checked, including 432 scored tasks. Of these, 431 met the
+one-second deadline measured from planned arrival; one correct result
+was late. Network qualification, evidence preservation and cleanup
+passed their separate checks. These results establish a bounded
+same-host correctness and repeatability screen. Placement, latency and
+decision-cost observations are reported separately from that validation
+objective.
+
+\subsection{1. Research Objective}\label{research-objective}
+
+The predefined question was whether the existing orchestrator could
+reconstruct its runtime and correctly execute and account for the
+original pilot across \textbf{three fresh VM sessions on the same host}.
+A separate question concerned reproduction of the configured network
+conditions within the original numerical tolerances.
+
+The application screen required three complete sessions. Completion
+required all expected task outcomes and reference outputs, consistent
+assignments and queue transitions, one execution slot per worker, finite
+resource accounting, valid clocks and provenance, intact evidence
+export, and verified cleanup. Network qualification was assessed
+independently. Strict performance eligibility additionally required both
+network qualifications to pass and the preserved evidence and cleanup to
+be verified. A correct result that missed its deadline remained a late
+result; lateness alone did not fail application correctness.
+
+RR, Compute-ECT and Network-ECT exercised the instrument under different
+placement decisions. Their performance ordering was not a validation
+criterion. The policy comparisons in Section 6 are exploratory
+observations from the completed cohort.
+
+Wang et al. {[}1{]} provide methodological context: compare controllers
+under common conditions and report decision overhead alongside
+service-level outcomes. Their Continuous Multi-Mode Scheduling benchmark
+selects execution modes as well as destinations for video inference.
+This testbed instead assigns fixed CPU tasks to workers and checks their
+results.
+
+\Needspace{100pt}
+
+\subsection{2. Testbed Architecture}\label{testbed-architecture}
+
+Each session used a fresh ARM64 Lima Linux VM with 4 vCPU, 4 GiB RAM and
+a 20 GiB sparse disk. The three sessions ran sequentially on the same
+Apple Silicon Mac. MADT {[}2{]} deployed the four-container topology
+below. G/E/F/C CPU quotas were 0.50/0.25/0.50/1.00 CPU, with a 100 ms
+period and a 256 MiB memory limit per container.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={System topology}]{build/figures/topology.png}
+\caption{System topology}
+\end{figure}
+
+Gateway G owns the global FIFO, placement controller and one sender FIFO
+per worker. Each sender serializes uploads until input-admission
+acknowledgement. Workers E, F and C each have a local FIFO and one
+non-preemptive execution slot; execution can overlap the next input
+transfer. G reaches C through F, while E is directly reachable on the
+access network. F therefore shares its quota between routing and
+application work.
+
+Each worker permits at most 32 unresolved assignments and 64 MiB of
+application reservations. A task reserves its input size plus 1 MiB;
+capacity is released after a validated result. These bounds are distinct
+from the container memory limit. Worker state is reported every 100 ms,
+and placement uses an immutable snapshot of controller-known events and
+state.
+
+The workload is deterministic PBKDF2-HMAC-SHA256 computation over a
+digest of the transferred input. Two input sizes (64 KiB and 1 MiB) and
+two work levels (200,000 and 800,000 iterations) define four task
+classes. G transfers the complete input and independently checks the
+returned result vector. Task, assignment and output identities are
+checked within each execution group.
+
+\subsection{3. Scheduling Policies}\label{scheduling-policies}
+
+All policies use the same eligibility rule: the worker must be online,
+below its unresolved-assignment limit and able to reserve the input plus
+1 MiB. A busy CPU does not by itself make a worker ineligible; work can
+wait in its queues. RR advances through E, F and C, skipping ineligible
+workers. The ECT policies select the eligible worker with the lowest
+predicted response-completion time; ties use the same E/F/C order. RR
+supplies a profile-free baseline. The two ECT variants keep service and
+queue accounting fixed while changing whether transport estimates enter
+the score.
+
+For task \(k\) and worker \(j\), let \(s_j(k)\) be calibrated execution
+wall time. Let \(u_j(b)\), \(a_j(b)\) and \(v_j(b)\) be the calibrated
+input-delivery, subsequent acknowledgement and result-return durations
+for input size \(b\). Service estimates are ceiling-rounded arithmetic
+means of three unshaped calibration samples per worker/task class.
+Transport estimates use all six samples per worker/input size in each
+network condition. The profiles are frozen before comparison and shared
+across policies; transport profiles are condition-specific.
+
+At decision time \(t\), the residual estimate for a reported executing
+task with start time \(x\) is
+
+\[
+R_j(t)=\max\{0,\ s_j(k_{\rm run})-(t-x)\}.
+\]
+
+It is zero when no task is reported executing. An exhausted estimate
+contributes zero residual, but the assignment remains unresolved until
+its result is verified.
+
+\textbf{Compute-ECT.} If \(W_j\) contains assigned tasks still waiting
+for transfer or execution, the candidate \(i\) is scored as
+
+\[
+\widehat F^{\rm C}_j(i)=t+R_j(t)+\sum_{k\in W_j}s_j(k)+s_j(i).
+\]
+
+This is the implemented predictor with input, acknowledgement and
+result-transfer estimates set to zero. Tasks already executing,
+returning results or completed are excluded from \(W_j\).
+
+\textbf{Network-ECT.} The predictor retains sender serialization and
+overlap between input delivery and execution. Initialize the execution
+frontier \(C_j=t+R_j(t)\) and upload frontier \(U_j=t\). If an upload
+started at \(e\) and its acknowledgement is outstanding, initialize
+\(U_j=\max\{t,e+u_j(b)+a_j(b)\}\) instead. This also applies when its
+computation finishes before the acknowledgement arrives.
+
+Traverse the remaining assigned tasks in assignment order and append the
+candidate. Skip tasks already executing, returning or completed. For
+each remaining task \(k\), predict input readiness as
+
+\[
+A_{jk}=\left\{\begin{array}{ll}
+t & \mathrm{already\ in\ worker\ FIFO},\\
+\max\{t,e_k+u_j(b_k)\} & \mathrm{active\ upload},\\
+U_j+u_j(b_k) & \mathrm{upload\ not\ yet\ started}.
+\end{array}\right.
+\]
+
+\Needspace{90pt}
+
+Only a not-yet-started upload advances
+\(U_j\leftarrow A_{jk}+a_j(b_k)\); the active upload is already
+represented in the initial frontier. After each task, update
+
+\[
+C_j\leftarrow\max\{C_j,A_{jk}\}+s_j(k),\qquad
+\widehat F^{\rm N}_j(i)=C_j+v_j(b_i)
+\]
+
+where the final score uses \(C_j\) after appending the candidate. Result
+return contributes to the candidate\textquotesingle s response estimate
+without occupying its worker\textquotesingle s CPU slot. These
+recurrences describe the frozen implementation; they use no future
+completion observations.
+
+\Needspace{120pt}
+
+\subsection{4. Experimental Protocol}\label{experimental-protocol}
+
+The prospective cohort comprised three sequential fresh VM sessions, Run
+1-3, attempted once each without replacement or tuning. Each
+reconstructed the pinned runtime and used the same task trace, policy
+definitions, quotas and hash-derived scenario order. The baseline
+included Lima 2.2.1, Docker 28.5.2, containerd 1.7.29 and the pinned
+MADT revision and network-control repair. Full source identities,
+dependency pins and execution commands accompany the public artifact.
+
+Each session crossed three policies, two arrival patterns and two
+network conditions: \textbf{12 scenarios, each with 12 scored offers
+over six seconds}. The steady trace releases one task every 0.5 s. The
+burst trace combines a one-task/s stream with three additional tasks
+near 2 s and three near 4 s. Task classes and release times are
+identical across policies and sessions.
+
+The scheduling conditions were unshaped networking and a nominal 20 ms
+one-way delay on Cloud ingress from Fog. The separate 10 Mbps treatment
+qualified network control; it was not a scored scheduling condition.
+Each VM performed 72 calibration tasks, 12 queue-check tasks, 720 common
+warmup tasks and 144 scored tasks: 948 executions in total.
+
+\textbf{Application criteria.} All 15 execution groups, including the 12
+scored scenarios, had to complete with 948 independently checked worker
+outputs and all 144 scored outcomes retained. The audit checked task
+conservation, assignment/output identities, FIFO and single-slot
+constraints, finite credits and reservations, queue/execution overlap,
+causal timestamps, resource limits and source/runtime provenance.
+Missing, invalid or incompletely audited application evidence required a
+stop.
+
+\textbf{Network criteria.} Both health and application-quota
+qualification measured baseline, impaired and restored states. For both
+probe directions, the median RTT increment had to be 15-25 ms and the
+restored median within 2 ms of baseline. The unaffected access-path
+medians could span at most 2 ms. The rate treatment required 7-11 Mbps,
+with baseline and restoration at least 20 Mbps and restoration at least
+75\% of baseline. Ordinary measurements required 20/20 ping delivery and
+valid TCP delivery. Route, interface, qdisc and numerical actuation
+readbacks, partition/recovery and unaffected-path checks were also
+mandatory. A valid numerical deviation was recorded separately from
+application correctness and excluded the session from strict performance
+comparison; it did not become a relaxed network pass.
+
+\textbf{Measurement and preservation.} A scored task meets its deadline
+when \(z_i-a_i^*\leq1\) s, from planned release \(a_i^*\) to verified
+response \(z_i\). The record separates release lag, global waiting,
+observation, decision, commitment, sender waiting, input delivery,
+worker waiting, execution and result return. Decision wall time measures
+the timed policy call; thread CPU time is recorded separately.
+Containers share a checked Linux monotonic-clock domain. Export
+integrity and actual session cleanup were verified before publication
+eligibility was finalized.
+
+\Needspace{200pt}
+
+\subsection{5. Validation Results}\label{validation-results}
+
+All three sessions passed the application screen and both network
+qualifications. Evidence export, preservation and cleanup passed their
+recorded audits. All 432 scored offers completed correctly: none was
+rejected, failed, unresolved or unreleased. The three sessions produced
+2,844 reference-checked worker outputs including preparation.
+
+\input{report/tables/sessions.tex}
+
+The Gateway recorded 948 assignments per session, including 144 scored
+decisions. Worker totals below include calibration, queue checks and
+warmup; parentheses contain scored outputs. Every worker produced
+verified results in each session.
+
+\input{report/tables/nodes.tex}
+
+The application-quota network qualification produced the following RTT
+increments and limited receive rates. Forward and reverse denote probe
+initiation directions; these are RTT increments, not direct
+one-way-delay estimates. All values lie within the original 15-25 ms and
+7-11 Mbps bands; restoration, delivery and control-path checks also
+passed.
+
+\input{report/tables/network.tex}
+
+Of the 432 scored tasks, \textbf{431 met the one-second planned-arrival
+deadline}. The remaining task was an Edge assignment in Run 3,
+RR/burst/unshaped. Its correct response arrived after 1002.317940 ms,
+exceeding the deadline by 2.317940 ms. Release lag was 4.019139 ms;
+measuring from actual release would yield 998.298801 ms and change its
+classification. The predefined planned-arrival result is retained.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Run 3 task timeline for Round Robin with burst arrivals; the late task is retained}]{build/figures/task-timeline.pdf}
+\caption{Run 3 task timeline for Round Robin with burst arrivals; the
+late task is retained}
+\end{figure}
+
+\subsection{6. Exploratory Observations}\label{exploratory-observations}
+
+The \textbf{VM session is the replication unit: N=3 on one host}. Each
+run cell below gives median response time in milliseconds and, beneath
+it, assignments to Edge / Fog / Cloud, out of 12 tasks.
+\textquotesingle On time\textquotesingle{} is a descriptive total over
+all 36 offers in that row. The rows and tasks are nested observations,
+not additional independent replications. All 12 scenario combinations
+are shown.
+
+\input{report/tables/scenario-summary.tex}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Median task response time in each fresh VM run}]{build/figures/median-latency.pdf}
+\caption{Median task response time in each fresh VM run}
+\end{figure}
+
+Each symbol is one session\textquotesingle s scenario median. The
+horizontal segment spans the observed minimum and maximum of the three
+medians; it is not a confidence interval.
+
+\Needspace{55pt}
+
+Both ECT response medians were lower than the matched RR median in every
+observed session/context pair. Across fixed scenarios, the relative
+range \((\max-\min)/\mathrm{median}\) was 0.219\%-31.267\%.
+
+\textbf{Placement.} RR assigned 4/4/4 in every scenario. Neither ECT
+policy selected Edge in this cohort. With burst arrivals and added
+delay, Compute-ECT assigned one task to Fog per run; Network-ECT
+assigned 4, 4 and 5. Under steady arrivals and added delay, Network-ECT
+assigned 3, 3 and 6 tasks to Fog. Its corresponding latency medians were
+196.273, 207.037 and 145.668 ms, the largest inter-session spread. The
+placement change and lower Run 3 median are associated observations;
+calibration and execution timing also varied between sessions.
+
+\textbf{Decision cost and offered load.} Decision wall medians across
+the 36 scenario/session points ranged from 9.375 to 160.792
+microseconds; CPU medians ranged from 6.459 to 146.083 microseconds. In
+all 24 matched ECT-minus-RR comparisons, both decision wall and CPU
+medians were higher for ECT. Decision cost remains included in measured
+task response.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Scheduling decision wall time in all three sessions; each point is one scenario median}]{build/figures/decision-overhead.pdf}
+\caption{Scheduling decision wall time in all three sessions; each point
+is one scenario median}
+\end{figure}
+
+Every scenario completed its 12 scored tasks within the six-second
+window: observed window throughput was 2 tasks/s. On-time goodput was
+also 2 tasks/s except for the late-task scenario, where it was 11/6
+tasks/s. This offered load does not identify maximum capacity or
+overload behavior.
+
+\subsection{7. Threats to Validity}\label{threats-to-validity}
+
+\textbf{Replication and scope.} Three fresh VMs shared one physical host
+and operator. They tested runtime reconstruction and repeated execution
+with one recipe, a fixed seed and a fixed scenario order. The data do
+not establish portability, long-term reliability or a general policy
+ranking. CPU quotas and emulated links represent logical tiers.
+
+\textbf{Timing and attribution.} CPU contention, quota replenishment,
+virtualization, network emulation and measurement activity all
+contribute to wall time. They were not varied independently, so the
+deadline miss and inter-session spread cannot be assigned to a single
+cause. The range of three medians is descriptive uncertainty, with too
+little replication for broad statistical conclusions. Decision wall time
+includes elapsed scheduling and instrumentation effects; it is not total
+control-plane cost.
+
+\textbf{Workload and models.} Twelve scored tasks per scenario and four
+deterministic CPU classes provide a correctness workload. They do not
+cover stateful services, application dependency graphs, migration,
+recovery of interrupted work or sustained saturation. Service profiles
+come from unshaped calibration; transport profiles are
+condition-specific and fixed. Model error under changing load or stale
+state was not experimentally isolated. Fog also couples forwarding and
+execution.
+
+\textbf{Reconstruction.} Source, versions and package manifests were
+pinned and checked, but the environment was not rebuilt from a hermetic
+package mirror. Future dependency availability remains an operational
+risk. All three collected sessions are included; preparation and warmup
+outputs are distinguished from scored outcomes.
+
+\subsection{8. Conclusion and Research
+Directions}\label{conclusion-and-research-directions}
+
+The predefined same-host application screen passed in three fresh VM
+sessions, with complete task accounting and verified outputs on every
+worker. The configured network treatments passed their separate
+qualifications, and preserved evidence and cleanup supported final
+comparison eligibility. The scored outcome was 431 on-time results and
+one late correct result under the original planned-arrival deadline.
+
+The next scientific question is how placement quality changes when queue
+and network observations become stale, and what information-update cost
+is justified by the resulting service-level benefit. The present
+implementation provides a measured baseline for designing that study.
+Extending the question to temporary worker loss or recovery would
+require an explicit failure and task-state model; the current cohort
+supplies no recovery evidence.
+
+\subsection{References}\label{references}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Z. Wang, B. Sedlak, J. L. Herrera, and S. Dustdar.
+  \textquotesingle Fair Comparison of Scheduling Algorithms on
+  Heterogeneous Edge Clusters: A Continuous Adaptive
+  Benchmark.\textquotesingle{} IEEE ICDCSW, pp. 232-237, 2026.
+  \href{https://doi.org/10.1109/ICDCSW72724.2026.00054}{DOI:
+  10.1109/ICDCSW72724.2026.00054}. Open preprint:
+  \href{https://arxiv.org/abs/2606.12343}{arXiv:2606.12343}.
+\item
+  MADT project. \textquotesingle Distributed Application Modelling
+  System.\textquotesingle{}
+  \href{https://github.com/dltcspbu/madt}{Source repository}, accessed
+  23 October 2026.
+\end{enumerate}
+
+\end{document}

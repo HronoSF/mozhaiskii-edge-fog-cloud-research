@@ -7,7 +7,8 @@ import re
 from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL = ROOT/'report/UPV-EHU_Scheduling_Report_A01-A03.pdf'
+CANONICAL = ROOT/'report/UPV-EHU_Testbed_Validation_Note.pdf'
+SOURCE = ROOT/'report/testbed-validation-note.tex'
 
 
 def require(value, message):
@@ -37,21 +38,24 @@ def main():
     parser.add_argument('pdf',type=Path)
     args=parser.parse_args()
     old,new=PdfReader(CANONICAL),PdfReader(args.pdf)
-    require(len(new.pages)==len(old.pages)==10, 'Report must remain ten pages')
+    require(len(old.pages)>0 and len(new.pages)==len(old.pages), 'Page count differs from the nonempty canonical report')
     for a,b in zip(old.pages,new.pages):
         require(a.mediabox==b.mediabox,'Changed page geometry')
         require(a.extract_text()==b.extract_text(),'Extracted page text differs; inspect toolchain before accepting build')
         fonts(b['/Resources'])
     require(uris(old)==uris(new),'Changed external links')
+    source=SOURCE.read_text()
+    table_inputs=set(re.findall(r'\\input\{(?:\.\./)?report/tables/([^}]+?)(?:\.tex)?\}',source))
+    require(bool(table_inputs),'No report/tables inputs found in canonical TeX')
     labels={}
-    for line in (ROOT/'build/scheduling-report.aux').read_text().splitlines():
+    for line in (ROOT/'build/testbed-validation-note.aux').read_text().splitlines():
         match=re.search(r'newlabel\{table:([^:]+):(start|end)\}.*?\}\}\{(\d+)\}',line)
         if match:labels.setdefault(match[1],{})[match[2]]=int(match[3])
-    require(len(labels)==9 and all(v['start']==v['end'] for v in labels.values()),'Missing or split table')
-    log=(ROOT/'build/scheduling-report.log').read_text()
+    require(set(labels)==table_inputs and all(v['start']==v['end'] for v in labels.values()),'Table labels do not match canonical inputs or a table is split')
+    log=(ROOT/'build/testbed-validation-note.log').read_text()
     require('Overfull' not in log,'Overfull box; inspect layout')
     same=hashlib.sha256(CANONICAL.read_bytes()).digest()==hashlib.sha256(args.pdf.read_bytes()).digest()
-    print('PASS: ten pages, exact page text/geometry, whole tables, embedded fonts and unchanged links.')
+    print(f'PASS: {len(new.pages)} pages, exact page text/geometry, whole tables, embedded fonts and unchanged links.')
     print('PDF bytes: '+('identical' if same else 'different; PDF metadata/object encoding can differ. Visual page comparison is still required.'))
 
 
