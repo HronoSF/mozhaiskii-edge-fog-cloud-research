@@ -56,6 +56,11 @@ def main():
         text=(ROOT/md).read_text().replace('../figures/','build/figures/').replace('.svg)', '.pdf){width=100%}').replace('.png)', '.png){width=100%}')
         body=subprocess.check_output(['pandoc','-f','markdown-smart','-t','latex'],input=text,text=True,cwd=ROOT)
         body=body.replace(r'\begin{figure}',r'\begin{figure}[H]')
+        if output == 'testbed-validation-note.tex':
+            marker = r'\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Run 3 task timeline'
+            if body.count(marker) != 1:
+                raise ValueError('Expected exactly one original timeline figure')
+            body = body.replace(marker, r'\vspace*{116pt}' + '\n' + marker)
         metadata=r'\hypersetup{pdftitle={'+title+r'},pdfauthor={Gleb Mozhaiskii}}'+'\n'
         path=GENERATED/'report'/output
         path.parent.mkdir(parents=True,exist_ok=True)
