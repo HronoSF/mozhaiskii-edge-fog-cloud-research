@@ -7,11 +7,16 @@ GENERATED=ROOT/'build/generated'
 def read(n):
     with (ROOT/'data'/n).open(newline='') as f:return list(csv.DictReader(f))
 def esc(v):return str(v).replace('&',r'\&').replace('%',r'\%').replace('_',r'\_')
-def table(name,headers,rows,align):
+def table(name,headers,rows,align,placements=None):
     # A table float using tabular is indivisible; H places it here or wholly on the next page.
     lines=[r'\begin{table}[H]',r'\centering',r'\label{table:'+name+':start}',r'\begin{tabular}{'+align+'}',r'\toprule',' & '.join(r'\textbf{'+esc(x)+'}' for x in headers)+r' \\',r'\midrule']
     lines+=[' & '.join(esc(x) for x in row)+r' \\' for row in rows]
-    lines += [r'\bottomrule',r'\end{tabular}',r'\label{table:'+name+':end}',r'\end{table}']
+    lines += [r'\bottomrule',r'\end{tabular}']
+    if placements is not None:
+        lines += [r'\par\smallskip',r'{\small Tasks assigned: Edge / Fog / Cloud (12 per run).}\par\smallskip',r'\begin{tabular}{lccc}',r'\toprule',r'\textbf{Scheduler} & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} \\',r'\midrule']
+        lines += [' & '.join(esc(x) for x in row)+r' \\' for row in placements]
+        lines += [r'\bottomrule',r'\end{tabular}']
+    lines += [r'\label{table:'+name+':end}',r'\end{table}']
     (GENERATED/'report/tables'/f'{name}.tex').write_text('\n'.join(lines)+'\n')
 def main():
     (GENERATED/'report/tables').mkdir(parents=True,exist_ok=True)
@@ -26,7 +31,8 @@ def main():
         rows=selected(arr,net,policy)
         return [f"{float(r['response_scheduled_ns_median'])/1e6:.1f}" for r in rows]+[f"{sum(int(r['on_time']) for r in rows)}/36"]
     for name,arr,net in [('example-a','steady','unshaped'),('example-b','burst','unshaped'),('example-c','burst','delay20')]:
-        table(name,['Scheduler','Run 1 (ms)','Run 2 (ms)','Run 3 (ms)','On time'],[[labels[p],*stats(arr,net,p)] for p in labels],'lrrrr')
+        placements=[[labels[p],*[' / '.join(r['placement_'+w] for w in ['E','F','C']) for r in selected(arr,net,p)]] for p in labels]
+        table(name,['Scheduler','Run 1 (ms)','Run 2 (ms)','Run 3 (ms)','On time'],[[labels[p],*stats(arr,net,p)] for p in labels],'lrrrr',placements=placements)
     rows=[]
     for arr in ['steady','burst']:
         for net in ['unshaped','delay20']:

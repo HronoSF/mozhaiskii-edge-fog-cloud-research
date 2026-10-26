@@ -37,7 +37,7 @@ def main():
     parser.add_argument('pdf',type=Path)
     args=parser.parse_args()
     old,new=PdfReader(CANONICAL),PdfReader(args.pdf)
-    require(len(new.pages)==len(old.pages)==9, 'Report must remain nine pages')
+    require(len(new.pages)==len(old.pages)==10, 'Report must remain ten pages')
     for a,b in zip(old.pages,new.pages):
         require(a.mediabox==b.mediabox,'Changed page geometry')
         require(a.extract_text()==b.extract_text(),'Extracted page text differs; inspect toolchain before accepting build')
@@ -51,7 +51,7 @@ def main():
     log=(ROOT/'build/scheduling-report.log').read_text()
     require('Overfull' not in log,'Overfull box; inspect layout')
     same=hashlib.sha256(CANONICAL.read_bytes()).digest()==hashlib.sha256(args.pdf.read_bytes()).digest()
-    print('PASS: nine pages, exact page text/geometry, whole tables, embedded fonts and unchanged links.')
+    print('PASS: ten pages, exact page text/geometry, whole tables, embedded fonts and unchanged links.')
     print('PDF bytes: '+('identical' if same else 'different; PDF metadata/object encoding can differ. Visual page comparison is still required.'))
 
 

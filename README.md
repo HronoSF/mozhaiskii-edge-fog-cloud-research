@@ -6,7 +6,7 @@ An application orchestrator assigns real CPU tasks to Edge, Fog and Cloud worker
 
 ## Quick Start 1: read the recorded results
 
-**[Open the nine-page report](report/UPV-EHU_Scheduling_Report_A01-A03.pdf)**. No software installation is needed. [Markdown](report/scheduling-report.md), [complete LaTeX](report/scheduling-report.tex), [figures](figures/) and [five measurement CSVs](data/) are versioned.
+**[Open the ten-page report](report/UPV-EHU_Scheduling_Report_A01-A03.pdf)**. No software installation is needed. [Markdown](report/scheduling-report.md), [complete LaTeX](report/scheduling-report.tex), [figures](figures/) and [five measurement CSVs](data/) are versioned.
 
 | Run | Correct outputs, including preparation | Scored tasks on time / offered |
 |---|---:|---:|
@@ -51,7 +51,7 @@ make verify PYTHON=.venv/bin/python
 
 **Rebuilt PDF: `build/scheduling-report.pdf`.** The canonical PDF and versioned sources are never overwritten by this workflow. Regenerated tables, LaTeX and SVGs appear under `build/generated/` and are compared with the versioned sources before compilation. Rebuilding uses no VM, Docker or private files. Package installation needs Internet; the subsequent build uses local inputs.
 
-On Apple Silicon with Homebrew Cairo the Makefile uses `/opt/homebrew/lib`; set `CAIRO_LIBDIR` for a different Cairo installation. Set `XELATEX` to an explicit compiler path if necessary. Report verification checks nine pages, exact per-page text/geometry, whole tables, embedded fonts and links. Different PDF metadata or encoding can change bytes; inspect rendered pages before accepting a different toolchain. Do not alter scientific values or typography to force a matching hash.
+On Apple Silicon with Homebrew Cairo the Makefile uses `/opt/homebrew/lib`; set `CAIRO_LIBDIR` for a different Cairo installation. Set `XELATEX` to an explicit compiler path if necessary. Report verification checks ten pages, exact per-page text/geometry, whole tables, embedded fonts and links. Different PDF metadata or encoding can change bytes; inspect rendered pages before accepting a different toolchain. Do not alter scientific values or typography to force a matching hash.
 
 ## Quick Start 3: collect and verify a new session
 
